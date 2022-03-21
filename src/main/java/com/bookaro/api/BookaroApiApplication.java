@@ -9,5 +9,19 @@ public class BookaroApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BookaroApiApplication.class, args);
 	}
+	
+	
+	/*
+	 * Implementar Seguridad 1: Authentication
+	 * https://www.youtube.com/watch?v=iyXne7dIn7U
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
 
 }
