@@ -1,6 +1,7 @@
 package com.bookaro.api.services;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,32 @@ public class UserService {
 	
 	public ArrayList<User> getUsers(){
 		return (ArrayList<User>) userRepository.findAll();
+	}
+	
+	public Optional<User> getUserId (Long id) {
+		Optional<User> aux = userRepository.findById(id);
+		if (aux.isPresent()) {
+			return aux;
+		} else {
+			return null;
+		}		
+	}
+	
+	public User insert (User user) {
+		return userRepository.save(user);
+	}
+	
+	public boolean delete (long id) {
+		try {
+	        userRepository.deleteById(id);
+	        return true;
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	        return false;
+	    }
+		 
+		
+		//userRepository.delete(user);
 	}
 
 }
