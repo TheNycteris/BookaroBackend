@@ -15,21 +15,26 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	
-	public ArrayList<User> getUsers(){
+	public ArrayList<User> findAll(){
 		return (ArrayList<User>) userRepository.findAll();
 	}
 	
-	public Optional<User> getUserId (Long id) {
-		Optional<User> aux = userRepository.findById(id);
-		if (aux.isPresent()) {
-			return aux;
-		} else {
-			return null;
-		}		
+	public Optional<User> findById (Long id) {
+		return userRepository.findById(id);
 	}
 	
-	public User insert (User user) {
+	public User add (User user) {
 		return userRepository.save(user);
+	}
+	
+	public boolean update(User user) {
+	    try {
+	    	userRepository.save(user);
+	        return true;
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	        return false;
+	    }
 	}
 	
 	public boolean delete (long id) {
@@ -40,9 +45,6 @@ public class UserService {
 	        System.out.println(e.getMessage());
 	        return false;
 	    }
-		 
-		
-		//userRepository.delete(user);
 	}
 
 }
