@@ -26,6 +26,10 @@ class PruebasBookaro {
 
 	@Test
 	void test() {
+		
+		/*User user = new User(2L, "Tolo", "1234");
+		userRepository.save(user);
+		
 
 		ArrayList<User> allCars = (ArrayList<User>) userRepository.findAll();
 
@@ -33,7 +37,7 @@ class PruebasBookaro {
 			System.out.println(u.getUsername());
 		}
 		assert !allCars.isEmpty();
-		assert allCars.get(0).getUsername().equalsIgnoreCase("Pedro");
+		assert allCars.get(0).getUsername().equalsIgnoreCase("Pedro");*/
 
 	}
 
