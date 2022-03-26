@@ -1,10 +1,7 @@
 package com.bookaro.api.controllers;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,8 +11,8 @@ import com.bookaro.api.models.UserModel;
 import com.bookaro.api.services.UserService;
 
 @RestController
-@RequestMapping("/usermodel")
-public class UserController {
+@RequestMapping("/userregister")
+public class RegisterUserController {
 	
 	@Autowired
 	UserService userService;
@@ -23,11 +20,12 @@ public class UserController {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	
-	@GetMapping()
-	public ArrayList<UserModel> getUsers(){
-		return userService.getUsers();
-	}
 	
-	
+	//Register users
+		@RequestMapping(value = "/userregister", method = RequestMethod.POST)
+		public UserModel saveuserModel(@RequestBody UserModel us1) {
+			us1.setPassword(encoder.encode(us1.getPassword()));
+			return this.userService.saveUsermodel(us1);
+		}
 
 }

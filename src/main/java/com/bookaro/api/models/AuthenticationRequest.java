@@ -1,25 +1,9 @@
 package com.bookaro.api.models;
 
-import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "userbookaro")
-public class User {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(unique = true, nullable = false)
-	private Long id;
-	
+public class AuthenticationRequest implements Serializable{
 	private String username, password;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getUsername() {
 		return username;
@@ -32,11 +16,21 @@ public class User {
 	public String getPassword() {
 		return password;
 	}
+	
+	//need default constructor for JSON Parsing
+    public AuthenticationRequest()
+    {
+
+    }
+
+    public AuthenticationRequest(String username, String password) {
+        this.setUsername(username);
+        this.setPassword(password);
+    }
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	
 	
 
