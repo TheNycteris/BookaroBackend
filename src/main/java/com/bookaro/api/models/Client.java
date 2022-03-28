@@ -29,6 +29,7 @@ public class Client extends User {
 		// TODO Auto-generated constructor stub
 	}
 
+	// Getter/Setter
 	public Subscription getSubscription() {
 		return subscription;
 	}
@@ -37,22 +38,5 @@ public class Client extends User {
 		this.subscription = subscription;
 	}
 
-	/*public Client(Long id, String username, String password, String type, String name, String surname, String dni,
-			String address, int age, int subscription) {
-		super(id, username, password, type, name, surname, dni, address, age);
-		this.subscription = subscription;
-	}*/
-
-	/*public int getSubscription() {
-		return subscription;
-	}
-
-	public void setSubscription(int subscription) {
-		this.subscription = subscription;
-	}*/
 	
-	
-	
-	
-
 }

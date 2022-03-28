@@ -17,6 +17,20 @@ public class Employee extends User {
 		// TODO Auto-generated constructor stub
 	}
 	
+	/**
+	 * Constructor
+	 * @param id
+	 * @param username
+	 * @param password
+	 * @param type
+	 * @param name
+	 * @param surname
+	 * @param dni
+	 * @param address
+	 * @param age
+	 * @param role
+	 * @param salary
+	 */
 	public Employee(Long id, String username, String password, String type, 
 			String name, String surname, String dni, String address, int age, String role, double salary) {
 		super(id, username, password, type, name, surname, dni, address, age);
@@ -24,6 +38,7 @@ public class Employee extends User {
 		this.salary = salary;
 	}
 	
+	// Getter/Setter
 	public String getRole() {
 		return role;
 	}
