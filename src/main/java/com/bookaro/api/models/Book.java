@@ -24,6 +24,7 @@ public class Book {
     @JoinColumn(name = "orderBook")
 	private Order orderBook;
 
+	// Getter/Setter
 	public Long getId() {
 		return id;
 	}

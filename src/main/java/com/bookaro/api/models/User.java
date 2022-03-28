@@ -16,6 +16,18 @@ public class User {
 	private String username, password, type, name, surname, dni, address;
 	private int age;
 	
+	/**
+	 * Constructor
+	 * @param id
+	 * @param username
+	 * @param password
+	 * @param type
+	 * @param name
+	 * @param surname
+	 * @param dni
+	 * @param address
+	 * @param age
+	 */
 	public User (Long id, String username, String password, String type, 
 			     String name, String surname, String dni, String address, int age) {
 		this.id = id;
@@ -33,6 +45,7 @@ public class User {
 		
 	}
 
+	// Getter/Setter
 	public Long getId() {
 		return id;
 	}

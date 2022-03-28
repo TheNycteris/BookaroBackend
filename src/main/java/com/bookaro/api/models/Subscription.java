@@ -29,7 +29,7 @@ public class Subscription {
 	
 	public Subscription () {}
 	
-	
+	// Getters/Setters
 	public List<Client> getAllClients() {
 		return allClients;
 	}

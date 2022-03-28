@@ -33,6 +33,16 @@ public class Order {
 	@OneToMany(mappedBy = "orderBook", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Book> books; //cambiar
 
+	/**
+	 * Métodeo para contar order activas
+	 * @param clientId
+	 * @return
+	 */
+	public boolean countActiveOrders (long clientId) {	
+		return false; // 
+	}
+	
+	// Getter/Setter
 	public Long getOrderId() {
 		return id;
 	}
