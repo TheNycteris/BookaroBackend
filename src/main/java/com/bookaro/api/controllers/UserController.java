@@ -76,7 +76,7 @@ public class UserController {
 	    	userRepository.save(user);
 	        return "Updated user.";
 	    } else {
-	        return "Request does not contain a body";
+	        return "Request does not contain a body ";
 	    }
 	}
 	
