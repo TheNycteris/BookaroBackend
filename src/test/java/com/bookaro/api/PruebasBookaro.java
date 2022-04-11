@@ -86,21 +86,18 @@ class PruebasBookaro {
 		assert subscriptions.get(0).getType().equalsIgnoreCase("Familiar");
 		
 		
-		Subscription subscription1 = new Subscription();
-		//subscription.setId(1L);
+		Subscription subscription1 = new Subscription();		
 		subscription1.setType("Básica");
 		subscription1.setPrice(10);
 		subscriptionRepository.save(subscription1);
 		
-		//Employee
-		//Employee employee = new Employee(1L, "prueba", "1234", "trabajador", "Pedro", "Ruiz", "43125340H", "Dirección de prueba", 39, "jefe", 1200);
-		//Usuario employee = new Employee(1L, "prueba", "1234", "trabajador", "Pedro", "Ruiz", "43125340H", "Dirección de prueba", 39, "jefe", 1200);
 		
+		//Rol usuario
 		List<String> rol = new ArrayList();
 		rol.add("ROLE_USER");
 		
-		Employee employee = new Employee();
-		
+		// Creamos un empleado
+		Employee employee = new Employee();		
 		employee.setAddress("dirección de prueba");
 		employee.setAge(20);
 		employee.setDni("43555666H");
@@ -108,36 +105,36 @@ class PruebasBookaro {
 		employee.setPassword("1234");
 		employee.setSurname("ruiz");		
 		employee.setUsername("pedro");
-		((Employee)employee).setPosition("Administrativo");
-		((Employee)employee).setSalary(1000);
+		employee.setPosition("Administrativo");
+		employee.setSalary(1000);
 		employee.setEmail("pedro@prueba.com");		
 		employee.setRoles(rol);
 		employeeService.add(employee);
-		//employeController.addEmployee(employee);
-		//userController.create(employee);	
 		
 		
+		//Almacenamos en un array el empleado creado
 		ArrayList<Employee> employees = (ArrayList<Employee>) employeeRepository.findAll();
 		
-		for(Employee e: employees) {
+		/*for(Employee e: employees) {
 			System.out.println(e.getUsername() + " - " + e.getPassword());
-		}
+		}*/
 		
+		// hacemos las comprobaciones
 		assert !employees.isEmpty();
 		assert employees.get(0).getUsername().equalsIgnoreCase("pedro");
 		
 		
-		
+		// Creamos un usuario admin
 		User admin = new User();
 		admin.setUsername("admin");
 		admin.setPassword("admin");		
 		List<String> roles = new ArrayList();
 		roles.add("ROLE_ADMIN");
-		admin.setRoles(roles);
-		
+		admin.setRoles(roles);		
 		userService.create(admin);
 		
 		
+		// Creamos un cliente
 		Client client = new Client();
 		client.setUsername("cliente1");
 		client.setPassword("1234");
@@ -150,10 +147,9 @@ class PruebasBookaro {
 		client.setRoles(rol);
 		client.setSubscription(subscription);
 		clientService.add(client);
-		//clientRepository.save(client);
-		//userController.create(client);
 		
 		
+		// Creamos un segundo cliente
 		Client client2 = new Client();
 		client2.setUsername("cliente2");
 		client2.setPassword("1234");
@@ -167,18 +163,14 @@ class PruebasBookaro {
 		client2.setSubscription(subscription1);
 		clientService.add(client2);
 		
-		List<Client> todos =  (List<Client>) clientRepository.findAll();/*new ArrayList();*/
-		//todos.add(client);
+		/*List<Client> todos =  (List<Client>) clientRepository.findAll();
+		
 		
 		for (Client c: todos) {
 			if (c.getSubscription().getType().equalsIgnoreCase("Familiar")) {
 				System.out.println(c.getUsername());
 			}
-		}
-		
-	
-		
-		
+		}*/	
 		
 		
 	}
