@@ -32,6 +32,7 @@ import com.bookaro.api.repositories.UserRepository;
 import com.bookaro.api.services.ClientService;
 import com.bookaro.api.services.EmployeeService;
 import com.bookaro.api.services.SubscriptionService;
+import com.bookaro.api.services.UserService;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -61,6 +62,9 @@ class PruebasBookaro {
 	
 	@Autowired
 	private ClientService clientService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -121,6 +125,17 @@ class PruebasBookaro {
 		
 		assert !employees.isEmpty();
 		assert employees.get(0).getUsername().equalsIgnoreCase("pedro");
+		
+		
+		
+		User admin = new User();
+		admin.setUsername("admin");
+		admin.setPassword("admin");		
+		List<String> roles = new ArrayList();
+		roles.add("ROLE_ADMIN");
+		admin.setRoles(roles);
+		
+		userService.create(admin);
 		
 		
 		Client client = new Client();

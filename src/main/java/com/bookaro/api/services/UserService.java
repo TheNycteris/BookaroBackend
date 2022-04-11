@@ -44,7 +44,7 @@ public class UserService {
         return repository.findById(id);
     }
 
-    //@PreAuthorize(value = "hasRole('ADMIN')")
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public User create(User user) {
         // To ensure the User ID remains unique,
         // use the current timestamp.

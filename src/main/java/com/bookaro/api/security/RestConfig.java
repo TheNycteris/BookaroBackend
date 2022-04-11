@@ -34,7 +34,7 @@ public class RestConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
-                .antMatchers(HttpMethod.POST, "/api/user/insert").permitAll()
+                //.antMatchers(HttpMethod.POST, "/api/user/insert").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/user/username").permitAll()       
                 //.antMatchers(HttpMethod.GET, "/api/user/all").permitAll()    
                 .antMatchers("/api/user/all").hasAnyRole("ADMIN", "MOD")
