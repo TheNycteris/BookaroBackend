@@ -2,6 +2,8 @@ package com.bookaro.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class BookaroApiApplication {
@@ -11,17 +13,8 @@ public class BookaroApiApplication {
 	}
 	
 	
-	/*
-	 * Implementar Seguridad 1: Authentication
-	 * https://www.youtube.com/watch?v=iyXne7dIn7U
-	 * 
-	 * 
-	 * Pruebas....
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
+	@Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder(); 
+    }
 
 }

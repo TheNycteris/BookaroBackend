@@ -19,7 +19,7 @@ public class Client extends User {
     @JoinColumn(name = "id_sub")
 	private Subscription subscription;
 	
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)	
 	private List<Order> allOrders;
 		
 	//private Integer subscription;
@@ -38,5 +38,15 @@ public class Client extends User {
 		this.subscription = subscription;
 	}
 
+	public List<Order> getAllOrders() {
+		return allOrders;
+	}
+
+	public void setAllOrders(List<Order> allOrders) {
+		this.allOrders = allOrders;
+	}
+	
+	
+	
 	
 }

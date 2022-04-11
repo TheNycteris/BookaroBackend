@@ -1,6 +1,7 @@
 package com.bookaro.api.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +17,19 @@ import com.bookaro.api.models.Subscription;
 import com.bookaro.api.services.SubscriptionService;
 
 @RestController
-@RequestMapping("api/subscription")
+@RequestMapping("/api/subscription")
 public class SubscriptionController {
 	
 	@Autowired
 	SubscriptionService subscriptionService;
 	
-	@GetMapping("")
-	public ArrayList<Subscription> getAllUsers(){
+	@GetMapping("/all")
+	public List<Subscription> getAllSubscription() {
 		return subscriptionService.findAll();
 	}
 	
 	@GetMapping (value = "{id}")
-	public Optional<Subscription> getSubscriptionId (@PathVariable ("id")long id) {
+	public Optional<Subscription> getSubscriptionId (@PathVariable ("id") long id) {
 		return subscriptionService.findById(id);
 	}
 	

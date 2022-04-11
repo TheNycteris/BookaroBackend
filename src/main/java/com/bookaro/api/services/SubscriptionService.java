@@ -1,6 +1,7 @@
 package com.bookaro.api.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class SubscriptionService {
 	@Autowired
 	SubscriptionRepository subscriptionRepository;
 	
-	public ArrayList<Subscription> findAll(){
-		return (ArrayList<Subscription>) subscriptionRepository.findAll();
+	public List<Subscription> findAll(){
+		return (List<Subscription>) subscriptionRepository.findAll();
 	}
 	
 	public Optional<Subscription> findById (Long id) {

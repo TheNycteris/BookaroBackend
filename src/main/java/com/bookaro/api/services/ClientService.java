@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bookaro.api.models.Client;
+import com.bookaro.api.models.Employee;
 import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.ClientRepository;
 
@@ -15,6 +17,9 @@ public class ClientService {
 	
 	@Autowired
 	ClientRepository clientRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	public ArrayList<Client> findAll (){
 		return (ArrayList<Client>) clientRepository.findAll();
@@ -25,7 +30,21 @@ public class ClientService {
 	}
 	
 	public Client add (Client client) {
-		return clientRepository.save(client);
+		
+		Client copy = new Client();
+		copy.setAddress(client.getAddress());
+		copy.setAge(client.getAge());
+		copy.setDni(client.getDni());
+		copy.setName(client.getName());		
+		copy.setPassword(passwordEncoder.encode(client.getPassword()));
+		copy.setSurname(client.getSurname());		
+		copy.setUsername(client.getUsername());			
+		copy.setEmail(client.getEmail());		
+		copy.setRoles(client.getRoles());	
+		copy.setSubscription(client.getSubscription());
+		copy.setAllOrders(client.getAllOrders());
+		
+		return clientRepository.save(copy);
 	}
 	
 	public boolean update (Client client) {

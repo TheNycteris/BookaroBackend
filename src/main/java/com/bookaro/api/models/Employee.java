@@ -1,5 +1,7 @@
 package com.bookaro.api.models;
 
+import java.util.List;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -9,51 +11,40 @@ import javax.persistence.Table;
 @DiscriminatorValue( value="EM" )
 public class Employee extends User {
 
-	private String role;
+	private String position;
 	private double salary;
 	
 	public Employee() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
-	
-	/**
-	 * Constructor
-	 * @param id
-	 * @param username
-	 * @param password
-	 * @param type
-	 * @param name
-	 * @param surname
-	 * @param dni
-	 * @param address
-	 * @param age
-	 * @param role
-	 * @param salary
-	 */
-	public Employee(Long id, String username, String password, String type, 
-			String name, String surname, String dni, String address, int age, String role, double salary) {
-		super(id, username, password, type, name, surname, dni, address, age);
-		this.role = role;
+
+	public Employee(Long id, String username, String password, String name, 
+			String surname, String dni, String address,
+			String email, int age, List<String> roles, String position, double salary) {
+		super(id, username, password, name, surname, dni, address, email, age, roles);
+		this.position = position;
 		this.salary = salary;
 	}
 	
+
 	// Getter/Setter
-	public String getRole() {
-		return role;
-	}
-	
-	public void setRole(String role) {
-		this.role = role;
-	}
-	
 	public double getSalary() {
 		return salary;
 	}
 	
 	public void setSalary(double salary) {
 		this.salary = salary;
+	}
+
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}	
+	
 	
 		
 }

@@ -22,13 +22,22 @@ public class Subscription {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
-	private Long id;
+	private Long id_sub;
 	
 	private String type;
 	private double price;
 	
 	public Subscription () {}
 	
+		
+	public Subscription(List<Client> allClients, Long id_sub, String type, double price) {		
+		this.allClients = allClients;
+		this.id_sub = id_sub;
+		this.type = type;
+		this.price = price;
+	}
+
+
 	// Getters/Setters
 	public List<Client> getAllClients() {
 		return allClients;
@@ -39,11 +48,11 @@ public class Subscription {
 	}
 	
 	public Long getId() {
-		return id;
+		return id_sub;
 	}
 	
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long id_sub) {
+		this.id_sub = id_sub;
 	}
 	
 	public String getType() {

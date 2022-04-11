@@ -1,49 +1,50 @@
 package com.bookaro.api.models;
 
+import java.util.Collection;
+import java.util.List;
 import javax.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "userbookaro")
+@JsonIgnoreProperties(ignoreUnknown=true)
 @Inheritance( strategy = InheritanceType.SINGLE_TABLE )
 @DiscriminatorColumn( name="employeeClient" )
-public class User {
+public class User  implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
 	private Long id;
 	
-	private String username, password, type, name, surname, dni, address;
+	private String username, password,name, surname, dni, address, email;
 	private int age;
 	
-	/**
-	 * Constructor
-	 * @param id
-	 * @param username
-	 * @param password
-	 * @param type
-	 * @param name
-	 * @param surname
-	 * @param dni
-	 * @param address
-	 * @param age
-	 */
-	public User (Long id, String username, String password, String type, 
-			     String name, String surname, String dni, String address, int age) {
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="roles", joinColumns= @JoinColumn(name="id"))
+	private List<String> roles;
+	
+	
+	
+	public User(Long id, String username, String password, String name, String surname, String dni, String address,
+			String email, int age, List<String> roles) {
+		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.type = type;
 		this.name = name;
 		this.surname = surname;
 		this.dni = dni;
 		this.address = address;
+		this.email = email;
 		this.age = age;
+		this.roles = roles;
 	}
-	
-	public User() {
-		
-	}
+
+	public User() {}
 
 	// Getter/Setter
 	public Long getId() {
@@ -69,14 +70,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
+	
 
 	public String getName() {
 		return name;
@@ -116,6 +110,53 @@ public class User {
 
 	public void setAge(int age) {
 		this.age = age;
+	}	
+	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 	
 
