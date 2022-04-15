@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -19,13 +20,14 @@ public class Client extends User {
     @JoinColumn(name = "id_sub")
 	private Subscription subscription;
 	
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)	
-	private List<Order> allOrders;
-		
-	//private Integer subscription;
+	/*@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)	
+	private List<Order> allOrders;*/
+	@ManyToOne()
+    @JoinColumn(name = "id_order")
+	private Order order;	
+	
 
-	public Client() {
-		super();
+	public Client() {		
 		// TODO Auto-generated constructor stub
 	}
 
@@ -38,13 +40,21 @@ public class Client extends User {
 		this.subscription = subscription;
 	}
 
-	public List<Order> getAllOrders() {
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	/*public List<Order> getAllOrders() {
 		return allOrders;
 	}
 
 	public void setAllOrders(List<Order> allOrders) {
 		this.allOrders = allOrders;
-	}
+	}*/
 	
 	
 	

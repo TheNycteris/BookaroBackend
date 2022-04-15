@@ -24,7 +24,7 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	//@PreAuthorize(value = "hasRole('MOD')")
+	@PreAuthorize(value = "hasRole('ADMIN')")
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
         Iterable<User> Users = repository.findAll();
@@ -44,15 +44,17 @@ public class UserService {
         return repository.findById(id);
     }
 
-    @PreAuthorize(value = "hasRole('ADMIN')")
+    //@PreAuthorize(value = "hasRole('ADMIN')")
     public User create(User user) {
         // To ensure the User ID remains unique,
         // use the current timestamp.
     	List<String> roles = new ArrayList<>();
-		if (user.getRoles() == null) {
+		//if (user.getRoles() == null) {
+    	if (user.getRole() == null) {
 			roles.add("ROLE_USER");
 		} else {
-			roles = user.getRoles();
+			//roles = user.getRoles();
+			roles.add(user.getRole());
 		}
     	
     	User copy = new User(
@@ -65,12 +67,13 @@ public class UserService {
                 user.getAddress(),
                 user.getEmail(),
                 user.getAge(),
-                roles
+                //roles
+                roles.get(0)
         );
         return repository.save(copy);
     }
 
-    @PreAuthorize(value = "hasRole('ADMIN')")
+    //@PreAuthorize(value = "hasRole('ADMIN')")
     public User update (User updatedUser) {
     	updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
     	return repository.save(updatedUser);

@@ -1,9 +1,10 @@
 package com.bookaro.api.models;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -12,27 +13,40 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "userbookaro")
 @JsonIgnoreProperties(ignoreUnknown=true)
 @Inheritance( strategy = InheritanceType.SINGLE_TABLE )
+//@Inheritance(strategy=InheritanceType.JOINED)
 @DiscriminatorColumn( name="employeeClient" )
+//@DiscriminatorColumn(name="employeeClient")
 public class User  implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
-	private Long id;
+	private Long id_user;
 	
-	private String username, password,name, surname, dni, address, email;
+	@Column(unique = true, nullable = false)
+	private String username; 
+	
+	@Column(unique = true, nullable = false)
+	private String password;
+	
+	@Column(unique = true, nullable = true)
+	private String email;
+	
+	private String name, surname, dni, address; 	
 	private int age;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	/*@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="roles", joinColumns= @JoinColumn(name="id"))
-	private List<String> roles;
+	private List<String> roles;*/
+	
+	private String roles;
 	
 	
 	
-	public User(Long id, String username, String password, String name, String surname, String dni, String address,
-			String email, int age, List<String> roles) {
+	public User(Long id_user, String username, String password, String name, String surname, String dni, String address,
+			String email, int age, /*List<String> roles*/String roles) {
 		super();
-		this.id = id;
+		this.id_user = id_user;
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -41,6 +55,7 @@ public class User  implements UserDetails {
 		this.address = address;
 		this.email = email;
 		this.age = age;
+		//this.roles = roles;
 		this.roles = roles;
 	}
 
@@ -48,11 +63,11 @@ public class User  implements UserDetails {
 
 	// Getter/Setter
 	public Long getId() {
-		return id;
+		return id_user;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id_user = id;
 	}
 
 	public String getUsername() {
@@ -121,19 +136,40 @@ public class User  implements UserDetails {
 		this.email = email;
 	}
 
-	public List<String> getRoles() {
+	/*public List<String> getRoles() {
 		return roles;
 	}
 
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
+	}*/
+	
+	public String getRole() {
+		return roles;
 	}
+
+	public void setRole(String role) {
+		this.roles = role;
+	}
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+		if(this.roles.equals("ADMIN")) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			
+			//authorities.add(new SimpleGrantedAuthority(role));
+		} else if(this.roles.equals("MOD")) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_MOD"));
+		} else {
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		}
+		return authorities;
 	}
+
+	
 
 	@Override
 	public boolean isAccountNonExpired() {

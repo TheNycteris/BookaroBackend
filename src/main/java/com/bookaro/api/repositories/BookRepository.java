@@ -6,5 +6,7 @@ import com.bookaro.api.models.Book;
 
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
+	
+	Book findByName (String name);
 
 }

@@ -14,7 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
-//@EnableMapRepositories
+@EnableMapRepositories
 public class EmployeeService {
 	
 	@Autowired	
@@ -45,7 +45,8 @@ public class EmployeeService {
 		copy.setPosition(employee.getPosition());
 		copy.setSalary(employee.getSalary());
 		copy.setEmail(employee.getEmail());		
-		copy.setRoles(employee.getRoles());	
+		//copy.setRoles(employee.getRoles());	
+		copy.setRole(employee.getRole());
 		
 		return employeeRepository.save(copy);
 	}

@@ -1,6 +1,5 @@
 package com.bookaro.api.models;
 
-import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -20,7 +19,7 @@ public class Employee extends User {
 
 	public Employee(Long id, String username, String password, String name, 
 			String surname, String dni, String address,
-			String email, int age, List<String> roles, String position, double salary) {
+			String email, int age, /*List<String> roles*/ String roles, String position, double salary) {
 		super(id, username, password, name, surname, dni, address, email, age, roles);
 		this.position = position;
 		this.salary = salary;

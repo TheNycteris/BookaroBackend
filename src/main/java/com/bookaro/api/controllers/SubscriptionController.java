@@ -1,9 +1,8 @@
 package com.bookaro.api.controllers;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bookaro.api.models.Subscription;
+import com.bookaro.api.repositories.SubscriptionRepository;
 import com.bookaro.api.services.SubscriptionService;
 
 @RestController
@@ -22,6 +22,7 @@ public class SubscriptionController {
 	
 	@Autowired
 	SubscriptionService subscriptionService;
+	
 	
 	@GetMapping("/all")
 	public List<Subscription> getAllSubscription() {
@@ -43,7 +44,7 @@ public class SubscriptionController {
 		}
 	}
 	
-	@PutMapping("")
+	/*@PutMapping("")
 	public String updateSubscription(@RequestBody Subscription subscription) {
 	    if(subscription != null) {
 	    	subscriptionService.update(subscription);
@@ -51,6 +52,17 @@ public class SubscriptionController {
 	    } else {
 	        return "Request does not contain a body";
 	    }
+	}*/
+	
+	@PutMapping("")
+	public Boolean update(@RequestBody Subscription subscription) {
+		try {
+			subscriptionService.update(subscription);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
 	}
 	
 	@DeleteMapping("{id}")

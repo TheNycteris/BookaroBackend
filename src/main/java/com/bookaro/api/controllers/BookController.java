@@ -17,14 +17,19 @@ import com.bookaro.api.models.Book;
 import com.bookaro.api.services.BookService;
 
 @RestController
-@RequestMapping("api/book")
+@RequestMapping("/api/book")
 public class BookController {
 	
 	@Autowired
 	BookService bookService;
 	
-	@GetMapping("")
-	public ArrayList<Book> getAllUsers(){
+	@GetMapping("/name/{name}")
+	public Book findByName(@PathVariable("name") String name) {
+		return bookService.findByName(name);
+	}
+
+	@GetMapping("/all")
+	public ArrayList<Book> getAllBooks(){
 		return bookService.findAll();
 	}
 	

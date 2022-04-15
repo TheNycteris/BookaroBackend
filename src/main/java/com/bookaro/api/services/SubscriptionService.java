@@ -20,20 +20,21 @@ public class SubscriptionService {
 	}
 	
 	public Optional<Subscription> findById (Long id) {
-		return subscriptionRepository.findById(id);
+		Optional<Subscription> aux = subscriptionRepository.findById(id);
+		return aux;
 	}
 	
 	public Subscription add (Subscription subscription) {
 		return subscriptionRepository.save(subscription);
 	}
 	
-	public boolean update(Subscription subscription) {
+	public Subscription update(Subscription subscription) {
 	    try {
 	    	subscriptionRepository.save(subscription);
-	        return true;
+	        return subscription;
 	    } catch (Exception e) {
 	        System.out.println(e.getMessage());
-	        return false;
+	        return null;
 	    }
 	}
 	

@@ -1,8 +1,7 @@
 package com.bookaro.api.models;
 
-import java.util.ArrayList;
-import java.util.List;
 
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,11 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "subscription")
 public class Subscription {
 
 	@OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<Client> allClients;
 	
 	@Id
