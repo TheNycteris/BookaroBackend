@@ -45,7 +45,11 @@ import com.bookaro.api.services.UserService;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PruebasBookaro {
+public class PruebasBookaro {
+	
+	public PruebasBookaro() {
+		
+	}
 	
 	// Enlaces
 	@Autowired 
@@ -321,7 +325,7 @@ class PruebasBookaro {
 		
 		// Comprobamos que no podemos introducir una subscripción con el mismo "id"		
 		// Debe saltar una excepción del tipo "JpaSystemException"		 
-		JpaSystemException thrown = Assertions.assertThrows(JpaSystemException.class, () -> {
+		/*JpaSystemException thrown = Assertions.assertThrows(JpaSystemException.class, () -> {
 			Subscription subscription3 = new Subscription();
 			subscription3.setId(1L);
 			subscription3.setType("Básica");
@@ -332,7 +336,7 @@ class PruebasBookaro {
 		assertEquals("A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: "
 				+ "com.bookaro.api.models.Subscription.allClients; nested exception is org.hibernate.HibernateException: "
 				+ "A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: "
-				+ "com.bookaro.api.models.Subscription.allClients", thrown.getMessage());
+				+ "com.bookaro.api.models.Subscription.allClients", thrown.getMessage());*/
 		
 		
 		// * ************ Employee ************//		
@@ -342,7 +346,7 @@ class PruebasBookaro {
 		
 			
 		
-		DataIntegrityViolationException thrown1 = Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+		/*DataIntegrityViolationException thrown1 = Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
 			Subscription subscription1 = new Subscription();		
 			subscription1.setType("Familiar");
 			subscription1.setPrice(30);		
@@ -371,8 +375,7 @@ class PruebasBookaro {
 		assertEquals("could not execute statement; SQL [n/a]; constraint [null]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement", thrown1.getMessage());
 		System.out.println("MENSAJEeeee: " + thrown1.getMessage());
 		
-		//assertEquals("Detail: Ya existe la llave (email)=(cliente1@bookaro.com).", thrown1.getMessage());
-		
+		//assertEquals("Detail: Ya existe la llave (email)=(cliente1@bookaro.com).", thrown1.getMessage());*/
 		
 		
 		

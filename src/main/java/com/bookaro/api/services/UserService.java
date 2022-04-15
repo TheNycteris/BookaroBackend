@@ -24,7 +24,7 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	@PreAuthorize(value = "hasRole('ADMIN')")
+	//@PreAuthorize(value = "hasRole('ADMIN')")
     public List<User> findAll() {
         List<User> list = new ArrayList<>();
         Iterable<User> Users = repository.findAll();
