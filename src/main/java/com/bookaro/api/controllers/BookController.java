@@ -21,7 +21,7 @@ import com.bookaro.api.services.BookService;
 public class BookController {
 	
 	@Autowired
-	BookService bookService;
+	private BookService bookService;
 	
 	@GetMapping("/name/{name}")
 	public Book findByName(@PathVariable("name") String name) {

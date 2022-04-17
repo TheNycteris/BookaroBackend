@@ -28,7 +28,7 @@ import com.bookaro.api.services.EmployeeService;
 public class EmployeeController {
 	
 	@Autowired
-	EmployeeService employeeService;
+	private EmployeeService employeeService;
 	
 	
 	/**

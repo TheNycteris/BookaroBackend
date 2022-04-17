@@ -31,7 +31,7 @@ import com.bookaro.api.services.ClientService;
 public class ClientController {
 	
 	@Autowired
-	ClientService clientService;
+	private ClientService clientService;
 	
 	
 	

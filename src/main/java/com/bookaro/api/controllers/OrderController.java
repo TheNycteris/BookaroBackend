@@ -30,7 +30,7 @@ import com.bookaro.api.services.OrderService;
 public class OrderController {
 	
 	@Autowired
-	OrderService orderService;
+	private OrderService orderService;
 	
 	
 	/**
