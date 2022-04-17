@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,19 +54,21 @@ public class UserController {
 	private JWTAuthenticationFilter filter;
 	
 	
-
 	
+	@GetMapping("/email/{email}")
+	public User findUserByEmail(@PathVariable("email") String email, Principal pri) {
+		return service.findUserByEmail(email);
+	}
+
 	@GetMapping("/all")
 	public ResponseEntity<List<User>> findAll() {	
 		List<User> users = service.findAll();
 		if (users.isEmpty()) {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
-		}
-		//return ResponseEntity.ok().body(users);
-		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
-		
-		
+		}		
+		return new ResponseEntity<List<User>>(users, HttpStatus.OK);		
 	}  
+	
 	
 	@PostMapping("/header") 
 	public void headerGet(HttpServletRequest request, HttpServletResponse response,  Authentication auth) throws IOException, ServletException {
@@ -156,6 +159,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }    	
     }
+    
+    
 
     /*@DeleteMapping("/{id}")
     public ResponseEntity<User> delete(@PathVariable("id") Long id) {
@@ -173,8 +178,9 @@ public class UserController {
         	return "User not found";
         }
         
-    }    
-	
+    }
+
+   	
 	
 
 }

@@ -5,41 +5,59 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * @author Pedro<br>
+ * 
+ * Clase Employee: <br>
+ * <li> Es un tipo de usuario. Hereada de la clase User.</li>
+ * <li> El valor discriminatorio es "EM".</li>
+ *
+ */
 @Entity
 @Table(name = "employee")
 @DiscriminatorValue( value="EM" )
 public class Employee extends User {
 
+	// ******* Atributos de clase *******
 	private String position;
 	private double salary;
 	
-	public Employee() {
-		
-	}
+	/**
+	 * Constructor vacio.
+	 */
+	public Employee() {}	
 
-	public Employee(Long id, String username, String password, String name, 
-			String surname, String dni, String address,
-			String email, int age, /*List<String> roles*/ String roles, String position, double salary) {
-		super(id, username, password, name, surname, dni, address, email, age, roles);
-		this.position = position;
-		this.salary = salary;
-	}
 	
-
-	// Getter/Setter
+	// ******* Getter/Setter *******
+	
+	/**
+	 * Getter salary
+	 * @return Retorna un double con el salario del empleado
+	 */
 	public double getSalary() {
 		return salary;
 	}
 	
+	/**
+	 * Setter salary
+	 * @param salary Recibe un parámetro de tipo double
+	 */
 	public void setSalary(double salary) {
 		this.salary = salary;
 	}
 
-
+	/**
+	 * Getter position
+	 * @return retorna un string con la posicion del empleado.
+	 */
 	public String getPosition() {
 		return position;
 	}
 
+	/**
+	 * Setter position
+	 * @param position Recibe un string con la posicion del empleado.
+	 */
 	public void setPosition(String position) {
 		this.position = position;
 	}	

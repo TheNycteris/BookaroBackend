@@ -1,6 +1,7 @@
 package com.bookaro.api.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,19 @@ import com.bookaro.api.models.User;
 import com.bookaro.api.services.EmployeeService;
 
 @RestController
-@RequestMapping("api/employee")
+@RequestMapping("/api/employee")
 public class EmployeeController {
 	
 	@Autowired
 	EmployeeService employeeService;
 	
-	@GetMapping("")
+	
+	@GetMapping("/position/{position}")	
+	public List<Employee> findEmployeesByPosition(@PathVariable("position")String position) {
+		return employeeService.findEmployeesByPosition(position);
+	}
+
+	@GetMapping("/all")
 	public ArrayList<Employee> getAllEmployee(){
 		return employeeService.findAll();
 	}
@@ -44,7 +51,7 @@ public class EmployeeController {
 		}
 	}
 	
-	@PutMapping("")
+	@PutMapping("/update")
 	public String updateEmployee (@RequestBody Employee employee) {
 	    if(employee != null) {
 	    	employeeService.update(employee);

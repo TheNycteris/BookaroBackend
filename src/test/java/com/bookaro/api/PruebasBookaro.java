@@ -135,23 +135,25 @@ public class PruebasBookaro {
 		employee.setAge(20);
 		employee.setDni("43555666H");
 		employee.setName("Pedro");		
-		employee.setPassword("1234");
+		employee.setPassword(passwordEncoder.encode("1234"));
 		employee.setSurname("ruiz");		
 		employee.setUsername("pedro");
 		employee.setPosition("Administrativo");
 		employee.setSalary(1000);
 		employee.setEmail("pedro@bookaro.com");		
 		employee.setRole("ROLE_MOD");
-		employeeService.add(employee);
+		//employeeService.add(employee);
+		employeeRepository.save(employee);
 		
 
 		// Creamos un usuario admin con los datos básicos
 		User admin = new User();
 		admin.setUsername("admin");
-		admin.setPassword("admin");	
-		//admin.setEmail("admin@bookaro.com");						
+		admin.setPassword(passwordEncoder.encode("admin"));	
+		admin.setEmail("admin@bookaro.com");						
 		admin.setRole("ROLE_ADMIN");
-		userService.create(admin);
+		//userService.create(admin);
+		userRepository.save(admin);
 		
 		/**
 		 * ************ Clients ************		
@@ -254,6 +256,7 @@ public class PruebasBookaro {
 		userRepository.deleteAll();
 		subscriptionRepository.deleteAll();
 		bookRepository.deleteAll();
+		orderRepository.deleteAll();
 	}
 	
 	
@@ -262,10 +265,10 @@ public class PruebasBookaro {
 		System.out.println("Prueba de ejecución despues");		
 	}
 	
-	/*@Test
+	@Test
 	void testClient() {
-		
-	}*/
+		crearRegistros();
+	}
 	
 	
 	
@@ -325,9 +328,9 @@ public class PruebasBookaro {
 		
 		// Comprobamos que no podemos introducir una subscripción con el mismo "id"		
 		// Debe saltar una excepción del tipo "JpaSystemException"		 
-		/*JpaSystemException thrown = Assertions.assertThrows(JpaSystemException.class, () -> {
+		JpaSystemException thrown = Assertions.assertThrows(JpaSystemException.class, () -> {
 			Subscription subscription3 = new Subscription();
-			subscription3.setId(1L);
+			subscription3.setId_sub(1L);
 			subscription3.setType("Básica");
 			subscription3.setPrice(10);			
 			subscriptionRepository.save(subscription3);
@@ -336,7 +339,7 @@ public class PruebasBookaro {
 		assertEquals("A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: "
 				+ "com.bookaro.api.models.Subscription.allClients; nested exception is org.hibernate.HibernateException: "
 				+ "A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: "
-				+ "com.bookaro.api.models.Subscription.allClients", thrown.getMessage());*/
+				+ "com.bookaro.api.models.Subscription.allClients", thrown.getMessage());
 		
 		
 		// * ************ Employee ************//		
@@ -346,7 +349,7 @@ public class PruebasBookaro {
 		
 			
 		
-		/*DataIntegrityViolationException thrown1 = Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+		DataIntegrityViolationException thrown1 = Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
 			Subscription subscription1 = new Subscription();		
 			subscription1.setType("Familiar");
 			subscription1.setPrice(30);		
@@ -375,7 +378,7 @@ public class PruebasBookaro {
 		assertEquals("could not execute statement; SQL [n/a]; constraint [null]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement", thrown1.getMessage());
 		System.out.println("MENSAJEeeee: " + thrown1.getMessage());
 		
-		//assertEquals("Detail: Ya existe la llave (email)=(cliente1@bookaro.com).", thrown1.getMessage());*/
+		//assertEquals("Detail: Ya existe la llave (email)=(cliente1@bookaro.com).", thrown1.getMessage());
 		
 		
 		

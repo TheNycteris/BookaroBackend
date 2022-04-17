@@ -1,6 +1,7 @@
 package com.bookaro.api.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bookaro.api.models.Client;
+import com.bookaro.api.models.Subscription;
+import com.bookaro.api.models.User;
 import com.bookaro.api.services.ClientService;
 
 @RestController
-@RequestMapping("api/client")
+@RequestMapping("/api/client")
 public class ClientController {
 	
 	@Autowired
 	ClientService clientService;
 	
+	
+	
+	
+	@GetMapping("/subscription")
+	public List<Client> findBySubscription(@RequestBody Subscription subscription) {
+		return clientService.findBySubscription(subscription);
+	}
+
 	@GetMapping("")
 	public ArrayList<Client> getAllClients(){
 		return clientService.findAll();
