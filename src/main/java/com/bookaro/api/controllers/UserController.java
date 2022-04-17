@@ -6,12 +6,10 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.http.HttpStatus;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +41,14 @@ import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+/**
+ * 
+ * @author Pedro<br>
+ * Clase que hace la funcion de Controller para el modelo User.<br>
+ * Implementa o inyecta las siguientes dependencias:
+ * <li> UserService</li> 
+ *
+ */
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -51,15 +56,23 @@ public class UserController {
 	@Autowired
 	private UserService service;
 	
-	private JWTAuthenticationFilter filter;
 	
-	
-	
+	/**
+	 * Metodo para buscar un usuario por su email
+	 * @param email Recibe un email
+	 * @param pri Recibe un objeto de tipo Principal
+	 * @return Retorna un objeto de tipo User
+	 */
 	@GetMapping("/email/{email}")
 	public User findUserByEmail(@PathVariable("email") String email, Principal pri) {
 		return service.findUserByEmail(email);
 	}
 
+	
+	/**
+	 * Metodo que devuelve una lista de usuarios
+	 * @return Retorna todos los usuarios creados.
+	 */
 	@GetMapping("/all")
 	public ResponseEntity<List<User>> findAll() {	
 		List<User> users = service.findAll();
@@ -68,6 +81,7 @@ public class UserController {
 		}		
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);		
 	}  
+	
 	
 	
 	@PostMapping("/header") 
@@ -117,6 +131,12 @@ public class UserController {
 	}
     
     
+	/**
+	 * Metodo que devuelve un User a través de su "username"
+	 * @param username Recibe un string con el username
+	 * @param pri Recibe un objeto de tipo Principal
+	 * @return Retorna un objeto User
+	 */
     @GetMapping("/username/{username}")
     public ResponseEntity<Optional<User>> findByUsername(@PathVariable("username") String username, Principal pri) {
 		//return service.findByUsername(username);
@@ -125,7 +145,12 @@ public class UserController {
 	}
 
 
-
+    /**
+     * Metodo que busca un usuario por su id
+     * @param id Recibe un long con el id del usuario
+     * @param pri Recibe un Principal
+     * @return Retorna un objeto de tipo User
+     */
 	@GetMapping("/{id}")
     public ResponseEntity<User> find(@PathVariable("id") Long id, Principal pri) {
     	try {
@@ -136,6 +161,12 @@ public class UserController {
         }    	
     }
 
+	
+	/**
+	 * Metodo para insertar usuarios
+	 * @param user Recibe un objeto User
+	 * @return Retorna un objeto User
+	 */
     @PostMapping("/insert")
     public ResponseEntity<User> create(@RequestBody User user) {
     	User created = service.create(user);
@@ -146,6 +177,13 @@ public class UserController {
         return ResponseEntity.created(location).body(created);
     }
     
+    
+    /**
+     * Metodo para actualizar un usuario
+     * @param id Recibe un long con el id del usuario
+     * @param patch Recibe un objeto JsonPatch
+     * @return Retorna un objeto User
+     */
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
     public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {    	
     	try {
@@ -158,17 +196,14 @@ public class UserController {
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }    	
-    }
-    
+    } 
     
 
-    /*@DeleteMapping("/{id}")
-    public ResponseEntity<User> delete(@PathVariable("id") Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
-        //return ResponseEntity.accepted().build();
-    }   */ 
-    
+    /**
+     * Metodo para borrar un usuario    
+     * @param id Recibe un long con el id del usuario.
+     * @return Retorna un string dependiendo del resultado.
+     */
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
         try {

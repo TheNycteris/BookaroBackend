@@ -20,6 +20,11 @@ import java.util.Map;
 
 import static java.util.Optional.ofNullable;
 
+/**
+ * Clase para controlar las excepciones
+ * @author Pedro
+ *
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

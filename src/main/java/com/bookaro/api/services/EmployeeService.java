@@ -98,7 +98,7 @@ public class EmployeeService {
 	 * @param employee Recibe un empleado por parametro
 	 * @return Retorna true o false dependiendo del 
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public boolean update(Employee employee) {
 		try {
 			employeeRepository.save(employee);

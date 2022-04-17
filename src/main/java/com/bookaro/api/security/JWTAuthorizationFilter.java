@@ -3,34 +3,44 @@ package com.bookaro.api.security;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
+
+/**
+ * Clase para la autorizacion de usuarios
+ * @author Pedro
+ *
+ */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    /**
+     * Constructor
+     * @param authManager
+     */
+	public JWTAuthorizationFilter(AuthenticationManager authManager) {
         super(authManager);
     }
 
     
-    
+    /**
+     * Metodo que filtra por el token obtenido
+     * @param req Recibe un objeto HttpServletRequest
+     * @param res Recibe un objeto HttpServletResponse
+     * @param chain Recibe un objeto FilterChain
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
@@ -48,7 +58,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(req, res);
     }
 
-    // Reads the JWT from the Authorization header, and then uses JWT to validate the token
+    
+    /**
+     * Metodo que lee el encabezado de autorización y luego usa JWT para validar el token
+     * @param request Recibe un objeto HttpServletRequest
+     * @return Retorna un objeto UsernamePasswordAuthenticationTokeno null
+     */
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
         

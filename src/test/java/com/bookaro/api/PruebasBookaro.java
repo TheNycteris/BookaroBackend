@@ -161,7 +161,7 @@ public class PruebasBookaro {
 		// Creamos client1
 		Client client1 = new Client();
 		client1.setUsername("cliente1");
-		client1.setPassword("1234");
+		client1.setPassword(passwordEncoder.encode("1234"));
 		client1.setName("name1");
 		client1.setSurname("surname1");
 		client1.setDni("43111333L");
@@ -170,7 +170,8 @@ public class PruebasBookaro {
 		client1.setAge(40);		
 		client1.setRole("ROLE_USER");
 		client1.setSubscription(subscription1);
-		clientService.add(client1);	
+		//clientService.add(client1);	
+		clientRepository.save(client1);
 
 		/*// Creamos client2
 		Client client2 = new Client();
@@ -209,7 +210,7 @@ public class PruebasBookaro {
 		
 		Client client2 = new Client();
 		client2.setUsername("cliente2");
-		client2.setPassword("1234");
+		client2.setPassword(passwordEncoder.encode("1234"));
 		client2.setName("name2");
 		client2.setSurname("surname2");
 		client2.setDni("43444555H");
@@ -219,7 +220,8 @@ public class PruebasBookaro {
 		client2.setRole("ROLE_USER");
 		client2.setSubscription(subscription2);		
 		client2.setOrder(order1);
-		clientService.add(client2);
+		//clientService.add(client2);
+		clientRepository.save(client2);
 		
 		
 		/**
@@ -284,7 +286,8 @@ public class PruebasBookaro {
 		List<Employee> employees = (List<Employee>) employeeRepository.findAll();
 		List<Client> clients = (List<Client>) clientRepository.findAll();
 		List<Book> books = (List<Book>) bookRepository.findAll();
-		Optional<Subscription> s2 = subscriptionService.findById(2L);	
+		//Optional<Subscription> s2 = subscriptionService.findById(2L);	
+		Optional<Subscription> s2 = subscriptionRepository.findById(2L);
 		
 		
 		
@@ -321,9 +324,11 @@ public class PruebasBookaro {
 		// Actualizamos el precio
 		Subscription s2Actualizada = subscriptions.get(1);
 		s2Actualizada.setPrice(20);		
-		subscriptionService.update(s2Actualizada);
+		//subscriptionService.update(s2Actualizada);		
+		subscriptionRepository.save(s2Actualizada);
 		// Comprobamos que se ha actualizado en la base de datos	
-		s2 = subscriptionService.findById(2L);
+		//s2 = subscriptionService.findById(2L);
+		s2 = subscriptionRepository.findById(2L);
 		assert s2.get().getPrice() == 20;
 		
 		// Comprobamos que no podemos introducir una subscripción con el mismo "id"		
@@ -370,7 +375,8 @@ public class PruebasBookaro {
 			//client.setRole(rol.get(0));
 			client.setRole("ROLE_USER");
 			//client.setSubscription(subscription1);
-			clientService.add(client);	
+			//clientService.add(client);
+			clientRepository.save(client);
 			
 			
 		}, "DataIntegrityViolationException was expected");

@@ -6,6 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 
+/**
+ * 
+ * @author Pedro
+ *
+ */
 public class Utils {
 	public static Object applyPatch (JsonPatch patch, Object obj)
 				throws JsonPatchException, JsonProcessingException {
