@@ -35,6 +35,8 @@ public class EmployeeService {
 	@Autowired	
 	EmployeeRepository employeeRepository;
 	
+	
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;	
 	
@@ -101,7 +103,7 @@ public class EmployeeService {
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public boolean update(Employee employee) {
 		try {
-			employeeRepository.save(employee);
+			employeeRepository.save(employee);			
 	        return true;
 	    } catch (Exception e) {
 	        System.out.println(e.getMessage());

@@ -82,11 +82,9 @@ public class ClientService {
 		copy.setSurname(client.getSurname());		
 		copy.setUsername(client.getUsername());			
 		copy.setEmail(client.getEmail());		
-		//copy.setRoles(client.getRoles());	
 		copy.setRole(client.getRole());
 		copy.setSubscription(client.getSubscription());
-		copy.setOrder(client.getOrder());
-		//copy.setAllOrders(client.getAllOrders());
+		copy.setOrder(client.getOrder());		
 		
 		return clientRepository.save(copy);
 	}
