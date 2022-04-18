@@ -36,6 +36,7 @@ public class ClientController {
 	
 	
 	/**
+	 * @author Pedro<br>
 	 * Metodo que devuelve una lista de clientes por subscripcion
 	 * @param subscription Rebie una objeto Subscription
 	 * @return Retorna la lista de Clientes filtrada
@@ -47,6 +48,7 @@ public class ClientController {
 
 	
 	/**
+	 * @author Pedro<br>
 	 * Metodo que devuelve una lista de clientes
 	 * @return Retorna una lista de todos los clientes creados
 	 */
@@ -57,6 +59,7 @@ public class ClientController {
 	
 	
 	/**
+	 * @author Pedro<br>
 	 * Metodo que devuelve un cliente por su id  
 	 * @param id Recibe un long con el id del cliente
 	 * @param pri Recibe un objeto Principal
@@ -68,6 +71,7 @@ public class ClientController {
 	}
 	
 	/**
+	 * @author Pedro<br>
 	 * Metodo para crear clientes
 	 * @param client Recibe un objeto Cliente
 	 * @return Retorna un String con el resultado.
@@ -84,6 +88,7 @@ public class ClientController {
 	
 	
 	/**
+	 * @author Pedro<br>
 	 * Metodo para actualizar un cliente
 	 * @param client Recibe un objeto Client
 	 * @return Retorna un String en funcion del resultado.
@@ -99,6 +104,7 @@ public class ClientController {
 	}
 	
 	/**
+	 * @author Pedro<br>
 	 * Metodo para borrar un cliente por su id
 	 * @param id Recibe un long con el id del cliente
 	 * @return Retorna un String en funcion del resultado.

@@ -68,20 +68,22 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
         
         if (token != null) {
-            // parse the token.
+            // Parseamos el token
             String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
                     .build()
                     .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
                     .getSubject();
+            // Decodificamos con JWT
             DecodedJWT jwt = JWT.decode(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
+            // Añadimos los roles
             Claim claim = jwt.getClaim("role");
             List<String> rolesList = claim.asList(String.class);;
             ArrayList<GrantedAuthority> authorities = new ArrayList<>();
             for(String role:rolesList) {
             	authorities.add(new SimpleGrantedAuthority(role));
     		}
-            if (user != null) {
-                // new arraylist means authorities
+            // Comprobamos si "user" es null antes de crear el objeto "UsernamePasswordAuthenticationToken"
+            if (user != null) {                
                 return new UsernamePasswordAuthenticationToken(user, null, authorities);
             }
             return null;

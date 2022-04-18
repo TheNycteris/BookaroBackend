@@ -47,13 +47,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-	
+
 	@Autowired
 	private UserService service;
-	
-	
+
+
 	/**
-	 * Metodo para buscar un usuario por su email
+	 * @author Pedro<br>
+	 * Metodo para buscar un usuario por su email<br>
 	 * @param email Recibe un email
 	 * @param pri Recibe un objeto de tipo Principal
 	 * @return Retorna un objeto de tipo User
@@ -63,8 +64,9 @@ public class UserController {
 		return service.findUserByEmail(email);
 	}
 
-	
+
 	/**
+	 * @author Pedro<br>
 	 * Metodo que devuelve una lista de usuarios
 	 * @return Retorna todos los usuarios creados.
 	 * @throws IOException 
@@ -84,9 +86,10 @@ public class UserController {
 			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 		}		
 	}  
-	
-	
+
+
 	/**
+	 * @author Pedro<br>
 	 * Metodo que gestiona logout del usuario. Almacena el token en una blackList.
 	 * @param request parametro de tipo HttpServletRequest
 	 * @return Retorna un String con el resultado.
@@ -108,9 +111,9 @@ public class UserController {
 			for(String role:rolesList) {
 				authorities.add(new SimpleGrantedAuthority(role));
 			}
-			
+
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-			
+
 			if (!Utils.blackList(request)) {
 				SecurityConstants.tokens.add(token);
 				return "Hasta la próxima: " + authentication.getName();
@@ -123,91 +126,96 @@ public class UserController {
 
 
 	}	
-    
-    
+
+
 	/**
+	 * @author Pedro<br>
 	 * Metodo que devuelve un User a través de su "username"
 	 * @param username Recibe un string con el username
 	 * @param pri Recibe un objeto de tipo Principal
 	 * @return Retorna un objeto User
 	 */
-    @GetMapping("/username/{username}")
-    public ResponseEntity<Optional<User>> findByUsername(@PathVariable("username") String username, Principal pri) {
+	@GetMapping("/username/{username}")
+	public ResponseEntity<Optional<User>> findByUsername(@PathVariable("username") String username, Principal pri) {
 		//return service.findByUsername(username);
-    	Optional<Optional<User>> user = Optional.of(service.findByUsername(username));  
-        return ResponseEntity.of(user);       
+		Optional<Optional<User>> user = Optional.of(service.findByUsername(username));  
+		return ResponseEntity.of(user);       
 	}
 
 
-    /**
-     * Metodo que busca un usuario por su id
-     * @param id Recibe un long con el id del usuario
-     * @param pri Recibe un Principal
-     * @return Retorna un objeto de tipo User
-     */
-	@GetMapping("/{id}")
-    public ResponseEntity<User> find(@PathVariable("id") Long id, Principal pri) {
-    	try {
-			Optional<User> user = service.find(id);   
-	        return ResponseEntity.of(user);
-    	} catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }    	
-    }
-
-	
 	/**
+	 * @author Pedro<br>
+	 * Metodo que busca un usuario por su id
+	 * @param id Recibe un long con el id del usuario
+	 * @param pri Recibe un Principal
+	 * @return Retorna un objeto de tipo User
+	 */
+	@GetMapping("/{id}")
+	public ResponseEntity<User> find(@PathVariable("id") Long id, Principal pri) {
+		try {
+			Optional<User> user = service.find(id);   
+			return ResponseEntity.of(user);
+		} catch (UsernameNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}    	
+	}
+
+
+	/**
+	 * @author Pol Casals<br>
 	 * Metodo para insertar usuarios
 	 * @param user Recibe un objeto User
 	 * @return Retorna un objeto User
 	 */
-    @PostMapping("/insert")
-    public ResponseEntity<User> create(@RequestBody User user) {
-    	User created = service.create(user);
-    	URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(created.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(created);
-    }
-    
-    
-    /**
-     * Metodo para actualizar un usuario
-     * @param id Recibe un long con el id del usuario
-     * @param patch Recibe un objeto JsonPatch
-     * @return Retorna un objeto User
-     */
-    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {    	
-    	try {
-            User user = service.find(id).orElseThrow(() -> new UsernameNotFoundException("User not found."));
-            User patchedUser = service.update((User) Utils.applyPatch(patch, user));
-            return ResponseEntity.ok(patchedUser);            
-        } catch (JsonPatchException | JsonProcessingException e) {
-        	e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }    	
-    } 
-    
+	@PostMapping("/insert")
+	public ResponseEntity<User> create(@RequestBody User user) {
+		User created = service.create(user);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(created.getId())
+				.toUri();
+		return ResponseEntity.created(location).body(created);
+	}
 
-    /**
-     * Metodo para borrar un usuario    
-     * @param id Recibe un long con el id del usuario.
-     * @return Retorna un string dependiendo del resultado.
-     */
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        try {
-        	service.delete(id);
-        	return "Delete User";
-        } catch (Exception e) {
-        	return "User not found";
-        }
-        
-    }  	
-   
+
+	/**
+	 * @author Pol Casals<br>
+	 * Metodo para actualizar un usuario
+	 * @param id Recibe un long con el id del usuario
+	 * @param patch Recibe un objeto JsonPatch
+	 * @return Retorna un objeto User
+	 */
+	@PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
+	public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {    	
+		try {
+			User user = service.find(id).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+			User patchedUser = service.update((User) Utils.applyPatch(patch, user));
+			return ResponseEntity.ok(patchedUser);            
+		} catch (JsonPatchException | JsonProcessingException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UsernameNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}    	
+	} 
+
+
+	/**
+	 * @author Pedro<br>
+	 * Metodo para borrar un usuario    
+	 * @param id Recibe un long con el id del usuario.
+	 * @return Retorna un string dependiendo del resultado.
+	 */
+	@DeleteMapping("/{id}")
+	public String delete(@PathVariable("id") Long id) {
+		try {
+			service.delete(id);
+			return "Delete User";
+		} catch (Exception e) {
+			return "User not found";
+		}
+
+	}  	
+
 
 }

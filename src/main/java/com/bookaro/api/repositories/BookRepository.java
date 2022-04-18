@@ -7,7 +7,7 @@ import com.bookaro.api.models.Book;
 /**
  * 
  * @author Pedro<br>
- * Interface que hace la funcion de repositorio
+ * Interface que hace la funcion de repositorio para la entidad Book
  *
  */
 @Repository

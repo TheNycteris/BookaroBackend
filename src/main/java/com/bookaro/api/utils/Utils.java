@@ -11,10 +11,20 @@ import com.github.fge.jsonpatch.JsonPatchException;
 
 /**
  * 
- * @author Pedro
+ * @author Pedro y Pol Casals
  *
  */
 public class Utils {
+	
+	/**
+	 * @author Pol Casals
+	 * Metodo para mapear un objeto Json a Object
+	 * @param patch Recibe un objeto de tipo JsonPatch
+	 * @param obj Recibe un objeto de tipo Object
+	 * @return Retorna un Object
+	 * @throws JsonPatchException Puede lanzar una excepción del tipo JsonPatchException
+	 * @throws JsonProcessingException Puede lanzar una excepción del tipo JsonProcessingException
+	 */
 	public static Object applyPatch (JsonPatch patch, Object obj)
 				throws JsonPatchException, JsonProcessingException {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -22,6 +32,12 @@ public class Utils {
 	    return objectMapper.treeToValue(patched, obj.getClass());
 	}
 	
+	/**
+	 * @author Pedro
+	 * Metodo que verifica si un token está o no en la lista de tokens invalidados
+	 * @param request Recibe un objeto de tipo HttpServletRequest
+	 * @return Retorna true o false dependiendo de si el token está o no en la lista.
+	 */
 	public static boolean blackList (HttpServletRequest request) {
     	boolean blackList = false;
 

@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
- * @author Pedro<br>
+ * @author Pedro y Pol Casals<br>
  * Clase para autentificar usuarios<br>
  * Inyecta la dependencia AuthenticationManager
  *
@@ -58,13 +58,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             User creds = new ObjectMapper()
                     .readValue(req.getInputStream(), User.class);
 
+            // Retornamos un objeto Authentication
+            // Le pasamos un objeto UsernamePasswordAuthenticationToken, con los atributos username y password.
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             creds.getUsername(),
                             creds.getPassword())
             );
-        } catch (IOException e) {
-        	//System.out.println("prueba");
+        } catch (IOException e) {        	
             throw new RuntimeException(e);
         }
     }
@@ -96,7 +97,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
 
-        // Llegara al body el username y el token
+        // Llegara al body username y token
     	String body = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername() + " " + token;
         res.getWriter().write(body);
         res.getWriter().flush();
