@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Subscription {
 
 	// ***** Atributos de clase *****
+	
 	@OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<Client> allClients;

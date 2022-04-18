@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +31,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.bookaro.api.models.User;
-import com.bookaro.api.security.JWTAuthenticationFilter;
+import com.bookaro.api.utils.*;
 import com.bookaro.api.security.SecurityConstants;
 import com.bookaro.api.services.UserService;
 import com.bookaro.api.utils.Utils;
@@ -72,63 +71,62 @@ public class UserController {
 	/**
 	 * Metodo que devuelve una lista de usuarios
 	 * @return Retorna todos los usuarios creados.
+	 * @throws IOException 
 	 */
 	@GetMapping("/all")
-	public ResponseEntity<List<User>> findAll() {	
-		List<User> users = service.findAll();
-		if (users.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+	public ResponseEntity<List<User>> findAll(HttpServletRequest request, HttpServletResponse res) throws IOException {		
+		if (!Utils.blackList(request)) {
+			List<User> users = service.findAll();
+			if (users.isEmpty()) {
+				return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
+			}		
+			return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+		} else {
+			String body = "Sesion no validada o token expirado";
+			res.getWriter().write(body);
+			res.getWriter().flush();
+			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 		}		
-		return new ResponseEntity<List<User>>(users, HttpStatus.OK);		
 	}  
 	
 	
-	
-	@PostMapping("/header") 
-	public void headerGet(HttpServletRequest request, HttpServletResponse response,  Authentication auth) throws IOException, ServletException {
+	/**
+	 * Meto para hacer un logout. Almacena el token en una blackList
+	 * @param request parametro de tipo HttpServletRequest
+	 * @return Retorna un String con el resultado.
+	 */
+	@PostMapping("/logout") 
+	public String logout(HttpServletRequest request) {
 		String token = request.getHeader(SecurityConstants.HEADER_STRING);
-		System.out.println("ESTE ES EL TOQUEN DEL CLIENTE" + token);
-		String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
-                 .build()
-                 .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
-                 .getSubject();
-		DecodedJWT jwt = JWT.decode(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
-		Claim claim = jwt.getClaim("role");
-		
-		List<String> rolesList = claim.asList(String.class);;
-        ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-        for(String role:rolesList) {
-        	authorities.add(new SimpleGrantedAuthority(role));
-		}
-		
-		//UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+		System.out.println(token);
+		if (token != null) {			
+			String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
+					.build()
+					.verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
+					.getSubject();
+			DecodedJWT jwt = JWT.decode(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
+			Claim claim = jwt.getClaim("role");
 
-        //SecurityContextHolder.getContext().setAuthentication(authentication);
-        
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-        
-        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false)/*.setAuthentication(null)*/;
-        
-        authorities.remove(0);
-        
-        for (Cookie cookie: request.getCookies()) {
-        	 String cookieName = cookie.getName();
-             Cookie cookieToDelete = new Cookie(cookieName, null);
-             cookieToDelete.setMaxAge(0);
-             response.addCookie(cookieToDelete);
-        }
-        
-		
-		System.out.println(request.getHeader("Authorization")/*.getIntHeader("Authorization")*/);
-		
-		System.out.println(authentication.getName());
-		
-		
-		
-		//System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		
-		//authentication.eraseCredentials();
-	}
+			List<String> rolesList = claim.asList(String.class);;
+			ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+			for(String role:rolesList) {
+				authorities.add(new SimpleGrantedAuthority(role));
+			}
+			
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+			
+			if (!Utils.blackList(request)) {
+				SecurityConstants.tokens.add(token);
+				return "Hasta la próxima: " + authentication.getName();
+			} else {
+				return "Token invalidado o expirado";
+			}
+		} else {
+			return "No ha incluido el token";
+		}
+
+
+	}	
     
     
 	/**
@@ -213,9 +211,7 @@ public class UserController {
         	return "User not found";
         }
         
-    }
-
-   	
-	
+    }  	
+   
 
 }

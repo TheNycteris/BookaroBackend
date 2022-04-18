@@ -44,16 +44,19 @@ public class RestConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()   
         		// EndPoints: /api/user
-                .antMatchers(HttpMethod.GET, "/api/user/all").hasAnyRole("ADMIN", "MOD")
-                .antMatchers(HttpMethod.GET, "/api/user/insert").hasAnyRole("ADMIN", "MOD")
+                //.antMatchers(HttpMethod.POST, "/api/user/logout").hasAnyRole("ADMIN", "MOD", "USER")
+        		.antMatchers(HttpMethod.POST, "/api/user/logout").permitAll()
+        		// --> .antMatchers(HttpMethod.GET, "/api/user/all").hasAnyRole("ADMIN", "MOD")
+                // --> .antMatchers(HttpMethod.GET, "/api/user/insert").hasAnyRole("ADMIN", "MOD")
                 // EndPoints: /api/book
-                .antMatchers(HttpMethod.GET, "/api/book/all").hasAnyRole("ADMIN", "MOD", "USER")
-                .antMatchers(HttpMethod.GET, "/api/book/name").hasAnyRole("ADMIN", "MOD", "USER")
+                // --> .antMatchers(HttpMethod.GET, "/api/book/all").hasAnyRole("ADMIN", "MOD", "USER")
+                // --> .antMatchers(HttpMethod.GET, "/api/book/name").hasAnyRole("ADMIN", "MOD", "USER")
                 // EndPoints: /api/client
-                .antMatchers(HttpMethod.GET, "/api/client/subscription").hasAnyRole("ADMIN", "MOD")
+                // --> .antMatchers(HttpMethod.GET, "/api/client/subscription").hasAnyRole("ADMIN", "MOD")
                 // EndPoints: /api/client
-                .antMatchers(HttpMethod.GET, "/api/employee/position/").hasAnyRole("ADMIN", "MOD")                
+                // --> .antMatchers(HttpMethod.GET, "/api/employee/position/").hasAnyRole("ADMIN", "MOD")                
                 .anyRequest().authenticated()
+                
                 .and()
                 .logout()
                 .permitAll()
