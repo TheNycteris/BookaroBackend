@@ -87,7 +87,7 @@ public class UserController {
 	
 	
 	/**
-	 * Meto para hacer un logout. Almacena el token en una blackList
+	 * Metodo que gestiona logout del usuario. Almacena el token en una blackList.
 	 * @param request parametro de tipo HttpServletRequest
 	 * @return Retorna un String con el resultado.
 	 */
