@@ -100,6 +100,7 @@ public class PruebasBookaro {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	int cont = 1;
 	
 	
 	@BeforeAll
@@ -173,20 +174,7 @@ public class PruebasBookaro {
 		//clientService.add(client1);	
 		clientRepository.save(client1);
 
-		/*// Creamos client2
-		Client client2 = new Client();
-		client2.setUsername("cliente2");
-		client2.setPassword("1234");
-		client2.setName("name2");
-		client2.setSurname("surname2");
-		client2.setDni("43444555H");
-		client2.setAddress("C/ dirección de prueba2");
-		client2.setEmail("cliente2@bookaro.com");
-		client2.setAge(40);		
-		client2.setRole("ROLE_USER");
-		client2.setSubscription(subscription2);		
-		client2.setOrder(order1);
-		clientService.add(client2);	*/	
+		
 		
 		
 		/**
@@ -195,7 +183,7 @@ public class PruebasBookaro {
 		// Creamos una Order
 		Order order1 = new Order();
 		order1.setStartDate(new Date());
-		order1.setActive(true);
+		order1.setActive(true);		
 		//order1.setClient(client1);	
 		orderRepository.save(order1);
 		
@@ -236,7 +224,8 @@ public class PruebasBookaro {
 		book1.setEditorial("editorial1");
 		book1.setSynopsis("synopsis1");
 		book1.setOrderBook(order1);
-		bookService.add(book1);
+		//bookService.add(book1);
+		bookRepository.save(book1);
 		
 		// Cremos book1
 		Book book2 = new Book();
@@ -247,7 +236,8 @@ public class PruebasBookaro {
 		book2.setEditorial("editorial2");
 		book2.setSynopsis("synopsis2");
 		book2.setOrderBook(order2);
-		bookService.add(book2);		
+		//bookService.add(book2);
+		bookRepository.save(book2);
 	}
 
 	
@@ -259,18 +249,15 @@ public class PruebasBookaro {
 		subscriptionRepository.deleteAll();
 		bookRepository.deleteAll();
 		orderRepository.deleteAll();
+		
 	}
 	
 	
 	@AfterEach
 	void ultima() {
-		System.out.println("Prueba de ejecución despues");		
+		System.out.println("Ha terminado el Test " + (cont-1));		
 	}
 	
-	@Test
-	void testClient() {
-		crearRegistros();
-	}
 	
 	
 	
