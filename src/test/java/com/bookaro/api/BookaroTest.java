@@ -74,7 +74,6 @@ class BookaroTest {
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	
-	
 	static List<User> users = new ArrayList();
 	static List<Client> clients = new ArrayList();
 	static List<Employee> employees = new ArrayList();
@@ -82,12 +81,15 @@ class BookaroTest {
 	static List<Book> books = new ArrayList();
 	static List<Subscription> subscriptions = new ArrayList();
 	
+	static int cont = 1;
+	
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		System.out.println("*************************  COMIENZA LOS TESTS *************************");
 	}
 
 	/**
@@ -95,6 +97,7 @@ class BookaroTest {
 	 */
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
+		System.out.println("*************************  FINALIZADOS LOS TESTS *************************");
 	}
 
 	/**
@@ -102,6 +105,7 @@ class BookaroTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
+		System.out.println("*********** TEST " + cont + " INICIANDO ***********");	
 	}
 
 	/**
@@ -109,6 +113,7 @@ class BookaroTest {
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
+		System.out.println("*********** TEST " + (cont-1) + " TERMINADO ***********");	
 	}
 	
 	
@@ -266,6 +271,8 @@ class BookaroTest {
 		orders = (List<Order>) orderRepository.findAll();
 		assert !orders.isEmpty();
 		
+		cont++;
+		
 	}
 	
 	
@@ -334,6 +341,8 @@ class BookaroTest {
 		orderRepository.save(order1);
 		// Comprobamos que el cambio ha tenido efecto.
 		assert orderRepository.findById(1L).get().isActive() == false;
+		
+		cont++;
 	}
 	
 	
@@ -367,6 +376,8 @@ class BookaroTest {
 			cliente1.setEmail("pedro@bookaro.com");
 			userRepository.save(cliente1);
 		}, "Exception was expected");
+		
+		cont++;
 
 	}
 	
@@ -387,6 +398,8 @@ class BookaroTest {
 		assert subscriptionRepository.count() == 0;
 		assert bookRepository.count() == 0;
 		assert userRepository.count() == 0;
+		
+		cont++;
 	}
 	
 	
