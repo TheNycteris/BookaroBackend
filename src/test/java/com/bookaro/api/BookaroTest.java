@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -15,6 +16,8 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import com.bookaro.api.models.Book;
@@ -332,6 +335,41 @@ class BookaroTest {
 		// Comprobamos que el cambio ha tenido efecto.
 		assert orderRepository.findById(1L).get().isActive() == false;
 	}
+	
+	
+	/**
+	 *  Test para comprobar que el campo ID de los objetos Subscription y el email de User 
+	 *  están configurados como "unique=true"
+	 */
+	@Test
+	void test3 () {		
+
+		// Comprobamos que no podemos introducir una subscripción con el mismo "id"		
+		// Debe saltar una excepción del tipo "JpaSystemException"		 
+		JpaSystemException thrown1 = Assertions.assertThrows(JpaSystemException.class, () -> {
+			Subscription subscription3 = new Subscription();
+			subscription3.setId_sub(1L);
+			subscription3.setType("Básica");
+			subscription3.setPrice(10);			
+			subscriptionRepository.save(subscription3);
+		}, "JpaSystemException was expected");		
+
+		assertEquals("A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: "
+				+ "com.bookaro.api.models.Subscription.allClients; nested exception is org.hibernate.HibernateException: "
+				+ "A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: "
+				+ "com.bookaro.api.models.Subscription.allClients", thrown1.getMessage());
+
+
+		// Actualizaremos el email de cliente1 al mismo que tiene employee "pedro@bookaro.com"
+		// Debería saltar una excepción puesto que el campo está calificado como "unique=true"
+		Exception thrown2 = Assertions.assertThrows(Exception.class, () -> {
+			User cliente1 = (Client)users.get(2);
+			cliente1.setEmail("pedro@bookaro.com");
+			userRepository.save(cliente1);
+		}, "Exception was expected");
+
+	}
+	
 
 	
 	/**
@@ -339,7 +377,7 @@ class BookaroTest {
 	 */
 	@Test
 	@Disabled
-	void test3 () {
+	void test4 () {
 		orderRepository.deleteAll();
 		subscriptionRepository.deleteAll();
 		bookRepository.deleteAll();
@@ -352,6 +390,9 @@ class BookaroTest {
 	}
 	
 	
+	
+	
+
 	
 
 }
