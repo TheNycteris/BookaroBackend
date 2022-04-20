@@ -206,7 +206,7 @@ class BookaroTest {
 		client1.setAge(40);		
 		client1.setRole("ROLE_USER");
 		client1.setSubscription(subscription1);		
-		client1.setOrder(order2);
+		//client1.setOrder(order2);
 		clientRepository.save(client1);			
 		
 		
@@ -223,7 +223,7 @@ class BookaroTest {
 		client2.setAge(40);		
 		client2.setRole("ROLE_USER");
 		client2.setSubscription(subscription2);		
-		client2.setOrder(order1);
+		//client2.setOrder(order1);
 		//clientService.add(client2);
 		clientRepository.save(client2);
 		
@@ -239,8 +239,7 @@ class BookaroTest {
 		book1.setCategory("category1");
 		book1.setEditorial("editorial1");
 		book1.setSynopsis("synopsis1");
-		book1.setOrderBook(order1);
-		//bookService.add(book1);
+		book1.setOrderBook(order1);		
 		bookRepository.save(book1);
 		
 		// Cremos book1
@@ -251,8 +250,7 @@ class BookaroTest {
 		book2.setCategory("category2");
 		book2.setEditorial("editorial2");
 		book2.setSynopsis("synopsis2");
-		book2.setOrderBook(order2);
-		//bookService.add(book2);
+		book2.setOrderBook(order2);		
 		bookRepository.save(book2);
 		
 		subscriptions = (List<Subscription>) subscriptionRepository.findAll();
@@ -267,9 +265,28 @@ class BookaroTest {
 
 		books = (List<Book>) bookRepository.findAll();
 		assert !books.isEmpty();
+		
+		
+		/////////////////////////
+		List<Client> orderC1 = new ArrayList();
+		orderC1.add((Client) users.get(2));
+		//order1.setClients(orderC1);
+		order1.setClient(client1);
+		
+		List<Client> orderC2 = new ArrayList();
+		orderC1.add((Client) users.get(3));
+		order2.setClient(client2);
+
+		orderRepository.save(order1);
+		orderRepository.save(order2);
+		////////////////////////
+		
 
 		orders = (List<Order>) orderRepository.findAll();
 		assert !orders.isEmpty();
+		
+		
+		
 		
 		cont++;
 		
