@@ -32,13 +32,14 @@ public class Client extends User {
 	
 	@ManyToOne()
     @JoinColumn(name = "id_sub")
+	@JsonIgnore
 	private Subscription subscription;
 	
 	
 	/*@ManyToOne()
     @JoinColumn(name = "id_order")
 	private Order order;*/
-	@OneToMany(mappedBy = "client"/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
 	@JsonIgnore
 	private List<Order> orders; 
 	

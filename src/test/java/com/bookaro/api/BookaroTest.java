@@ -141,25 +141,6 @@ class BookaroTest {
 		subscription2.setPrice(10);
 		subscriptionRepository.save(subscription2);
 		
-		
-		/**
-		 * ************ Order ************		
-		 */
-		System.out.println("Insertamos Order1");
-		// Creamos una Order
-		Order order1 = new Order();
-		order1.setStartDate(new Date());
-		order1.setActive(true);		
-		orderRepository.save(order1);
-		
-		System.out.println("Insertamos Order2");
-		// Creamos una Order
-		Order order2 = new Order();
-		order2.setStartDate(new Date());
-		order2.setActive(true);				
-		orderRepository.save(order2);
-
-		
 		/**
 		 * ************ Users/employee ************		
 		 */
@@ -206,7 +187,6 @@ class BookaroTest {
 		client1.setAge(40);		
 		client1.setRole("ROLE_USER");
 		client1.setSubscription(subscription1);		
-		//client1.setOrder(order2);
 		clientRepository.save(client1);			
 		
 		
@@ -223,9 +203,26 @@ class BookaroTest {
 		client2.setAge(40);		
 		client2.setRole("ROLE_USER");
 		client2.setSubscription(subscription2);		
-		//client2.setOrder(order1);
-		//clientService.add(client2);
 		clientRepository.save(client2);
+		
+		/**
+		 * ************ Order ************		
+		 */
+		System.out.println("Insertamos Order1");
+		// Creamos una Order
+		Order order1 = new Order();
+		order1.setStartDate(new Date());
+		order1.setActive(true);		
+		order1.setClient(client1);
+		orderRepository.save(order1);
+		
+		System.out.println("Insertamos Order2");
+		// Creamos una Order
+		Order order2 = new Order();
+		order2.setStartDate(new Date());
+		order2.setActive(true);		
+		order2.setClient(client2);
+		orderRepository.save(order2);	
 		
 		
 		/**
@@ -265,28 +262,9 @@ class BookaroTest {
 
 		books = (List<Book>) bookRepository.findAll();
 		assert !books.isEmpty();
-		
-		
-		/////////////////////////
-		List<Client> orderC1 = new ArrayList();
-		orderC1.add((Client) users.get(2));
-		//order1.setClients(orderC1);
-		order1.setClient(client1);
-		
-		List<Client> orderC2 = new ArrayList();
-		orderC1.add((Client) users.get(3));
-		order2.setClient(client2);
-
-		orderRepository.save(order1);
-		orderRepository.save(order2);
-		////////////////////////
-		
 
 		orders = (List<Order>) orderRepository.findAll();
-		assert !orders.isEmpty();
-		
-		
-		
+		assert !orders.isEmpty();	
 		
 		cont++;
 		

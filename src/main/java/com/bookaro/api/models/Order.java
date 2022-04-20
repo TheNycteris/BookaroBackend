@@ -40,10 +40,11 @@ public class Order {
 	//@JsonIgnore
 	//private List<Client> clients; 
 	@ManyToOne()
+	@JsonIgnore
     @JoinColumn(name = "id_user")
 	private Client client;
 	
-	@OneToMany(mappedBy = "orderBook"/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
+	@OneToMany(mappedBy = "orderBook", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
 	@JsonIgnore
 	private List<Book> books; 
 
