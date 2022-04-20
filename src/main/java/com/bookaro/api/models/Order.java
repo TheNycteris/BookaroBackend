@@ -36,15 +36,12 @@ public class Order {
 	private Date startDate;
 	private boolean active;	
 	
-	//@OneToMany(mappedBy = "order"/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
-	//@JsonIgnore
-	//private List<Client> clients; 
 	@ManyToOne()
 	@JsonIgnore
     @JoinColumn(name = "id_user")
 	private Client client;
 	
-	@OneToMany(mappedBy = "orderBook", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
+	@OneToMany(mappedBy = "orderBook", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Book> books; 
 
@@ -124,31 +121,21 @@ public class Order {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 	
-
+	
 	/**
 	 * Getter clients
-	 * @return Retorna una lista de clientes
+	 * @return Retorna un Objeto Client
 	 */
-	/*public List<Client> getClients() {
-		return clients;
-	}*/
-
-	/**
-	 * Setter clients
-	 * @param clients Recibe una lista de clientes
-	 */
-	/*public void setClients(List<Client> clients) {
-		this.clients = clients;
-	}*/
-	
 	public Client getClient() {
 		return client;
 	}
 
 
+	/**
+	 * Setter clients
+	 * @param clients Recibe un objeto Client
+	 */
 	public void setClient(Client client) {
 		this.client = client;
 	}

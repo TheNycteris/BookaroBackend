@@ -35,11 +35,7 @@ public class Client extends User {
 	@JsonIgnore
 	private Subscription subscription;
 	
-	
-	/*@ManyToOne()
-    @JoinColumn(name = "id_order")
-	private Order order;*/
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL/*, orphanRemoval = true*/)
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Order> orders; 
 	
@@ -67,27 +63,18 @@ public class Client extends User {
 	}
 
 	
-
 	/**
 	 * Getter Order	  
-	 * @return Devuelve un objeto de tipo Order
+	 * @return Devuelve una lista de tipo Order
 	 */
-	/*public Order getOrder() {
-		return order;
-	}*/
-
-	/**
-	 * Setter Order
-	 * @param order Recibe un parametro de tipo Order
-	 */
-	/*public void setOrder(Order order) {
-		this.order = order;
-	}*/
-	
 	public List<Order> getOrders() {
 		return orders;
 	}
 
+	/**
+	 * Setter Order
+	 * @param order Recibe una lista de tipo Order
+	 */
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
