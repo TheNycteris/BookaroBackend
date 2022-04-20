@@ -84,7 +84,8 @@ public class ClientService {
 		copy.setEmail(client.getEmail());		
 		copy.setRole(client.getRole());
 		copy.setSubscription(client.getSubscription());
-		copy.setOrder(client.getOrder());		
+		//copy.setOrder(client.getOrder());		
+		//copy.setOrder(client.getOrder());
 		
 		return clientRepository.save(copy);
 	}
