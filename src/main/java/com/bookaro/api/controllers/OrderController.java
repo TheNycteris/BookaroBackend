@@ -38,7 +38,7 @@ public class OrderController {
 	 * @return Retorna una lista de usuarios
 	 */
 	@GetMapping("/all")
-	public ArrayList<Order> getAllUsers(){
+	public ArrayList<Order> getAllOrders(){
 		return orderService.findAll();
 	}
 	

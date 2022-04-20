@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -34,11 +36,14 @@ public class Order {
 	private Date startDate;
 	private boolean active;	
 	
-	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
-	private List<Client> clients; 
+	//@OneToMany(mappedBy = "order"/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
+	//@JsonIgnore
+	//private List<Client> clients; 
+	@ManyToOne()
+    @JoinColumn(name = "id_user")
+	private Client client;
 	
-	@OneToMany(mappedBy = "orderBook", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "orderBook"/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
 	@JsonIgnore
 	private List<Book> books; 
 
@@ -119,20 +124,32 @@ public class Order {
 		this.id = id;
 	}
 
+
+	
+
 	/**
 	 * Getter clients
 	 * @return Retorna una lista de clientes
 	 */
-	public List<Client> getClients() {
+	/*public List<Client> getClients() {
 		return clients;
-	}
+	}*/
 
 	/**
 	 * Setter clients
 	 * @param clients Recibe una lista de clientes
 	 */
-	public void setClients(List<Client> clients) {
+	/*public void setClients(List<Client> clients) {
 		this.clients = clients;
+	}*/
+	
+	public Client getClient() {
+		return client;
+	}
+
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 	
 		

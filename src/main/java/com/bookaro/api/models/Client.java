@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** 
  * @author Pedro <br>
@@ -34,9 +35,12 @@ public class Client extends User {
 	private Subscription subscription;
 	
 	
-	@ManyToOne()
+	/*@ManyToOne()
     @JoinColumn(name = "id_order")
-	private Order order;	
+	private Order order;*/
+	@OneToMany(mappedBy = "client"/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
+	@JsonIgnore
+	private List<Order> orders; 
 	
 	/**
 	 * Constructor vacio
@@ -61,23 +65,31 @@ public class Client extends User {
 		this.subscription = subscription;
 	}
 
+	
+
 	/**
 	 * Getter Order	  
 	 * @return Devuelve un objeto de tipo Order
 	 */
-	public Order getOrder() {
+	/*public Order getOrder() {
 		return order;
-	}
+	}*/
 
 	/**
 	 * Setter Order
 	 * @param order Recibe un parametro de tipo Order
 	 */
-	public void setOrder(Order order) {
+	/*public void setOrder(Order order) {
 		this.order = order;
+	}*/
+	
+	public List<Order> getOrders() {
+		return orders;
 	}
 
-	
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
 	
 	
 	
