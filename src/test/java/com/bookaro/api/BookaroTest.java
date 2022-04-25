@@ -159,6 +159,7 @@ class BookaroTest {
 		employee.setSalary(1000);
 		employee.setEmail("pedro@bookaro.com");		
 		employee.setRole("ROLE_MOD");		
+		//employee.setRole("MOD");
 		employeeRepository.save(employee);
 		
 
@@ -168,7 +169,8 @@ class BookaroTest {
 		admin.setUsername("admin");
 		admin.setPassword(passwordEncoder.encode("admin"));	
 		admin.setEmail("admin@bookaro.com");						
-		admin.setRole("ROLE_ADMIN");		
+		admin.setRole("ROLE_ADMIN");
+		//admin.setRole("ADMIN");
 		userRepository.save(admin);
 		
 		/**
@@ -186,6 +188,7 @@ class BookaroTest {
 		client1.setEmail("cliente1@bookaro.com");
 		client1.setAge(40);		
 		client1.setRole("ROLE_USER");
+		//client1.setRole("USER");
 		client1.setSubscription(subscription1);		
 		clientRepository.save(client1);			
 		
@@ -201,7 +204,8 @@ class BookaroTest {
 		client2.setAddress("C/ dirección de prueba2");
 		client2.setEmail("cliente2@bookaro.com");
 		client2.setAge(40);		
-		client2.setRole("ROLE_USER");
+		//client2.setRole("ROLE_USER");
+		client2.setRole("USER");
 		client2.setSubscription(subscription2);		
 		clientRepository.save(client2);
 		
@@ -249,22 +253,24 @@ class BookaroTest {
 		book2.setSynopsis("synopsis2");
 		book2.setOrderBook(order2);		
 		bookRepository.save(book2);
-		
-		subscriptions = (List<Subscription>) subscriptionRepository.findAll();
-
+				
 		// Comprobamos que los datos se han guardado en la lista y en la BD
+		subscriptions = (List<Subscription>) subscriptionRepository.findAll();		
 		assert !subscriptions.isEmpty();
 		assert subscriptions.size() == subscriptionRepository.count();
 
 
 		users = (List<User>) userRepository.findAll();
 		assert !users.isEmpty();
+		assert users.size() == userRepository.count();
 
 		books = (List<Book>) bookRepository.findAll();
 		assert !books.isEmpty();
+		assert books.size() == bookRepository.count();
 
 		orders = (List<Order>) orderRepository.findAll();
 		assert !orders.isEmpty();	
+		assert orders.size() == orderRepository.count();
 		
 		cont++;
 		
@@ -374,8 +380,7 @@ class BookaroTest {
 		
 		cont++;
 
-	}
-	
+	}	
 
 	
 	/**
@@ -398,9 +403,4 @@ class BookaroTest {
 	}
 	
 	
-	
-	
-
-	
-
 }

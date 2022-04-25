@@ -13,6 +13,9 @@ import com.bookaro.api.models.Book;
 @Repository
 public interface BookRepository extends CrudRepository<Book, Long> {
 	
-	Book findByName (String name);
+	Book findBookByName (String name);
+	Book findBookByAuthor (String author);
+	Book findBookByCategory (String category);
+	Book findBookByEditorial (String editorial);
 
 }

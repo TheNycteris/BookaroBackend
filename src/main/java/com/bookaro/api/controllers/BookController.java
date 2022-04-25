@@ -30,6 +30,38 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	
+	
+	/**
+	 * Metodo que busca un libro por su autor
+	 * @param author Recibe un String con el autor del libro
+	 * @return Retorna un objeto Book.
+	 */
+	@GetMapping("/author/{author}")
+	public Book findBookByAuthor(@PathVariable("author") String author) {		
+		return bookService.findBookByAuthor(author);
+	}
+
+	/**
+	 * Metodo que busca un libro por su category
+	 * @param category Recibe un String con la categoria del libro
+	 * @return Retorna un objeto Book.
+	 */
+	@GetMapping("/category/{category}")
+	public Book findBookByCategory(@PathVariable("category") String category) {
+		return bookService.findBookByCategory(category);
+	}
+
+	/**
+	 * Metodo que busca un libro por su editorial
+	 * @param editorial Recibe un String con la editorial del libro
+	 * @return Retorna un objeto Book.
+	 */
+	@GetMapping("/editorial/{editorial}")
+	public Book findBookByEditorial(@PathVariable("editorial") String editorial) {
+		return bookService.findBookByEditorial(editorial);
+	}
+
+
 	/**
 	 * @author Pedro<br>
 	 * Metodo que busca un libro por su nombre
@@ -37,7 +69,7 @@ public class BookController {
 	 * @return Retorna un objeto Book.
 	 */
 	@GetMapping("/name/{name}")
-	public Book findByName(@PathVariable("name") String name) {
+	public Book findBookByName(@PathVariable("name") String name) {
 		return bookService.findByName(name);
 	}
 	

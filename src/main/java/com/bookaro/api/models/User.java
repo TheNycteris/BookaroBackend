@@ -254,9 +254,9 @@ public class User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {		
 		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-		if(this.roles.equals("ADMIN")) {
+		if(this.roles.equals("ADMIN") || this.roles.equals("ROLE_ADMIN")) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));			
-		} else if(this.roles.equals("MOD")) {
+		} else if(this.roles.equals("MOD") || this.roles.equals("ROLE_MOD")) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_MOD"));
 		} else {
 			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

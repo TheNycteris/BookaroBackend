@@ -24,6 +24,37 @@ public class BookService {
 	@Autowired
 	BookRepository bookRepository;
 	
+	
+	/**
+	 * Metodo para buscar un libro por su autor
+	 * @param author Recibe un String con el autor
+	 * @return Retorna un Book
+	 */
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	public Book findBookByAuthor(String author) {
+		return bookRepository.findBookByAuthor(author);
+	}
+
+	/**
+	 * Metodo para buscar un libro por su categoria
+	 * @param category Recibe un String con la categoria
+	 * @return Retorna un Book
+	 */
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	public Book findBookByCategory(String category) {
+		return bookRepository.findBookByCategory(category);
+	}
+
+	/**
+	 * Metodo para buscar un libro por su editorial
+	 * @param editorial Recibe un String con la editorial
+	 * @return Retorna un Book
+	 */
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	public Book findBookByEditorial(String editorial) {
+		return bookRepository.findBookByEditorial(editorial);
+	}
+
 	/** 
 	 * Metodo que devuelve un libro por su nombre	
 	 * @param name Recibe un String con el nombre del libro
@@ -31,7 +62,7 @@ public class BookService {
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	public Book findByName(String name) {
-		return bookRepository.findByName(name);
+		return bookRepository.findBookByName(name);
 	}
 
 	/**

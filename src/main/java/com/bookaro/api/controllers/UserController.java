@@ -80,9 +80,9 @@ public class UserController {
 			}		
 			return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 		} else {
-			String body = "Sesion no validada o token expirado";
+			/*String body = "Sesion no validada o token expirado";
 			res.getWriter().write(body);
-			res.getWriter().flush();
+			res.getWriter().flush();*/
 			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 		}		
 	}  
@@ -97,7 +97,7 @@ public class UserController {
 	@PostMapping("/logout") 
 	public String logout(HttpServletRequest request) {
 		String token = request.getHeader(SecurityConstants.HEADER_STRING);
-		System.out.println(token);
+		//System.out.println(token);
 		if (token != null) {			
 			String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
 					.build()
