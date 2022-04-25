@@ -83,8 +83,7 @@ public class ImageService {
 				.id(img.get().getId())
 				.name(img.get().getName())
 				.type(img.get().getType())
-				.image(ImageUtility.decompressImage(img.get().getImage())).build();
-		
+				.image(ImageUtility.decompressImage(img.get().getImage())).build();		
 	}
 
 
