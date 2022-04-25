@@ -1,6 +1,12 @@
 package com.bookaro.api;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,21 +23,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
+
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Employee;
+import com.bookaro.api.models.Image;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
 import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.BookRepository;
 import com.bookaro.api.repositories.ClientRepository;
 import com.bookaro.api.repositories.EmployeeRepository;
+import com.bookaro.api.repositories.ImageRepository;
 import com.bookaro.api.repositories.OrderRepository;
 import com.bookaro.api.repositories.SubscriptionRepository;
 import com.bookaro.api.repositories.UserRepository;
+import com.bookaro.api.utils.ImageUtility;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -69,6 +83,9 @@ class BookaroTest {
 
 	@Autowired
 	private BookRepository bookRepository;
+	
+	@Autowired
+	private ImageRepository imageRepository;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -123,6 +140,35 @@ class BookaroTest {
 	@Test
 	void test1() {
 		System.out.println("*************************** TEST INSERT ***************************");
+		
+		/**
+		 * ************ Image ************	
+		 */
+		String url = "C:\\Users\\Pedro\\Pictures\\Diagrama ejercicio 4.png";
+		File file = new File(url);
+		Image image = new Image();
+		try {
+			InputStream input = new FileInputStream(file);
+			//byte[] prueba = null;
+			try {
+				
+				
+				MultipartFile multi = new MockMultipartFile("file", file.getName(),"image/png", IOUtils.toByteArray(input));
+				
+				image = imageRepository.save(Image.builder().id(multi.getSize()).name(multi.getOriginalFilename()).type(multi.getContentType()).image(ImageUtility.compressImage(multi.getBytes())).build());
+				//image.setImage(IOUtils.toByteArray(input));
+				//image.setName(file.getName());
+				//image.setType("")
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		/**
 		 * ************ Subscription ************		
@@ -204,8 +250,8 @@ class BookaroTest {
 		client2.setAddress("C/ dirección de prueba2");
 		client2.setEmail("cliente2@bookaro.com");
 		client2.setAge(40);		
-		//client2.setRole("ROLE_USER");
-		client2.setRole("USER");
+		client2.setRole("ROLE_USER");
+		//client2.setRole("USER");
 		client2.setSubscription(subscription2);		
 		clientRepository.save(client2);
 		
@@ -240,7 +286,8 @@ class BookaroTest {
 		book1.setCategory("category1");
 		book1.setEditorial("editorial1");
 		book1.setSynopsis("synopsis1");
-		book1.setOrderBook(order1);		
+		book1.setOrderBook(order1);
+		book1.setImage(image);
 		bookRepository.save(book1);
 		
 		// Cremos book1

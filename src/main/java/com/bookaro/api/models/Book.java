@@ -1,14 +1,6 @@
 package com.bookaro.api.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -39,6 +31,11 @@ public class Book {
 	
 	@Column(unique = true, nullable = false)
 	private String isbn; 
+	
+	
+	@OneToOne
+	@JoinColumn(name = "image_id")
+	private Image image;
 	
 	/**
 	 * Constructor vacio
@@ -173,6 +170,16 @@ public class Book {
 	 */
 	public void setOrderBook(Order orderBook) {
 		this.orderBook = orderBook;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
 	}	
+	
+	
 	
 }
