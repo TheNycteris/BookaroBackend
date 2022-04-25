@@ -144,7 +144,8 @@ class BookaroTest {
 		/**
 		 * ************ Image ************	
 		 */
-		String url = "C:\\Users\\Pedro\\Pictures\\Diagrama ejercicio 4.png";
+		//String url = "C:\\Users\\Pedro\\Pictures\\Diagrama ejercicio 4.png";
+		String url = "C:\\Users\\Pedro\\git\\BookaroBackend\\src\\test\\java\\com\\bookaro\\api\\captura.png";
 		File file = new File(url);
 		Image image = new Image();
 		try {
