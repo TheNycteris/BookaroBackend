@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import com.bookaro.api.models.Subscription;
 import com.bookaro.api.repositories.SubscriptionRepository;
@@ -55,7 +56,7 @@ public class SubscriptionService {
 	 * @param subscription Recibe un objeto Subscription
 	 * @return Retorna un objeto Subscription
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
 	public Subscription add (Subscription subscription) {
 		return subscriptionRepository.save(subscription);
 	}
@@ -66,7 +67,7 @@ public class SubscriptionService {
 	 * @param subscription Recibe un objeto de tipo Subscription
 	 * @return Retorna un objeto Subscription
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
 	public Subscription update(Subscription subscription) {
 	    try {
 	    	subscriptionRepository.save(subscription);
@@ -83,7 +84,7 @@ public class SubscriptionService {
 	 * @param id Recibe un long con el id de la subscripcion
 	 * @return Retorna true o false en funcion de si ha podido o no borrarla.
 	 */
-	@PostAuthorize(value = "hasRole('ADMIN')")
+	@PreAuthorize(value = "hasRole('ADMIN')")
 	public boolean delete (long id) {
 		try {
 			subscriptionRepository.deleteById(id);

@@ -88,7 +88,7 @@ public class SubscriptionController {
 	 * @param id Recibe un long con el id de la subscripcion
 	 * @return Retorna un String con el resultado.
 	 */
-	@DeleteMapping("{id}")
+	@DeleteMapping("/delete/{id}")
 	public String deleteSubscription (@PathVariable("id") long id) {
 		if(id > 0) {
 			if(subscriptionService.delete(id)) {

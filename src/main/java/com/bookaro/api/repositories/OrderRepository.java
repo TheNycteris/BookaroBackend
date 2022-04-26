@@ -1,5 +1,7 @@
 package com.bookaro.api.repositories;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import com.bookaro.api.models.Order;
@@ -12,5 +14,7 @@ import com.bookaro.api.models.Order;
  */
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
+	
+	List<Order> findAllOrderByActive (boolean active);
 
 }

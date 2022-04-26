@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.bookaro.api.models.Book;
@@ -61,7 +62,7 @@ public class BookService {
 	 * @return Retorna un objeto Book.
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
-	public Book findByName(String name) {
+	public Book findBookByName(String name) {
 		return bookRepository.findBookByName(name);
 	}
 
@@ -90,7 +91,7 @@ public class BookService {
 	 * @param book Recibe un objeto Book.
 	 * @return Retorn un objeto Book.
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public Book add (Book book) {
 		return bookRepository.save(book);
 	}
@@ -101,7 +102,7 @@ public class BookService {
 	 * @param book Recibo un objeto Book
 	 * @return Retorna true o false dependiendo de si puede o no actualizarlo.
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public boolean update(Book book) {
 	    try {
 	    	bookRepository.save(book);
@@ -117,7 +118,7 @@ public class BookService {
 	 * @param id Recibe un long con el id del libro
 	 * @return Retorna true o false dependiendo del resultado.
 	 */
-	@PostAuthorize(value = "hasRole('ADMIN')")
+	@PreAuthorize(value = "hasRole('ADMIN')")
 	public boolean delete (long id) {
 		try {
 			bookRepository.deleteById(id);

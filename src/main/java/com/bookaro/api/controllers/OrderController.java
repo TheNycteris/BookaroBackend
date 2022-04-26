@@ -2,6 +2,7 @@ package com.bookaro.api.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,24 @@ import com.bookaro.api.services.OrderService;
 public class OrderController {
 	
 	@Autowired
-	private OrderService orderService;
+	private OrderService orderService;	
+	
 	
 	
 	/**
 	 * Metodo que devuelve una lista de orders
-	 * @return Retorna una lista de usuarios
+	 * @param active Recibe un boolean
+	 * @return Retorna una lista de orders
+	 */
+	@GetMapping (value = "/active/{active}")
+	public List<Order> findAllOrderByActive(@PathVariable("active") boolean active) {
+		return orderService.findAllOrderByActive(active);
+	}
+
+
+	/**
+	 * Metodo que devuelve una lista de orders
+	 * @return Retorna una lista de order
 	 */
 	@GetMapping("/all")
 	public ArrayList<Order> getAllOrders(){

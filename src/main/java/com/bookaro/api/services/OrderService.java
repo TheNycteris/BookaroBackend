@@ -1,6 +1,7 @@
 package com.bookaro.api.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -28,6 +29,17 @@ public class OrderService {
 	@Autowired
 	OrderRepository orderRepository;
 	
+	
+	/**
+	 * Metodo que devuelve una lista de order
+	 * @param active Recibe boolean 
+	 * @return Retorna una lista de Order
+	 */
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	public List<Order> findAllOrderByActive(boolean active) {
+		return orderRepository.findAllOrderByActive(active);
+	}
+
 	/**
 	 * Metodo que devuelve una lista de Order
 	 * @return Retorna todas las Orders
