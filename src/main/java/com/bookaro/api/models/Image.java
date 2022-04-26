@@ -2,6 +2,8 @@ package com.bookaro.api.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -36,6 +38,7 @@ public class Image {
 	
 	// Enlace con la clase Book
 	@OneToOne(mappedBy="image")
+	@JsonIgnore
 	private Book book;
 	
 	/**

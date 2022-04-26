@@ -35,6 +35,7 @@ public class Book {
 	
 	@OneToOne
 	@JoinColumn(name = "image_id")
+	@JsonIgnore
 	private Image image;
 	
 	/**

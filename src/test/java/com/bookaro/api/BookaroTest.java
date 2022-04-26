@@ -26,6 +26,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
@@ -143,30 +144,27 @@ class BookaroTest {
 		
 		/**
 		 * ************ Image ************	
-		 */
-		//String url = "C:\\Users\\Pedro\\Pictures\\Diagrama ejercicio 4.png";
-		String url = "C:\\Users\\Pedro\\git\\BookaroBackend\\src\\test\\java\\com\\bookaro\\api\\captura.png";
+		 */			
+		String ubi = System.getProperty("user.dir");		
+		String url = ubi + "/src/main/resources/captura.png";
 		File file = new File(url);
 		Image image = new Image();
 		try {
-			InputStream input = new FileInputStream(file);
-			//byte[] prueba = null;
-			try {
+			InputStream input = new FileInputStream(file);			
+			try {				
 				
+				MultipartFile multi = new MockMultipartFile("file", file.getName(), "image/png", IOUtils.toByteArray(input));				
+				image = imageRepository.save(Image.builder()
+						.id(multi.getSize())
+						.name(multi.getOriginalFilename())
+						.type(multi.getContentType())
+						.image(ImageUtility.compressImage(multi.getBytes()))
+						.build());				
 				
-				MultipartFile multi = new MockMultipartFile("file", file.getName(),"image/png", IOUtils.toByteArray(input));
-				
-				image = imageRepository.save(Image.builder().id(multi.getSize()).name(multi.getOriginalFilename()).type(multi.getContentType()).image(ImageUtility.compressImage(multi.getBytes())).build());
-				//image.setImage(IOUtils.toByteArray(input));
-				//image.setName(file.getName());
-				//image.setType("")
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (IOException e) {				
 				e.printStackTrace();
 			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (FileNotFoundException e) {			
 			e.printStackTrace();
 		}
 		
