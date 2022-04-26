@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -163,19 +164,33 @@ public class UserController {
 
 	/**
 	 * @author Pol Casals<br>
-	 * Metodo para insertar usuarios
+	 * Metodo para insertar usuarios. Este metodo
+	 * solo podrá ser usado por el ROLE_ADMIN
 	 * @param user Recibe un objeto User
 	 * @return Retorna un objeto User
 	 */
-	@PostMapping("/insert")
+	@PostMapping("/insertA")
 	public ResponseEntity<User> create(@RequestBody User user) {
-		User created = service.create(user);
+		User created = service.create(user);		
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(created.getId())
 				.toUri();
 		return ResponseEntity.created(location).body(created);
 	}
+	
+	
+	/**
+	 * Metodo para insertar usuarios.
+	 * Este metodo podra ser utilizado por ROLE_ADMIN ROLE_MOD
+	 * @param user Recibe un objeto User
+	 * @return Retorna un objeto User
+	 */
+	@PostMapping("/insert")
+	public User createUser(@RequestBody User user) {
+		return service.createUser(user);
+	}
+	
 
 
 	/**
@@ -198,6 +213,13 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}    	
 	} 
+	
+	
+
+	@PutMapping("/update")
+	public User update(@RequestBody User updatedUser) {
+		return service.update(updatedUser);
+	}
 
 
 	/**

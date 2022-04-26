@@ -76,7 +76,7 @@ public class EmployeeService {
 	 * @param employee Recibe un objeto de tipo Employee
 	 * @return Retorna el usuario creado
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	@PreAuthorize(value = "hasRole('ADMIN')")
 	public Employee add(Employee employee) {
 		Employee copy = new Employee();
 		copy.setAddress(employee.getAddress());
@@ -89,7 +89,8 @@ public class EmployeeService {
 		copy.setPosition(employee.getPosition());
 		copy.setSalary(employee.getSalary());
 		copy.setEmail(employee.getEmail());			
-		copy.setRole(employee.getRole());
+		//copy.setRole(employee.getRole());
+		copy.setRole("ROLE_MOD");
 		
 		return employeeRepository.save(copy);
 	}
@@ -100,9 +101,11 @@ public class EmployeeService {
 	 * @param employee Recibe un empleado por parametro
 	 * @return Retorna true o false dependiendo del 
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	@PreAuthorize(value = "hasRole('ADMIN')")
 	public boolean update(Employee employee) {
 		try {
+			employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+			employee.setRole("ROLE_MOD");
 			employeeRepository.save(employee);			
 	        return true;
 	    } catch (Exception e) {

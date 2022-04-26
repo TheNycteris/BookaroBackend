@@ -33,7 +33,7 @@ public class User implements UserDetails {
 	// ******* Atributos de clase ******* 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(unique = true, nullable = false)
+	@Column(unique = true, nullable = true)
 	private Long id_user;
 	
 	@Column(unique = true, nullable = false)

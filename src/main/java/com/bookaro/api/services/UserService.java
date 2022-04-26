@@ -87,19 +87,18 @@ public class UserService {
     }
 
 	/**
-	 * Metodo para crear objetos de tipo User
+	 * Metodo para crear objetos de tipo User.
+	 * Está pensado para el usuario con ROLE_ADMIN
 	 * @param user Recibe un parametro de tipo User
 	 * @return Retorna un objeto de tipo User.
 	 */  
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
-    public User create(User user) {
-        
-    	List<String> roles = new ArrayList<>();		
-    	if (user.getRole() == null) {
-			roles.add("ROLE_USER");
-		} else {			
-			roles.add(user.getRole());
-		}
+	//@PostAuthorize(value = "hasRole('ADMIN')")
+	@PreAuthorize(value = "hasRole('ADMIN')")
+    public User create(User user) {       
+    			
+    	if (user.getRole() == null) {			
+    		user.setRole("ROLE_USER");
+		}     	
     	
     	User copy = new User(
                 new Date().getTime(),
@@ -111,19 +110,45 @@ public class UserService {
                 user.getAddress(),
                 user.getEmail(),
                 user.getAge(),                
-                roles.get(0)
+                user.getRole()
         );
         return repository.save(copy);
     }
 
+	/**
+	 * Metodo para crear objetos de tipo User
+	 * Está pensado para el ROLE_MOD
+	 * @param user Recibe un parametro de tipo User
+	 * @return Retorna un objeto de tipo User.
+	 */  
+	//@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+    public User createUser(User user) {    	
+		user.setRole("ROLE_USER");
+    	
+    	User copy = new User(
+                new Date().getTime(),
+                user.getUsername(),
+                passwordEncoder.encode(user.getPassword()),
+                user.getName(),
+                user.getSurname(),
+                user.getDni(),
+                user.getAddress(),
+                user.getEmail(),
+                user.getAge(),               
+                user.getRole()
+        );
+        return repository.save(copy);
+    }
     
     /**
      * Metodo que acualiza objetos de tipo User
      * @param updatedUser Recibe un parametro User
      * @return Retorna un objeto User
      */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
-    public User update (User updatedUser) {
+	//@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+    public User update (User updatedUser) {		
     	updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
     	return repository.save(updatedUser);
     }
@@ -132,8 +157,8 @@ public class UserService {
     /**
      * Metodo para eliminar usuarios
      * @param id Recibe un parametro de tipo Long con el ID del usuario
-     */
-	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+     */	
+	@PreAuthorize(value = "hasRole('ADMIN')")
     public void delete(Long id) {
         repository.deleteById(id);
     }

@@ -102,8 +102,7 @@ public class ImageService {
 				.ok()
 				.contentType(MediaType.valueOf(dbImage.get().getType()))
 				.body(ImageUtility.decompressImage(dbImage.get().getImage()));
-	}
-	
+	}	
 	
 
 }

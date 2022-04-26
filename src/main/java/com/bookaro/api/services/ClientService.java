@@ -70,7 +70,7 @@ public class ClientService {
 	 * @param client Recibe un objeto de tipo Client
 	 * @return Retorna el cliente
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
 	public Client add (Client client) {
 		
 		Client copy = new Client();
@@ -81,17 +81,18 @@ public class ClientService {
 		copy.setPassword(passwordEncoder.encode(client.getPassword()));
 		copy.setSurname(client.getSurname());		
 		copy.setUsername(client.getUsername());			
-		copy.setEmail(client.getEmail());		
-		copy.setRole(client.getRole());
-		copy.setSubscription(client.getSubscription());
-		//copy.setOrder(client.getOrder());		
-		//copy.setOrder(client.getOrder());
+		copy.setEmail(client.getEmail());	
+		copy.setRole("ROLE_USER");
+		copy.setSubscription(client.getSubscription());		
 		
 		return clientRepository.save(copy);
 	}
 	
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
 	public boolean update (Client client) {
 	    try {
+	    	client.setPassword(passwordEncoder.encode(client.getPassword()));
+	    	client.setRole("ROLE_USER");
 	    	clientRepository.save(client);
 	        return true;
 	    } catch (Exception e) {
