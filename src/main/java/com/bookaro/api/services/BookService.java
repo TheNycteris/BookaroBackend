@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,8 @@ public class BookService {
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	public Book findBookByAuthor(String author) {
-		return bookRepository.findBookByAuthor(author);
+		Book book = bookRepository.findBookByAuthor(author);		
+		return book;		
 	}
 
 	/**

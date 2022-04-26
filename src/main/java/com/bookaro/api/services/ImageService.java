@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +30,6 @@ public class ImageService {
 
 	@Autowired
 	ImageRepository imageRepository;
-
 	
 
 	/**
@@ -38,7 +38,7 @@ public class ImageService {
 	 * @return Retorna un objeto ImageUploadResponse
 	 * @throws IOException Puede lanzar IOException
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file) throws IOException {
 		imageRepository.save(Image.builder()
 				.id(file.getSize())
@@ -47,8 +47,31 @@ public class ImageService {
 				.image(ImageUtility.compressImage(file.getBytes())).build());
 		ImageUploadResponse image = new ImageUploadResponse(file.getOriginalFilename());
 		return image;
-	}
+	}	
+	
 
+	/**
+	 * Metodo para actualizar una imagen
+	 * @param file recibe un parametro de tipo MultipartFile
+	 * @param id recibe un Long con el id de la imagen
+	 * @return Retorna un objeto de tipo Image
+	 * @throws IOException puede lanzar IOException
+	 */
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	public Image update(@RequestParam("image") MultipartFile file, Long id) throws IOException {
+		imageRepository.save(Image.builder()
+				.id(file.getSize())
+				.name(file.getOriginalFilename())
+				.type(file.getContentType())
+				.image(ImageUtility.compressImage(file.getBytes())).build());
+		Image  image = new Image();
+		image.setId(id);
+		image.setName(file.getOriginalFilename());
+		image.setType(file.getContentType());
+		
+		return image;
+	}
+	
 
 	/**
 	 * Metodo para obtener la informacion de la imagen
@@ -67,7 +90,7 @@ public class ImageService {
 				.type(dbImage.get().getType())
 				.image(ImageUtility.decompressImage(dbImage.get().getImage())).build();
 	}
-	
+		
 	
 	
 	/**
@@ -84,6 +107,22 @@ public class ImageService {
 				.name(img.get().getName())
 				.type(img.get().getType())
 				.image(ImageUtility.decompressImage(img.get().getImage())).build();		
+	}
+	
+	
+	/**
+	 * Metodo que obtine una lista de Image
+	 * @return Retorna la lista.
+	 */
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	public List<Image> findAll() {
+		List<Image> images = (List<Image>) imageRepository.findAll();
+		
+		for (Image img: images) {
+			img.setImage(null);
+		}
+		
+		return images;
 	}
 
 
@@ -102,7 +141,20 @@ public class ImageService {
 				.ok()
 				.contentType(MediaType.valueOf(dbImage.get().getType()))
 				.body(ImageUtility.decompressImage(dbImage.get().getImage()));
+	}
+
+	
+	/**
+	 * Metodo que borra una imagen por su id
+	 * @param id Recibe long con el id
+	 */
+	@PreAuthorize(value = "hasRole('ADMIN')")
+	public void deleteById(Long id) {
+		imageRepository.deleteById(id);
 	}	
+	
+	
+	
 	
 
 }

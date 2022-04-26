@@ -91,8 +91,7 @@ public class UserService {
 	 * Está pensado para el usuario con ROLE_ADMIN
 	 * @param user Recibe un parametro de tipo User
 	 * @return Retorna un objeto de tipo User.
-	 */  
-	//@PostAuthorize(value = "hasRole('ADMIN')")
+	 */	
 	@PreAuthorize(value = "hasRole('ADMIN')")
     public User create(User user) {       
     			
@@ -145,8 +144,7 @@ public class UserService {
      * Metodo que acualiza objetos de tipo User
      * @param updatedUser Recibe un parametro User
      * @return Retorna un objeto User
-     */
-	//@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+     */	
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
     public User update (User updatedUser) {		
     	updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
