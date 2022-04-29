@@ -86,7 +86,7 @@ public class OrderController {
 	public String addOrder (@RequestBody Order order, Principal pri) {
 		if (order != null) {	
 			System.out.println(order.countActiveOrders(order.getClient()));
-			if (!order.countActiveOrders(order.getClient())) {
+			if (order.countActiveOrders(order.getClient())) {
 				orderService.add(order);
 				return "Added a order";
 			} else {

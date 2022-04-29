@@ -11,7 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /** 
  * @author Pedro <br>
@@ -24,20 +27,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * <li> Tiene vinculación con la clase Subscription y Order</li>
  *
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
-//@Table(name = "client")
 @DiscriminatorValue( value="CL" )
 public class Client extends User {
 	
 	// ******* Atributos de clase  *******
 	
 	@ManyToOne()
-    @JoinColumn(name = "id_sub")
+    //@JoinColumn(name = "id_sub")
+	@JoinColumn(name = "id_sub")
 	//@JsonIgnore
 	private Subscription subscription;
 	
 	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	@JsonIgnore
+	//@JsonIgnore <-----------------
 	private List<Order> orders; 
 	
 	/**

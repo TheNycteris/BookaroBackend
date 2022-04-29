@@ -6,7 +6,10 @@ import javax.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 
@@ -22,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * <li>Implementa la interfaz UserDetails</li>
  * 
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "userbookaro")
@@ -34,7 +38,8 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = true)
-	private Long id_user;
+	//private Long id_user;
+	private Long id;
 	
 	@Column(unique = true, nullable = false)
 	private String username; 
@@ -67,7 +72,8 @@ public class User implements UserDetails {
 	public User(Long id_user, String username, String password, 
 			    String name, String surname, String dni, String address,
 			    String email, int age, String roles) {		
-		this.id_user = id_user;
+		//this.id_user = id_user;
+		this.id = id_user;
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -91,7 +97,8 @@ public class User implements UserDetails {
 	 * @return retorna el id del usuario
 	 */
 	public Long getId() {
-		return id_user;
+		//return id_user;
+		return id;
 	}
 
 	/**
@@ -99,7 +106,8 @@ public class User implements UserDetails {
 	 * @param id Recibe un parametro de tipo Long
 	 */
 	public void setId(Long id) {
-		this.id_user = id;
+		//this.id_user = id;
+		this.id = id;
 	}
 
 	/**

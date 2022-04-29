@@ -31,14 +31,7 @@ import com.bookaro.api.services.SubscriptionService;
 public class SubscriptionController {
 	
 	@Autowired
-	SubscriptionService subscriptionService;
-	
-	
-	
-	
-	
-	
-	
+	SubscriptionService subscriptionService;	
 
 	/**
 	 * Metodo que devuelve una lista de subscripciones

@@ -1,9 +1,10 @@
 package com.bookaro.api.models;
 
 import java.util.List;
-
 import javax.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * 
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * <li> Tine vinculacion con la clase Order</li>
  *
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name = "book")
 public class Book {
@@ -30,7 +32,7 @@ public class Book {
 	private Order orderBook;	*/
 	
 	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	@JsonIgnore
+	//@JsonIgnore <---------
 	private List<Order> orders;
 	
 	

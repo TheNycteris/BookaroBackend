@@ -5,6 +5,9 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 /**
  * @author Pedro<br>
  * 
@@ -13,8 +16,8 @@ import javax.persistence.Table;
  * <li> El valor discriminatorio es "EM".</li>
  *
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
-//@Table(name = "employee")
 @DiscriminatorValue( value="EM" )
 public class Employee extends User {
 

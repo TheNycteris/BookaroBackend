@@ -11,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 /**
@@ -22,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * <li> Tiene vinculacion con las clase Client </li>
  *
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_sub")
 @Entity
 @Table(name = "subscription")
 public class Subscription {
@@ -29,13 +33,13 @@ public class Subscription {
 	// ***** Atributos de clase *****
 	
 	@OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
-	@JsonIgnore
+	//@JsonIgnore <-------------------------
 	private List<Client> allClients;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
-	private Long id_sub;
+	private Long id_sub;	
 	
 	private String type;
 	private double price;
@@ -102,6 +106,7 @@ public class Subscription {
 	 */
 	public Long getId_sub() {
 		return id_sub;
+		//return id;
 	}
 
 	/**
@@ -110,6 +115,7 @@ public class Subscription {
 	 */
 	public void setId_sub(Long id_sub) {
 		this.id_sub = id_sub;
+		//this.id = id_sub;
 	}
 	
 	

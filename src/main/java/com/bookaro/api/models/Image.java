@@ -2,7 +2,9 @@ package com.bookaro.api.models;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +16,7 @@ import lombok.Data;
  * Clase que hace la función de entidad o tabla para almacenar imagenes o portadas de libros
  *
  */
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name = "image")
 @Data
@@ -43,7 +46,7 @@ public class Image {
 	
 	@OneToOne
 	@JoinColumn(name = "book_id")
-	@JsonIgnore
+	//@JsonIgnore <--------------------
 	private Book book;
 	
 	/**

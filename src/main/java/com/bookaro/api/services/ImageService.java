@@ -109,6 +109,7 @@ public class ImageService {
 				.id(img.get().getId())
 				.name(img.get().getName())
 				.type(img.get().getType())
+				.book(img.get().getBook())
 				.image(ImageUtility.decompressImage(img.get().getImage())).build();		
 	}
 	
@@ -122,7 +123,13 @@ public class ImageService {
 		List<Image> images = (List<Image>) imageRepository.findAll();
 		
 		for (Image img: images) {
-			img.setImage(null);
+			Image.builder()
+			.id(img.getId())
+			.name(img.getName())
+			.type(img.getType())
+			.book(img.getBook())
+			.image(ImageUtility.decompressImage(img.getImage())).build();
+			//img.setImage(null);
 		}
 		
 		return images;
