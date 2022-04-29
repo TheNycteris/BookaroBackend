@@ -8,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Image;
 import com.bookaro.api.repositories.ImageRepository;
 import com.bookaro.api.utils.ImageUploadResponse;
@@ -39,11 +41,12 @@ public class ImageService {
 	 * @throws IOException Puede lanzar IOException
 	 */
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
-	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file) throws IOException {
+	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file, Book id) throws IOException {
 		imageRepository.save(Image.builder()
 				.id(file.getSize())
 				.name(file.getOriginalFilename())
 				.type(file.getContentType())
+				.book(id)
 				.image(ImageUtility.compressImage(file.getBytes())).build());
 		ImageUploadResponse image = new ImageUploadResponse(file.getOriginalFilename());
 		return image;

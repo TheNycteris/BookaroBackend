@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Image;
 import com.bookaro.api.repositories.ImageRepository;
 import com.bookaro.api.services.ImageService;
@@ -43,8 +46,8 @@ public class ImageController {
 	 * @throws IOException Puede lanzar IOException
 	 */
 	@PostMapping("/upload/imagen")
-	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file) throws IOException {		
-		return imageService.upload(file);		
+	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file, @RequestParam("book_id") Book id) throws IOException {		
+		return imageService.upload(file, id);		
 	}
 	
 	

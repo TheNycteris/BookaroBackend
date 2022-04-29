@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bookaro.api.models.Client;
+import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
 import com.bookaro.api.services.ClientService;
 
@@ -31,10 +34,19 @@ import com.bookaro.api.services.ClientService;
 public class ClientController {
 	
 	@Autowired
-	private ClientService clientService;
+	private ClientService clientService;	
 	
 	
 	
+
+	@GetMapping("/orders/{id}")
+	public List<Order> orders(@PathVariable ("id")Long id, Principal pri, HttpServletRequest request) {		
+		Optional<Client> client = clientService.findById(id);
+		List<Order> orders = client.get().getOrders();
+		return orders;		
+	}
+
+
 	/**
 	 * @author Pedro<br>
 	 * Metodo que devuelve una lista de clientes por subscripcion

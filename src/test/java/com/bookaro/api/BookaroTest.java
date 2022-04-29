@@ -1,10 +1,8 @@
 package com.bookaro.api;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -22,15 +20,12 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
-
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Employee;
@@ -46,8 +41,8 @@ import com.bookaro.api.repositories.OrderRepository;
 import com.bookaro.api.repositories.SubscriptionRepository;
 import com.bookaro.api.repositories.UserRepository;
 import com.bookaro.api.utils.ImageUtility;
-
 import static org.junit.Assert.assertEquals;
+
 
 /**
  * @author Pedro<br>
@@ -68,10 +63,7 @@ class BookaroTest {
 	private OrderRepository orderRepository;
 
 	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
-	private static UserRepository deleteRepository;
+	private UserRepository userRepository;	
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
@@ -92,12 +84,12 @@ class BookaroTest {
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	
-	static List<User> users = new ArrayList();
-	static List<Client> clients = new ArrayList();
-	static List<Employee> employees = new ArrayList();
-	static List<Order> orders = new ArrayList();
-	static List<Book> books = new ArrayList();
-	static List<Subscription> subscriptions = new ArrayList();
+	static List<User> users = new ArrayList<User>();
+	static List<Client> clients = new ArrayList<Client>();
+	static List<Employee> employees = new ArrayList<Employee>();
+	static List<Order> orders = new ArrayList<Order>();
+	static List<Book> books = new ArrayList<Book>();
+	static List<Subscription> subscriptions = new ArrayList<Subscription>();
 	
 	static int cont = 1;
 	
@@ -142,32 +134,7 @@ class BookaroTest {
 	void test1() {
 		System.out.println("*************************** TEST INSERT ***************************");
 		
-		/**
-		 * ************ Image ************	
-		 */			
-		String ubi = System.getProperty("user.dir");		
-		String url = ubi + "/src/main/resources/captura.png";
-		File file = new File(url);
-		Image image = new Image();
-		try {
-			InputStream input = new FileInputStream(file);			
-			try {				
-				
-				MultipartFile multi = new MockMultipartFile("file", file.getName(), "image/png", IOUtils.toByteArray(input));				
-				image = imageRepository.save(Image.builder()
-						.id(multi.getSize())
-						.name(multi.getOriginalFilename())
-						.type(multi.getContentType())
-						.image(ImageUtility.compressImage(multi.getBytes()))
-						.build());				
-				
-			} catch (IOException e) {				
-				e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {			
-			e.printStackTrace();
-		}
-		
+	
 		
 		/**
 		 * ************ Subscription ************		
@@ -214,8 +181,7 @@ class BookaroTest {
 		admin.setUsername("admin");
 		admin.setPassword(passwordEncoder.encode("admin"));	
 		admin.setEmail("admin@bookaro.com");						
-		admin.setRole("ROLE_ADMIN");
-		//admin.setRole("ADMIN");
+		admin.setRole("ROLE_ADMIN");		
 		userRepository.save(admin);
 		
 		/**
@@ -254,25 +220,7 @@ class BookaroTest {
 		client2.setSubscription(subscription2);		
 		clientRepository.save(client2);
 		
-		/**
-		 * ************ Order ************		
-		 */
-		System.out.println("Insertamos Order1");
-		// Creamos una Order
-		Order order1 = new Order();
-		order1.setStartDate(new Date());
-		order1.setActive(true);		
-		order1.setClient(client1);
-		orderRepository.save(order1);
-		
-		System.out.println("Insertamos Order2");
-		// Creamos una Order
-		Order order2 = new Order();
-		order2.setStartDate(new Date());
-		order2.setActive(true);		
-		order2.setClient(client2);
-		orderRepository.save(order2);	
-		
+			
 		
 		/**
 		 * ************ Book ************		
@@ -285,8 +233,8 @@ class BookaroTest {
 		book1.setCategory("category1");
 		book1.setEditorial("editorial1");
 		book1.setSynopsis("synopsis1");
-		book1.setOrderBook(order1);
-		book1.setImage(image);
+		//book1.setOrderBook(order1);
+		//book1.setImage(image);
 		bookRepository.save(book1);
 		
 		// Cremos book1
@@ -297,8 +245,70 @@ class BookaroTest {
 		book2.setCategory("category2");
 		book2.setEditorial("editorial2");
 		book2.setSynopsis("synopsis2");
-		book2.setOrderBook(order2);		
+		//book2.setOrderBook(order2);				
 		bookRepository.save(book2);
+		
+		
+		/**
+		 * ************ Image ************	
+		 */			
+		String ubi = System.getProperty("user.dir");		
+		String url = ubi + "/src/main/resources/captura.png";
+		File file = new File(url);
+		Image image = new Image();		
+		try {
+			InputStream input = new FileInputStream(file);			
+
+			MultipartFile multi = new MockMultipartFile("file", file.getName(), "image/png", IOUtils.toByteArray(input));				
+			image = imageRepository.save(Image.builder()
+					.id(multi.getSize())
+					.name(multi.getOriginalFilename())
+					.type(multi.getContentType())
+					.book(book2)
+					.image(ImageUtility.compressImage(multi.getBytes()))
+					.build());				
+
+		} catch (IOException e ) {			
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		/**
+		 * ************ Order ************		
+		 */
+		System.out.println("Insertamos Order1");
+		// Creamos una Order
+		Order order1 = new Order();
+		order1.setStartDate(new Date());
+		order1.setActive(true);		
+		order1.setClient(client1);
+		//order1.setClient(client2);
+		order1.setBook(book1);
+		orderRepository.save(order1);
+		
+		System.out.println("Insertamos Order2");
+		// Creamos una Order
+		Order order2 = new Order();
+		order2.setStartDate(new Date());
+		order2.setActive(true);		
+		order2.setClient(client2);
+		order2.setBook(book2);
+		orderRepository.save(order2);	
+
+		System.out.println("Insertamos Order2");
+		// Creamos una Order
+		Order order3 = new Order();
+		order3.setStartDate(new Date());
+		order3.setActive(true);		
+		order3.setClient(client2);
+		order3.setBook(book2);
+		orderRepository.save(order3);	
+		
+		
+		
+		
 				
 		// Comprobamos que los datos se han guardado en la lista y en la BD
 		subscriptions = (List<Subscription>) subscriptionRepository.findAll();		
@@ -316,9 +326,48 @@ class BookaroTest {
 
 		orders = (List<Order>) orderRepository.findAll();
 		assert !orders.isEmpty();	
-		assert orders.size() == orderRepository.count();
+		assert orders.size() == orderRepository.count();		
 		
-		cont++;
+		cont++; // Actualizamos variable
+		
+		//clients = (List<Client>) clientRepository.findAll();
+		/*System.out.println("SUSBSCRIPCION CLIENTE: " + clients.get(0).getSubscription().getType());
+		System.out.println("ORDER CLIENTE: " + clients.get(1).getOrders().get(0).isActive());
+		
+		if (clients.get(0).getOrders() == null) {
+			System.out.println("ESSSS NULLLOO");
+		} else {
+			System.out.println("HAY ELEMENTOS");
+			List<Order> ordenes = clients.get(0).getOrders();
+			
+			System.out.println(ordenes.size());
+			System.out.println(ordenes.get(0).getClient().getName());
+			
+		}*/
+		//System.out.println("ORDERS: " + clients.get(0).getOrders().size());
+		
+		/*int contador = 0;
+		
+		for (Order order: orders) {
+			if (order.getClient().getId() == 3 && order.isActive()) {
+				contador++;
+			}
+		}
+		
+		System.out.println("Puede ordenar: " + order2.countActiveOrders(client2));
+		
+		System.out.println("CANTIDAD DE ORDENES CLIENTE: " + orders.get(0).countActiveOrders(clients.get(1)));
+		
+		System.out.println("CONTADOR DE ORDERS CON EL CLIENTE CON ID 3:" + contador);*/
+		
+		List<Subscription> subs = (List<Subscription>) subscriptionRepository.findAll();
+		List<Client> cli = (List<Client>) clientRepository.findAll();
+		List<Order> ord = cli.get(0).getOrders();
+		
+		System.out.println(cli.get(0));
+		
+		System.out.println(ord);
+		System.out.println(subs.get(0).getAllClients().get(0).getUsername());
 		
 	}
 	
@@ -389,7 +438,7 @@ class BookaroTest {
 		// Comprobamos que el cambio ha tenido efecto.
 		assert orderRepository.findById(1L).get().isActive() == false;
 		
-		cont++;
+		cont++; // Actualizamos variable
 	}
 	
 	
@@ -418,13 +467,13 @@ class BookaroTest {
 
 		// Actualizaremos el email de cliente1 al mismo que tiene employee "pedro@bookaro.com"
 		// Debería saltar una excepción puesto que el campo está calificado como "unique=true"
-		Exception thrown2 = Assertions.assertThrows(Exception.class, () -> {
+		Assertions.assertThrows(Exception.class, () -> {
 			User cliente1 = (Client)users.get(2);
 			cliente1.setEmail("pedro@bookaro.com");
 			userRepository.save(cliente1);
 		}, "Exception was expected");
 		
-		cont++;
+		cont++; // Actualizamos variable
 
 	}	
 
@@ -440,12 +489,13 @@ class BookaroTest {
 		bookRepository.deleteAll();
 		userRepository.deleteAll();
 		
+		// Comprobamos que se han borrado los registros
 		assert orderRepository.count() == 0;
 		assert subscriptionRepository.count() == 0;
 		assert bookRepository.count() == 0;
 		assert userRepository.count() == 0;
 		
-		cont++;
+		cont++; // Actualizamos variable
 	}
 	
 	

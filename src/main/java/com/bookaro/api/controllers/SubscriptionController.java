@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Subscription;
 import com.bookaro.api.services.SubscriptionService;
 
@@ -31,6 +33,13 @@ public class SubscriptionController {
 	@Autowired
 	SubscriptionService subscriptionService;
 	
+	
+	
+	
+	
+	
+	
+
 	/**
 	 * Metodo que devuelve una lista de subscripciones
 	 * @return Retorna un lista de todas las subscripciones

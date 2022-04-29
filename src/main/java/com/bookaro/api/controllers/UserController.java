@@ -1,13 +1,11 @@
 package com.bookaro.api.controllers;
 
-import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,38 +50,42 @@ public class UserController {
 	@Autowired
 	private UserService service;
 
-
+	
 	/**
 	 * @author Pedro<br>
 	 * Metodo para buscar un usuario por su email<br>
-	 * @param email Recibe un email
+	 * @param email email Recibe un email
 	 * @param pri Recibe un objeto de tipo Principal
-	 * @return Retorna un objeto de tipo User
+	 * @param request parametro de tipo HttpServletRequest
+	 * @return etorna un objeto de tipo User
 	 */
 	@GetMapping("/email/{email}")
-	public User findUserByEmail(@PathVariable("email") String email, Principal pri) {
-		return service.findUserByEmail(email);
+	public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable("email") String email, Principal pri, HttpServletRequest request) {		
+		if (!Utils.blackList(request)) {
+			Optional<Optional<User>> user = Optional.of(service.findUserByEmail(email));  
+			return ResponseEntity.of(user);			
+		} else {
+			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+		}		
 	}
 
 
+		
 	/**
 	 * @author Pedro<br>
 	 * Metodo que devuelve una lista de usuarios
+	 * @param request parametro de tipo HttpServletRequest
 	 * @return Retorna todos los usuarios creados.
-	 * @throws IOException 
 	 */
 	@GetMapping("/all")
-	public ResponseEntity<List<User>> findAll(HttpServletRequest request, HttpServletResponse res) throws IOException {		
+	public ResponseEntity<List<User>> findAll(HttpServletRequest request) {		
 		if (!Utils.blackList(request)) {
 			List<User> users = service.findAll();
 			if (users.isEmpty()) {
 				return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
 			}		
 			return new ResponseEntity<List<User>>(users, HttpStatus.OK);
-		} else {
-			/*String body = "Sesion no validada o token expirado";
-			res.getWriter().write(body);
-			res.getWriter().flush();*/
+		} else {			
 			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 		}		
 	}  
@@ -97,8 +99,7 @@ public class UserController {
 	 */
 	@PostMapping("/logout") 
 	public String logout(HttpServletRequest request) {
-		String token = request.getHeader(SecurityConstants.HEADER_STRING);
-		//System.out.println(token);
+		String token = request.getHeader(SecurityConstants.HEADER_STRING);		
 		if (token != null) {			
 			String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
 					.build()
@@ -124,23 +125,28 @@ public class UserController {
 		} else {
 			return "No ha incluido el token";
 		}
-
-
-	}	
-
-
+		
+	}
+	
+	
 	/**
 	 * @author Pedro<br>
 	 * Metodo que devuelve un User a través de su "username"
 	 * @param username Recibe un string con el username
-	 * @param pri Recibe un objeto de tipo Principal
+	 * @param pri ecibe un objeto de tipo Principal
+	 * @param request Recibe un objeto HttpServletRequest
 	 * @return Retorna un objeto User
 	 */
 	@GetMapping("/username/{username}")
-	public ResponseEntity<Optional<User>> findByUsername(@PathVariable("username") String username, Principal pri) {
-		//return service.findByUsername(username);
-		Optional<Optional<User>> user = Optional.of(service.findByUsername(username));  
-		return ResponseEntity.of(user);       
+	public ResponseEntity<Optional<User>> findByUsername(@PathVariable("username") String username, 
+			Principal pri, 
+			HttpServletRequest request) {	
+		if (!Utils.blackList(request)) {
+			Optional<Optional<User>> user = Optional.of(service.findByUsername(username));  
+			return ResponseEntity.of(user);       
+		} else {
+			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+		}		
 	}
 
 
@@ -148,47 +154,62 @@ public class UserController {
 	 * @author Pedro<br>
 	 * Metodo que busca un usuario por su id
 	 * @param id Recibe un long con el id del usuario
-	 * @param pri Recibe un Principal
+	 * @param priRecibe un objeto Principal
+	 * @param request Recibe un objeto HttpServletRequest
 	 * @return Retorna un objeto de tipo User
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<User> find(@PathVariable("id") Long id, Principal pri) {
-		try {
-			Optional<User> user = service.find(id);   
-			return ResponseEntity.of(user);
-		} catch (UsernameNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}    	
+	public ResponseEntity<User> findById(@PathVariable("id") Long id, Principal pri, HttpServletRequest request) {
+		if (!Utils.blackList(request)) {
+			try {
+				Optional<User> user = service.findById(id);   
+				return ResponseEntity.of(user);
+			} catch (UsernameNotFoundException e) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}    	
+		} else {
+			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+		}		
 	}
 
 
 	/**
-	 * @author Pol Casals<br>
-	 * Metodo para insertar usuarios. Este metodo
-	 * solo podrá ser usado por el ROLE_ADMIN
+	 * Metodo para insertar o crear usuarios. Solo puede utilizarlo el admin
 	 * @param user Recibe un objeto User
+	 * @param request Recibe un objeto HttpServletRequest
 	 * @return Retorna un objeto User
 	 */
 	@PostMapping("/insertA")
-	public ResponseEntity<User> create(@RequestBody User user) {
-		User created = service.create(user);		
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(created.getId())
-				.toUri();
-		return ResponseEntity.created(location).body(created);
+	public ResponseEntity<User> create(@RequestBody User user, HttpServletRequest request) {
+		if (!Utils.blackList(request)) {
+			User created = service.create(user);		
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+					.path("/{id}")
+					.buildAndExpand(created.getId())
+					.toUri();
+			return ResponseEntity.created(location).body(created);
+		} else {
+			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+		}		
 	}
 	
 	
+	
 	/**
-	 * Metodo para insertar usuarios.
-	 * Este metodo podra ser utilizado por ROLE_ADMIN ROLE_MOD
+	 * Metodo para insertar usuarios. Puden utilizarlo:
+	 * <li> ROL_ADMIN </li>
+	 * <li> ROL_MOD </li>
 	 * @param user Recibe un objeto User
+	 * @param request Recibe un objeto HttpServletRequest
 	 * @return Retorna un objeto User
 	 */
 	@PostMapping("/insert")
-	public User createUser(@RequestBody User user) {
-		return service.createUser(user);
+	public ResponseEntity<User> createUser(@RequestBody User user, HttpServletRequest request) {
+		if (!Utils.blackList(request)) {			
+			return ResponseEntity.ok(service.createUser(user));			
+		} else {
+			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+		}		
 	}
 	
 
@@ -203,8 +224,8 @@ public class UserController {
 	@PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
 	public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {    	
 		try {
-			User user = service.find(id).orElseThrow(() -> new UsernameNotFoundException("User not found."));
-			User patchedUser = service.update((User) Utils.applyPatch(patch, user));
+			User user = service.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+			User patchedUser = service.updateUser((User) Utils.applyPatch(patch, user));
 			return ResponseEntity.ok(patchedUser);            
 		} catch (JsonPatchException | JsonProcessingException e) {
 			e.printStackTrace();
@@ -215,27 +236,42 @@ public class UserController {
 	} 
 	
 	
-
+	/**
+	 * Metodo para actualizar un objeto User
+	 * @param updatedUser Recibe un objeto de tipo user
+	 * @param request Recibe un objeto HttpServletRequest
+	 * @return Retorna un objeto User
+	 */
 	@PutMapping("/update")
-	public User update(@RequestBody User updatedUser) {
-		return service.update(updatedUser);
+	public ResponseEntity<User> update(@RequestBody User updatedUser, HttpServletRequest request) {
+		if (!Utils.blackList(request)) {
+			return ResponseEntity.ok(service.updateUser(updatedUser));
+		} else {
+			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+		}		
 	}
 
-
+	
 	/**
 	 * @author Pedro<br>
 	 * Metodo para borrar un usuario    
 	 * @param id Recibe un long con el id del usuario.
+	 * @param request Recibe un objeto HttpServletRequest
 	 * @return Retorna un string dependiendo del resultado.
 	 */
-	@DeleteMapping("/{id}")
-	public String delete(@PathVariable("id") Long id) {
-		try {
-			service.delete(id);
-			return "Delete User";
-		} catch (Exception e) {
-			return "User not found";
+	@DeleteMapping("/delete/{id}")
+	public String deleteUser(@PathVariable("id") Long id, HttpServletRequest request) {
+		if (!Utils.blackList(request)) {
+			try {
+				service.deleteUser(id);
+				return "Delete User";
+			} catch (Exception e) {
+				return "User not found";
+			}
+		} else {
+			return "Token expirado";
 		}
+		
 
 	}  	
 

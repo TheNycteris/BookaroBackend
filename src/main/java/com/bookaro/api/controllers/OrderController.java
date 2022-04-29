@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.services.OrderService;
 
@@ -35,13 +34,22 @@ public class OrderController {
 	
 	
 	
+	
+	
+	@GetMapping("/client")
+	public List<Order> findAllOrderByClient(@RequestBody Client client, Principal pri) {
+		List<Order> todas = orderService.findAllOrderByClient(client);
+		return todas;
+	}
+
+
 	/**
 	 * Metodo que devuelve una lista de orders
 	 * @param active Recibe un boolean
 	 * @return Retorna una lista de orders
 	 */
 	@GetMapping (value = "/active/{active}")
-	public List<Order> findAllOrderByActive(@PathVariable("active") boolean active) {
+	public List<Order> findAllOrderByActive(@PathVariable("active") boolean active, Principal pri) {		
 		return orderService.findAllOrderByActive(active);
 	}
 
@@ -64,7 +72,8 @@ public class OrderController {
 	 */
 	@GetMapping (value = "{id}")
 	public Optional<Order> getOrderId (@PathVariable ("id")long id, Principal pri) {
-		return orderService.findById(id);
+		Optional<Order> order = orderService.findById(id);
+		return order;
 	}
 	
 	
@@ -76,9 +85,15 @@ public class OrderController {
 	 */
 	@PostMapping("/insert")
 	public String addOrder (@RequestBody Order order, Principal pri) {
-		if (order != null) {
-			orderService.add(order);
-			return "Added a order";
+		if (order != null) {	
+			System.out.println(order.countActiveOrders(order.getClient()));
+			if (!order.countActiveOrders(order.getClient())) {
+				orderService.add(order);
+				return "Added a order";
+			} else {
+				return "Tiene demasiadas ordenes";
+			}			
+			
 		} else {
 			return "Request does not contain a body";
 		}

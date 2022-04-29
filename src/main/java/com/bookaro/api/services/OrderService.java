@@ -1,12 +1,16 @@
 package com.bookaro.api.services;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+
+import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.repositories.OrderRepository;
 
@@ -30,12 +34,18 @@ public class OrderService {
 	OrderRepository orderRepository;
 	
 	
+	
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")	
+	public List<Order> findAllOrderByClient(Client client) {
+		return orderRepository.findAllOrderByClient(client);
+	}
+
 	/**
 	 * Metodo que devuelve una lista de order
 	 * @param active Recibe boolean 
 	 * @return Retorna una lista de Order
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")	
 	public List<Order> findAllOrderByActive(boolean active) {
 		return orderRepository.findAllOrderByActive(active);
 	}
@@ -54,7 +64,7 @@ public class OrderService {
 	 * @param id Recibe un Long con el id de la Order
 	 * @return Retorna un objeto Order
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")	
 	public Optional<Order> findById (long id) {
 		return orderRepository.findById(id);
 	}
@@ -65,7 +75,7 @@ public class OrderService {
 	 * @param order Recibe una Order como parametro
 	 * @return Retorna un objeto Order
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	public Order add (Order order) {
 		return orderRepository.save(order);
 	}

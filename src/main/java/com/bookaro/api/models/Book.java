@@ -1,5 +1,7 @@
 package com.bookaro.api.models;
 
+import java.util.List;
+
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,10 +24,15 @@ public class Book {
 	@Column(unique = true, nullable = false)
 	private Long id;	
 	
-	@ManyToOne()
+	/*@ManyToOne()
     @JoinColumn(name = "orderBook")
 	@JsonIgnore
-	private Order orderBook;	
+	private Order orderBook;	*/
+	
+	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@JsonIgnore
+	private List<Order> orders;
+	
 	
 	private String name, author, category, editorial, synopsis;
 	
@@ -33,9 +40,14 @@ public class Book {
 	private String isbn; 
 	
 	
-	@OneToOne
+	/*@OneToOne
 	@JoinColumn(name = "image_id")
 	@JsonIgnore
+	private Image image;*/
+	
+	// Enlace con la clase Book
+	@OneToOne(mappedBy="book")
+	//@JsonIgnore
 	private Image image;
 	
 	/**
@@ -161,21 +173,34 @@ public class Book {
 	 * Getter orderBook
 	 * @return Retorna un objeto de tipo Order.
 	 */
-	public Order getOrderBook() {
+	/*public Order getOrderBook() {
 		return orderBook;
-	}
+	}*/
 	
 	/**
 	 * Setter orderBook
 	 * @param orderBook Recibe un objeto de tipo Order.
 	 */
-	public void setOrderBook(Order orderBook) {
+	/*public void setOrderBook(Order orderBook) {
 		this.orderBook = orderBook;
+	}*/
+	
+	
+	public List<Order> getOrders() {
+		return orders;
 	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+	
+	
+	
 
 	public Image getImage() {
 		return image;
 	}
+	
 
 	public void setImage(Image image) {
 		this.image = image;

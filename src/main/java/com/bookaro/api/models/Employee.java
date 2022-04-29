@@ -14,7 +14,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "employee")
+//@Table(name = "employee")
 @DiscriminatorValue( value="EM" )
 public class Employee extends User {
 

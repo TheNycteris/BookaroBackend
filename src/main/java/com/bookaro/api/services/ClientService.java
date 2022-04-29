@@ -8,7 +8,11 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.bookaro.api.models.Client;
+import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
 import com.bookaro.api.repositories.ClientRepository;
 import com.bookaro.api.repositories.SubscriptionRepository;
@@ -34,6 +38,14 @@ public class ClientService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;	
 	
+
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	public List<Order> orders(Long id) {
+		Optional<Client> client = clientRepository.findById(id);
+		List<Order> orders = client.get().getOrders();
+		return orders;		
+	}
+
 	/**
 	 * Metodo que devuelve una lista de clientes
 	 * @param subscription Recibe un objeto Subscription

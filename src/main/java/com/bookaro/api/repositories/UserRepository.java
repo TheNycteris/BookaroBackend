@@ -11,9 +11,7 @@ import com.bookaro.api.models.User;
  * <li> Implementa los metodos findByUsername y findUserByEmail</li>
  */
 @Repository
-public interface UserRepository extends CrudRepository <User, Long> {
-	
+public interface UserRepository extends CrudRepository <User, Long> {	
 	User findByUsername(String username);	
-	User findUserByEmail(String email);
-	
+	User findUserByEmail(String email);	
 }

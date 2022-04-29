@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+
+import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Subscription;
 import com.bookaro.api.repositories.SubscriptionRepository;
 
@@ -29,6 +31,11 @@ public class SubscriptionService {
 	@Autowired
 	SubscriptionRepository subscriptionRepository;
 	
+	
+		
+	
+
+
 	/**
 	 * Metodo que devuelve una lista de Subscription
 	 * @return Retorna todas las subscripciones creadas
@@ -56,7 +63,7 @@ public class SubscriptionService {
 	 * @param subscription Recibe un objeto Subscription
 	 * @return Retorna un objeto Subscription
 	 */
-	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public Subscription add (Subscription subscription) {
 		return subscriptionRepository.save(subscription);
 	}

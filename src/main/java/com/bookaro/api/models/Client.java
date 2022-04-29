@@ -1,10 +1,12 @@
 package com.bookaro.api.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -23,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  */
 @Entity
-@Table(name = "client")
+//@Table(name = "client")
 @DiscriminatorValue( value="CL" )
 public class Client extends User {
 	
@@ -31,17 +33,21 @@ public class Client extends User {
 	
 	@ManyToOne()
     @JoinColumn(name = "id_sub")
-	@JsonIgnore
+	//@JsonIgnore
 	private Subscription subscription;
 	
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JsonIgnore
 	private List<Order> orders; 
 	
 	/**
 	 * Constructor vacio
 	 */
-	public Client() {}
+	public Client() {
+		super();
+		orders = new ArrayList<Order>(); 
+	}	
+	
 
 	//  ******* Getter/Setter ******* 
 	
@@ -77,6 +83,17 @@ public class Client extends User {
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Client [orders=" + orders + ", getId()=" + getId() + ", getUsername()=" + getUsername()
+				+ ", getPassword()=" + getPassword() + ", getName()=" + getName() + ", getSurname()=" + getSurname()
+				+ ", getDni()=" + getDni() + ", getAddress()=" + getAddress() + ", getAge()=" + getAge()
+				+ ", getEmail()=" + getEmail() + ", getRole()=" + getRole() + "]";
+	}
+
+
 	
 	
 	

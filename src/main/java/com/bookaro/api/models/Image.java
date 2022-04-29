@@ -37,7 +37,12 @@ public class Image {
 	
 	
 	// Enlace con la clase Book
-	@OneToOne(mappedBy="image")
+	/*@OneToOne(mappedBy="image")
+	//@JsonIgnore
+	private Book book;*/
+	
+	@OneToOne
+	@JoinColumn(name = "book_id")
 	@JsonIgnore
 	private Book book;
 	

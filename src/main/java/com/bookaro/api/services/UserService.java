@@ -47,9 +47,9 @@ public class UserService {
 	 * @param email Recibe el email como String
 	 * @return Retorna un objet User
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
-	public User findUserByEmail(String email) {
-		return repository.findUserByEmail(email);
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER') or principal.equals(returnObject.get().getUsername())")
+	public  Optional<User> findUserByEmail(String email) {
+		return Optional.of(repository.findUserByEmail(email));
 	}
 
 	/**
@@ -70,8 +70,7 @@ public class UserService {
      * @return Retorna un objeto de tipo User o null en funcion de si encuentra o no el usuario
      */    
     @PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
-    public Optional<User> findByUsername(String username) {
-		//return repository.findByUsername(username);
+    public Optional<User> findByUsername(String username) {		
 		return Optional.of(repository.findByUsername(username));
 	}
 
@@ -82,7 +81,7 @@ public class UserService {
      * @return Retorna User o null en funcion de si encuentra o no el usuario.
      */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
-    public Optional<User> find(Long id) {
+    public Optional<User> findById (Long id) {
         return repository.findById(id);
     }
 
@@ -119,8 +118,7 @@ public class UserService {
 	 * Está pensado para el ROLE_MOD
 	 * @param user Recibe un parametro de tipo User
 	 * @return Retorna un objeto de tipo User.
-	 */  
-	//@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	 */
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
     public User createUser(User user) {    	
 		user.setRole("ROLE_USER");
@@ -146,7 +144,7 @@ public class UserService {
      * @return Retorna un objeto User
      */	
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
-    public User update (User updatedUser) {		
+    public User updateUser (User updatedUser) {		
     	updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
     	return repository.save(updatedUser);
     }
@@ -157,7 +155,7 @@ public class UserService {
      * @param id Recibe un parametro de tipo Long con el ID del usuario
      */	
 	@PreAuthorize(value = "hasRole('ADMIN')")
-    public void delete(Long id) {
+    public void deleteUser(Long id) {
         repository.deleteById(id);
     }
 

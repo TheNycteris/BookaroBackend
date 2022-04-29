@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.bookaro.api.models.Client;
+import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
 
 /**
@@ -16,6 +19,7 @@ import com.bookaro.api.models.Subscription;
 @Repository
 public interface ClientRepository extends CrudRepository<Client, Long> {
 
-	List<Client> findBySubscription (Subscription subscription);	
+	List<Client> findBySubscription (Subscription subscription);
+	List<Order> orders (Long id);	
 	
 }

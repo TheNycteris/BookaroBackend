@@ -37,13 +37,18 @@ public class Order {
 	private boolean active;	
 	
 	@ManyToOne()
-	@JsonIgnore
+	//@JsonIgnore
     @JoinColumn(name = "id_user")
 	private Client client;
 	
-	@OneToMany(mappedBy = "orderBook", cascade = CascadeType.ALL)
+	/*@OneToMany(mappedBy = "orderBook", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Book> books; 
+	private List<Book> books;*/ 
+	
+	@ManyToOne()
+    @JoinColumn(name = "id_book")
+	//@JsonIgnore
+	private Book book;	
 
 	/**
 	 * Métodeo para contar order activas
@@ -51,8 +56,27 @@ public class Order {
 	 * @param clientId Recibe el id del cliente
 	 * @return Retorna true o false dependien de la cantidad de libros adquiridos.
 	 */
-	public boolean countActiveOrders (long clientId) {	
-		return false; // aún por implementar
+	public boolean countActiveOrders (Client client) {
+		System.out.println(client.getId());
+		System.out.println(this.getClient().getUsername());
+		if (client.getSubscription() == null) {
+			System.out.println("Estoy en el primer IF");
+			return false;
+		} 
+		int contador = 0;
+		for (Order order: client.getOrders()) {
+			if (order.isActive()) {
+				contador++;
+			}
+		}
+		
+		System.out.println(contador);
+		
+		if ((contador > 1) && client.getSubscription().getType().equals("Básica")) {
+			System.out.println("Estoy en el SEGUNDO IF");
+			return false;
+		}
+		return true; // aún por implementar
 	}
 	
 	
@@ -94,17 +118,29 @@ public class Order {
 	 * Getter books
 	 * @return Retorna una lista de libros asociados a la order
 	 */
-	public List<Book> getBooks() {
+	/*public List<Book> getBooks() {
 		return books;
-	}
+	}*/
 
 	/**
 	 * Setter books
 	 * @param books Recibe una lista de libros
 	 */
-	public void setBooks(List<Book> books) {
+	/*public void setBooks(List<Book> books) {
 		this.books = books;
+	}*/
+	
+	
+	public Book getBook() {
+		return book;
 	}
+
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
+	
+	
 
 	/**
 	 * Getter ID
@@ -113,6 +149,9 @@ public class Order {
 	public Long getId() {
 		return id;
 	}
+
+	
+
 
 	/**
 	 * Setter ID
@@ -139,6 +178,21 @@ public class Order {
 	public void setClient(Client client) {
 		this.client = client;
 	}
+	
+	
+	public String getUsername() {
+		return this.client.getUsername();
+	}
+
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", startDate=" + startDate + ", active=" + active + "]";
+	}
+
+
+	
+	
 	
 		
 }

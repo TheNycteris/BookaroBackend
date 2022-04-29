@@ -88,8 +88,7 @@ public class EmployeeService {
 		copy.setUsername(employee.getUsername());
 		copy.setPosition(employee.getPosition());
 		copy.setSalary(employee.getSalary());
-		copy.setEmail(employee.getEmail());			
-		//copy.setRole(employee.getRole());
+		copy.setEmail(employee.getEmail());		
 		copy.setRole("ROLE_MOD");
 		
 		return employeeRepository.save(copy);
