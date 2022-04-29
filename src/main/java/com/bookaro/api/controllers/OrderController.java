@@ -35,7 +35,6 @@ public class OrderController {
 	
 	
 	
-	
 	@GetMapping("/client")
 	public List<Order> findAllOrderByClient(@RequestBody Client client, Principal pri) {
 		List<Order> todas = orderService.findAllOrderByClient(client);

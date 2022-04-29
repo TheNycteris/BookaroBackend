@@ -38,6 +38,8 @@ public class ClientController {
 	
 	
 	
+	
+	
 
 	@GetMapping("/orders/{id}")
 	public List<Order> orders(@PathVariable ("id")Long id, Principal pri, HttpServletRequest request) {		
@@ -106,7 +108,8 @@ public class ClientController {
 	 * @return Retorna un String en funcion del resultado.
 	 */
 	@PutMapping("/update")
-	public String updateClient (@RequestBody Client client) {
+	public String updateClient (@RequestBody Client client/*, Principal pri, HttpServletRequest request*/) {
+		
 	    if(client != null) {
 	    	clientService.update(client);
 	        return "Updated employee.";
@@ -115,6 +118,13 @@ public class ClientController {
 	    }
 	}
 	
+	
+	
+	
+
+	
+
+
 	/**
 	 * @author Pedro<br>
 	 * Metodo para borrar un cliente por su id
@@ -133,6 +143,13 @@ public class ClientController {
 		return "The id is invalid for the client.";
 	}
 
+
+	
+
+
+	
+
+	
 	
 
 }

@@ -1,5 +1,6 @@
 package com.bookaro.api.services;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
+import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.ClientRepository;
 import com.bookaro.api.repositories.SubscriptionRepository;
 
@@ -39,6 +41,9 @@ public class ClientService {
 	private BCryptPasswordEncoder passwordEncoder;	
 	
 
+	
+	
+	
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
 	public List<Order> orders(Long id) {
 		Optional<Client> client = clientRepository.findById(id);
@@ -82,7 +87,7 @@ public class ClientService {
 	 * @param client Recibe un objeto de tipo Client
 	 * @return Retorna el cliente
 	 */
-	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
+	//@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
 	public Client add (Client client) {
 		
 		Client copy = new Client();
@@ -100,9 +105,12 @@ public class ClientService {
 		return clientRepository.save(copy);
 	}
 	
-	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
-	public boolean update (Client client) {
+	//@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals('cliente2')")
+	//@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PreAuthorize("hasAnyRole('ADMIN', 'MOD') or #client.getUsername() == authentication.name")
+	public boolean update (Client client/*, Principal principal*/) {
 	    try {
+	    	//System.out.println(principal.getName());
 	    	client.setPassword(passwordEncoder.encode(client.getPassword()));
 	    	client.setRole("ROLE_USER");
 	    	clientRepository.save(client);
@@ -114,6 +122,9 @@ public class ClientService {
 	}
 	
 	
+	
+	
+
 	/**
 	 * Metodo para eliminar un cliente por su id
 	 * @param id Recibe un parametro de tipo Long 
@@ -129,6 +140,10 @@ public class ClientService {
 	        return false;
 	    }
 	}
+
+	
+
+	
 
 	
 }

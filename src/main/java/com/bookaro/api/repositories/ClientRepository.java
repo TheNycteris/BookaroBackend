@@ -1,6 +1,7 @@
 package com.bookaro.api.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,7 @@ import com.bookaro.api.models.Subscription;
 public interface ClientRepository extends CrudRepository<Client, Long> {
 
 	List<Client> findBySubscription (Subscription subscription);
-	List<Order> orders (Long id);	
+	List<Order> orders (Long id);
+	
 	
 }

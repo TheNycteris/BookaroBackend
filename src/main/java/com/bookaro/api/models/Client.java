@@ -48,9 +48,15 @@ public class Client extends User {
 		orders = new ArrayList<Order>(); 
 	}	
 	
+	
+	
 
 	//  ******* Getter/Setter ******* 
 	
+	
+
+
+
 	/**
 	 * Getter que devuelve el tipo de subscripcion
 	 * @return retorna un objeto de tipo Subscription
@@ -85,17 +91,14 @@ public class Client extends User {
 	}
 
 
+
+
 	@Override
 	public String toString() {
-		return "Client [orders=" + orders + ", getId()=" + getId() + ", getUsername()=" + getUsername()
-				+ ", getPassword()=" + getPassword() + ", getName()=" + getName() + ", getSurname()=" + getSurname()
-				+ ", getDni()=" + getDni() + ", getAddress()=" + getAddress() + ", getAge()=" + getAge()
-				+ ", getEmail()=" + getEmail() + ", getRole()=" + getRole() + "]";
+		return "Client [subscription=" + subscription + ", orders=" + orders + ", getId()=" + getId()
+				+ ", getUsername()=" + getUsername() + ", getPassword()=" + getPassword() + ", getName()=" + getName()
+				+ "]";
 	}
-
-
-	
-	
 	
 	
 }

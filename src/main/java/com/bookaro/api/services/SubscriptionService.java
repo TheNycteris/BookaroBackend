@@ -29,10 +29,7 @@ import com.bookaro.api.repositories.SubscriptionRepository;
 public class SubscriptionService {
 	
 	@Autowired
-	SubscriptionRepository subscriptionRepository;
-	
-	
-		
+	SubscriptionRepository subscriptionRepository;		
 	
 
 

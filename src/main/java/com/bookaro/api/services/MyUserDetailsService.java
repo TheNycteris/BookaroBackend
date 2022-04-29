@@ -39,7 +39,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("User " + username +" not found");
 		}  			
-		//List<String> roles = user.getRoles();
+		
 		
 		List<String> roles = new ArrayList<String>();
 		roles.add(user.getRole());

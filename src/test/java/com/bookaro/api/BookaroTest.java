@@ -184,6 +184,9 @@ class BookaroTest {
 		admin.setRole("ROLE_ADMIN");		
 		userRepository.save(admin);
 		
+		
+		
+		
 		/**
 		 * ************ Clients ************		
 		 */
@@ -247,6 +250,14 @@ class BookaroTest {
 		book2.setSynopsis("synopsis2");
 		//book2.setOrderBook(order2);				
 		bookRepository.save(book2);
+		
+		
+		User user = new User();
+		user.setUsername("user");
+		user.setPassword(passwordEncoder.encode("1234"));	
+		user.setEmail("user@bookaro.com");						
+		user.setRole("ROLE_USER");		
+		userRepository.save(user);
 		
 		
 		/**

@@ -32,7 +32,8 @@ public class RestConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()       		
-		.antMatchers(HttpMethod.POST, "/api/user/logout").permitAll()        		               
+		.antMatchers(HttpMethod.POST, "/api/user/logout").permitAll()   
+		.antMatchers(HttpMethod.POST, "/api/client/insert").permitAll()
 		.anyRequest().authenticated()                
 		.and()
 		.logout()
