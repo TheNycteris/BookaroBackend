@@ -91,6 +91,7 @@ public class ImageService {
 				.id(dbImage.get().getId())
 				.name(dbImage.get().getName())
 				.type(dbImage.get().getType())
+				.book(dbImage.get().getBook())
 				.image(ImageUtility.decompressImage(dbImage.get().getImage())).build();
 	}
 		
