@@ -99,9 +99,33 @@ public class EmployeeService {
 	 * Metodo para actualizar un empleado
 	 * @param employee Recibe un empleado por parametro
 	 * @return Retorna true o false dependiendo del 
-	 */
-	@PreAuthorize(value = "hasRole('ADMIN')")
+	 */	
+	@PreAuthorize("hasAnyRole('ADMIN') or #employee.getUsername() == authentication.name")
 	public boolean update(Employee employee) {
+		Optional<Employee> aux = employeeRepository.findById(employee.getId());
+		try {
+			employee.setSalary(aux.get().getSalary());
+	    	employee.setActive(true);
+	    	employee.setDni(aux.get().getDni());
+	    	employee.setId(aux.get().getId());
+	    	employee.setPosition(aux.get().getPosition());	    		    	
+			employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+			employee.setRole("ROLE_MOD");
+			employeeRepository.save(employee);			
+	        return true;
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	        return false;
+	    }
+	}
+	
+	/**
+	 * Metodo para actualizar un empleado
+	 * @param employee Recibe un empleado por parametro
+	 * @return Retorna true o false dependiendo del 
+	 */	
+	@PreAuthorize("hasRole('ADMIN')")
+	public boolean updateA(Employee employee) {
 		try {
 			employee.setPassword(passwordEncoder.encode(employee.getPassword()));
 			employee.setRole("ROLE_MOD");

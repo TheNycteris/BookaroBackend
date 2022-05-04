@@ -45,7 +45,7 @@ public class ImageController {
 	 * @return Retorna un objeto ImageUploadResponse
 	 * @throws IOException Puede lanzar IOException
 	 */
-	@PostMapping("/upload/imagen")
+	@PostMapping("/upload/image")
 	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file, @RequestParam("book_id") Book id) throws IOException {		
 		return imageService.upload(file, id);		
 	}
@@ -71,9 +71,10 @@ public class ImageController {
 	 * @return Retorna un objeto Image
 	 * @throws IOException Puede lanzar IOException
 	 */
-	@PutMapping("/upload/image/{id}")	
-	public Image update(@RequestParam("image") MultipartFile file, @PathVariable("id") Long id) throws IOException {
-		return imageService.update(file, id);
+	@PutMapping("/update/image/{id}")	
+	public Image update(@RequestParam("image") MultipartFile file, 
+			@PathVariable("id") Long id, @RequestParam("book_id") Book book_id) throws IOException {
+		return imageService.update(file, id, book_id);
 	}
 
 

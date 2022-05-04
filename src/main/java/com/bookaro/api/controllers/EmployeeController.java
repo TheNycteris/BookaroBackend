@@ -86,9 +86,23 @@ public class EmployeeController {
 	 * @return Retorna un String con el resultado
 	 */
 	@PutMapping("/update")
-	public String updateEmployee (@RequestBody Employee employee) {
-	    if(employee != null) {
+	public String updateEmployee (@RequestBody Employee employee) {		
+	    if(employee != null) {	    	
 	    	employeeService.update(employee);
+	        return "Updated employee.";
+	    } else {
+	        return "Request does not contain a body";
+	    }
+	}
+	
+	/**
+	 * Metodo para actualizar un empleado ROLE_ADMIN
+	 * @param employee Recibe un objeto Employee
+	 * @return Retorna un String con el resultado
+	 */
+	@PutMapping("/updateA")
+	public String updateEmployeeA (@RequestBody Employee employee) {		
+	    if(employeeService.updateA(employee)) {	    	
 	        return "Updated employee.";
 	    } else {
 	        return "Request does not contain a body";

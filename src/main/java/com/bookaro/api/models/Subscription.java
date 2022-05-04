@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * <li> Tiene vinculacion con las clase Client </li>
  *
  */
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_sub")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_sub")
 @Entity
 @Table(name = "subscription")
 public class Subscription {
@@ -33,7 +33,7 @@ public class Subscription {
 	// ***** Atributos de clase *****
 	
 	@OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
-	//@JsonIgnore <-------------------------
+	@JsonIgnore 
 	private List<Client> allClients;
 	
 	@Id

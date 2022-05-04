@@ -22,6 +22,6 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
 
 	List<Client> findBySubscription (Subscription subscription);
 	List<Order> orders (Long id);
-	
+	Client findClientByUsername (String username);
 	
 }

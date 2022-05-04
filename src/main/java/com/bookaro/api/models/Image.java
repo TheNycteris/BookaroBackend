@@ -25,11 +25,11 @@ public class Image {
 	
 	// Atriburos de clase
 	@Id
-	@Column(name = "id")
+	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name")
+	@Column(name = "name", unique = true)
 	private String name;
 	
 	@Column(name = "type")

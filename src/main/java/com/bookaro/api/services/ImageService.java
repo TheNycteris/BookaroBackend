@@ -61,18 +61,15 @@ public class ImageService {
 	 * @throws IOException puede lanzar IOException
 	 */
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
-	public Image update(@RequestParam("image") MultipartFile file, Long id) throws IOException {
-		imageRepository.save(Image.builder()
-				.id(file.getSize())
+	public Image update(@RequestParam("image") MultipartFile file, Long id, Book id_book) throws IOException {				
+		Image imagen = imageRepository.save(Image.builder()				
+				.id(id)
 				.name(file.getOriginalFilename())
 				.type(file.getContentType())
+				.book(id_book)
 				.image(ImageUtility.compressImage(file.getBytes())).build());
-		Image  image = new Image();
-		image.setId(id);
-		image.setName(file.getOriginalFilename());
-		image.setType(file.getContentType());
 		
-		return image;
+		return imagen;
 	}
 	
 

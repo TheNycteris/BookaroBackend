@@ -90,6 +90,7 @@ class BookaroTest {
 	static List<Order> orders = new ArrayList<Order>();
 	static List<Book> books = new ArrayList<Book>();
 	static List<Subscription> subscriptions = new ArrayList<Subscription>();
+	static List<Image> images = new ArrayList<Image>();
 	
 	static int cont = 1;
 	
@@ -170,7 +171,8 @@ class BookaroTest {
 		employee.setPosition("Administrativo");
 		employee.setSalary(1000);
 		employee.setEmail("pedro@bookaro.com");		
-		employee.setRole("ROLE_MOD");		
+		employee.setRole("ROLE_MOD");	
+		employee.setActive(true);
 		//employee.setRole("MOD");
 		employeeRepository.save(employee);
 		
@@ -181,10 +183,19 @@ class BookaroTest {
 		admin.setUsername("admin");
 		admin.setPassword(passwordEncoder.encode("admin"));	
 		admin.setEmail("admin@bookaro.com");						
-		admin.setRole("ROLE_ADMIN");		
-		userRepository.save(admin);
+		admin.setRole("ROLE_ADMIN");	
+		admin.setActive(true);
+		userRepository.save(admin);	
 		
-		
+		// Creamos un usuario mod con los datos básicos
+		System.out.println("Insertamos user user");
+		User user = new User();
+		user.setUsername("user");
+		user.setPassword(passwordEncoder.encode("1234"));	
+		user.setEmail("user@bookaro.com");						
+		user.setRole("ROLE_USER");	
+		user.setActive(true);
+		userRepository.save(user);
 		
 		
 		/**
@@ -202,7 +213,7 @@ class BookaroTest {
 		client1.setEmail("cliente1@bookaro.com");
 		client1.setAge(40);		
 		client1.setRole("ROLE_USER");
-		//client1.setRole("USER");
+		client1.setActive(true);
 		client1.setSubscription(subscription1);		
 		clientRepository.save(client1);			
 		
@@ -219,8 +230,8 @@ class BookaroTest {
 		client2.setEmail("cliente2@bookaro.com");
 		client2.setAge(40);		
 		client2.setRole("ROLE_USER");
-		//client2.setRole("USER");
-		client2.setSubscription(subscription2);		
+		client2.setActive(true);
+		//client2.setSubscription(subscription2);		
 		clientRepository.save(client2);
 		
 			
@@ -229,40 +240,35 @@ class BookaroTest {
 		 * ************ Book ************		
 		 */
 		// Cremos book1
+		System.out.println("Insertamos book1");
 		Book book1 = new Book();
 		book1.setName("libro1");
 		book1.setAuthor("author1");
 		book1.setIsbn("isbn1");
 		book1.setCategory("category1");
 		book1.setEditorial("editorial1");
-		book1.setSynopsis("synopsis1");
-		//book1.setOrderBook(order1);
-		//book1.setImage(image);
+		book1.setSynopsis("synopsis1");		
 		bookRepository.save(book1);
 		
 		// Cremos book1
+		System.out.println("Insertamos book2");
 		Book book2 = new Book();
 		book2.setName("libro2");
 		book2.setAuthor("author2");
 		book2.setIsbn("isbn2");
 		book2.setCategory("category2");
 		book2.setEditorial("editorial2");
-		book2.setSynopsis("synopsis2");
-		//book2.setOrderBook(order2);				
+		book2.setSynopsis("synopsis2");				
 		bookRepository.save(book2);
 		
 		
-		User user = new User();
-		user.setUsername("user");
-		user.setPassword(passwordEncoder.encode("1234"));	
-		user.setEmail("user@bookaro.com");						
-		user.setRole("ROLE_USER");		
-		userRepository.save(user);
+		
 		
 		
 		/**
 		 * ************ Image ************	
-		 */			
+		 */		
+		System.out.println("Insertamos una imagen");
 		String ubi = System.getProperty("user.dir");		
 		String url = ubi + "/src/main/resources/captura.png";
 		File file = new File(url);
@@ -304,7 +310,7 @@ class BookaroTest {
 		Order order2 = new Order();
 		order2.setStartDate(new Date());
 		order2.setActive(true);		
-		order2.setClient(client2);
+		order2.setClient(client1);
 		order2.setBook(book2);
 		orderRepository.save(order2);	
 
@@ -313,13 +319,12 @@ class BookaroTest {
 		Order order3 = new Order();
 		order3.setStartDate(new Date());
 		order3.setActive(true);		
-		order3.setClient(client2);
+		order3.setClient(client1);
 		order3.setBook(book2);
 		orderRepository.save(order3);	
 		
 		
-		
-		
+				
 				
 		// Comprobamos que los datos se han guardado en la lista y en la BD
 		subscriptions = (List<Subscription>) subscriptionRepository.findAll();		
@@ -337,7 +342,11 @@ class BookaroTest {
 
 		orders = (List<Order>) orderRepository.findAll();
 		assert !orders.isEmpty();	
-		assert orders.size() == orderRepository.count();		
+		assert orders.size() == orderRepository.count();	
+		
+		images = (List<Image>) imageRepository.findAll();
+		assert !images.isEmpty();
+		assert images.size() == imageRepository.count();
 		
 		cont++; // Actualizamos variable
 		
@@ -414,15 +423,15 @@ class BookaroTest {
 		
 		// ********** CLIENTE 1 ********** //		
 		// Comprobamos que el cliente 1 tiene una subscripcion Familiar
-		assertEquals(clientRepository.findById(3L).get().getSubscription().getType(), "Familiar");
+		assertEquals(clientRepository.findById(4L).get().getSubscription().getType(), "Familiar");
 		
 		System.out.println("Actualizamos la subscripción del client1.");
 		// Actualizamos el cliente1 con la nueva subscripcion		
-		Client client1 = (Client) users.get(2);
+		Client client1 = (Client) users.get(3);
 		client1.setSubscription(subscriptionRepository.findById(2L).get());
 		clientRepository.save(client1);
 		// Comprobamos que realmente se ha actualizado.
-		assertEquals(client1.getSubscription().getType(), clientRepository.findById(3L).get().getSubscription().getType());
+		assertEquals(client1.getSubscription().getType(), clientRepository.findById(4L).get().getSubscription().getType());
 		
 		// ********** SUBSCRIPTION ********** //
 		// Comprobamos que la subscripción 2 tiene un precio de 10
@@ -458,8 +467,9 @@ class BookaroTest {
 	 *  están configurados como "unique=true"
 	 */
 	@Test
-	void test3 () {		
-
+	void test3 () {	
+		System.out.println("*************************** TEST EXCEPTION ***************************");
+		System.out.println("Comprobamos que no podemos introducir una subscripción con el mismo id.");
 		// Comprobamos que no podemos introducir una subscripción con el mismo "id"		
 		// Debe saltar una excepción del tipo "JpaSystemException"		 
 		JpaSystemException thrown1 = Assertions.assertThrows(JpaSystemException.class, () -> {
@@ -476,6 +486,7 @@ class BookaroTest {
 				+ "com.bookaro.api.models.Subscription.allClients", thrown1.getMessage());
 
 
+		System.out.println("Actualizaremos el email de cliente1 al mismo que tiene employee pedro@bookaro.com");
 		// Actualizaremos el email de cliente1 al mismo que tiene employee "pedro@bookaro.com"
 		// Debería saltar una excepción puesto que el campo está calificado como "unique=true"
 		Assertions.assertThrows(Exception.class, () -> {
@@ -495,16 +506,34 @@ class BookaroTest {
 	@Test
 	@Disabled
 	void test4 () {
+		System.out.println("*************************** TEST DELETE ***************************");
+		for (Order o: orders) {
+			o.setClient(null);
+			orderRepository.save(o);
+		}
+		
+		for (Image i: imageRepository.findAll()) {
+			i.setBook(null);
+			imageRepository.save(i);
+		}
+		
+		System.out.println("Borrado Orders");
 		orderRepository.deleteAll();
+		System.out.println("Borrado Subscriptions");
 		subscriptionRepository.deleteAll();
+		System.out.println("Borrado Books");
 		bookRepository.deleteAll();
+		System.out.println("Borrado Users");
 		userRepository.deleteAll();
+		System.out.println("Borrado Images");
+		imageRepository.deleteAll();
 		
 		// Comprobamos que se han borrado los registros
 		assert orderRepository.count() == 0;
 		assert subscriptionRepository.count() == 0;
 		assert bookRepository.count() == 0;
 		assert userRepository.count() == 0;
+		assert imageRepository.count() == 0;
 		
 		cont++; // Actualizamos variable
 	}

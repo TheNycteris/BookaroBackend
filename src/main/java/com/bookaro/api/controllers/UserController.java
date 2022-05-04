@@ -50,44 +50,33 @@ public class UserController {
 	@Autowired
 	private UserService service;
 
-	
+
 	/**
 	 * @author Pedro<br>
 	 * Metodo para buscar un usuario por su email<br>
 	 * @param email email Recibe un email
-	 * @param pri Recibe un objeto de tipo Principal
-	 * @param request parametro de tipo HttpServletRequest
+	 * @param pri Recibe un objeto de tipo Principal 
 	 * @return etorna un objeto de tipo User
 	 */
 	@GetMapping("/email/{email}")
-	public ResponseEntity<Optional<User>> findUserByEmail(@PathVariable("email") String email, Principal pri, HttpServletRequest request) {		
-		if (!Utils.blackList(request)) {
-			Optional<Optional<User>> user = Optional.of(service.findUserByEmail(email));  
-			return ResponseEntity.of(user);			
-		} else {
-			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-		}		
+	public User findUserByEmail(@PathVariable("email") String email, Principal pri) {	
+		return service.findUserByEmail(email);
 	}
 
 
-		
+
 	/**
 	 * @author Pedro<br>
-	 * Metodo que devuelve una lista de usuarios
-	 * @param request parametro de tipo HttpServletRequest
+	 * Metodo que devuelve una lista de usuarios	 
 	 * @return Retorna todos los usuarios creados.
 	 */
 	@GetMapping("/all")
-	public ResponseEntity<List<User>> findAll(HttpServletRequest request) {		
-		if (!Utils.blackList(request)) {
-			List<User> users = service.findAll();
-			if (users.isEmpty()) {
-				return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
-			}		
-			return new ResponseEntity<List<User>>(users, HttpStatus.OK);
-		} else {			
-			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+	public ResponseEntity<List<User>> findAll() {		
+		List<User> users = service.findAll();
+		if (users.isEmpty()) {
+			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
 		}		
+		return new ResponseEntity<List<User>>(users, HttpStatus.OK);		 
 	}  
 
 
@@ -125,28 +114,21 @@ public class UserController {
 		} else {
 			return "No ha incluido el token";
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * @author Pedro<br>
 	 * Metodo que devuelve un User a través de su "username"
 	 * @param username Recibe un string con el username
-	 * @param pri ecibe un objeto de tipo Principal
-	 * @param request Recibe un objeto HttpServletRequest
+	 * @param pri ecibe un objeto de tipo Principal	
 	 * @return Retorna un objeto User
 	 */
 	@GetMapping("/username/{username}")
-	public ResponseEntity<Optional<User>> findByUsername(@PathVariable("username") String username, 
-			Principal pri, 
-			HttpServletRequest request) {	
-		if (!Utils.blackList(request)) {
-			Optional<Optional<User>> user = Optional.of(service.findByUsername(username));  
-			return ResponseEntity.of(user);       
-		} else {
-			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-		}		
+	public ResponseEntity<Optional<User>> findByUsername(@PathVariable("username") String username, Principal pri) {
+		Optional<Optional<User>> user = Optional.of(service.findByUsername(username));  
+		return ResponseEntity.of(user);       
 	}
 
 
@@ -154,64 +136,49 @@ public class UserController {
 	 * @author Pedro<br>
 	 * Metodo que busca un usuario por su id
 	 * @param id Recibe un long con el id del usuario
-	 * @param priRecibe un objeto Principal
-	 * @param request Recibe un objeto HttpServletRequest
+	 * @param priRecibe un objeto Principal	
 	 * @return Retorna un objeto de tipo User
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<User> findById(@PathVariable("id") Long id, Principal pri, HttpServletRequest request) {
-		if (!Utils.blackList(request)) {
-			try {
-				Optional<User> user = service.findById(id);   
-				return ResponseEntity.of(user);
-			} catch (UsernameNotFoundException e) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-			}    	
-		} else {
-			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-		}		
+	public ResponseEntity<User> findById(@PathVariable("id") Long id, Principal pri) {
+		try {
+			Optional<User> user = service.findById(id);   
+			return ResponseEntity.of(user);
+		} catch (UsernameNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 
 	/**
 	 * Metodo para insertar o crear usuarios. Solo puede utilizarlo el admin
-	 * @param user Recibe un objeto User
-	 * @param request Recibe un objeto HttpServletRequest
+	 * @param user Recibe un objeto User	 
 	 * @return Retorna un objeto User
 	 */
 	@PostMapping("/insertA")
-	public ResponseEntity<User> create(@RequestBody User user, HttpServletRequest request) {
-		if (!Utils.blackList(request)) {
-			User created = service.create(user);		
-			URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-					.path("/{id}")
-					.buildAndExpand(created.getId())
-					.toUri();
-			return ResponseEntity.created(location).body(created);
-		} else {
-			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-		}		
+	public ResponseEntity<User> create(@RequestBody User user) {
+		User created = service.create(user);		
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(created.getId())
+				.toUri();
+		return ResponseEntity.created(location).body(created);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Metodo para insertar usuarios. Puden utilizarlo:
 	 * <li> ROL_ADMIN </li>
 	 * <li> ROL_MOD </li>
-	 * @param user Recibe un objeto User
-	 * @param request Recibe un objeto HttpServletRequest
+	 * @param user Recibe un objeto User	 
 	 * @return Retorna un objeto User
 	 */
 	@PostMapping("/insert")
-	public ResponseEntity<User> createUser(@RequestBody User user, HttpServletRequest request) {
-		if (!Utils.blackList(request)) {			
-			return ResponseEntity.ok(service.createUser(user));			
-		} else {
-			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
-		}		
+	public ResponseEntity<User> createUser(@RequestBody User user) {
+		return ResponseEntity.ok(service.createUser(user));
 	}
-	
+
 
 
 	/**
@@ -234,46 +201,46 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}    	
 	} 
-	
-	
+
+
 	/**
 	 * Metodo para actualizar un objeto User
-	 * @param updatedUser Recibe un objeto de tipo user
-	 * @param request Recibe un objeto HttpServletRequest
+	 * @param updatedUser Recibe un objeto de tipo user	 
 	 * @return Retorna un objeto User
 	 */
 	@PutMapping("/update")
-	public ResponseEntity<User> update(@RequestBody User updatedUser, HttpServletRequest request) {
-		if (!Utils.blackList(request)) {
-			return ResponseEntity.ok(service.updateUser(updatedUser));
+	public ResponseEntity<User> update(@RequestBody User updatedUser) {		
+		return ResponseEntity.ok(service.updateUser(updatedUser));		
+	}
+
+
+	/**
+	 * Metodo para borrar un usuario por su ID
+	 * @param id Recibe un long con el id del usuario
+	 * @return Retorn un String con el msg del resultado.
+	 */
+	@DeleteMapping("/delete/{id}")
+	public String deleteUser(@PathVariable("id") Long id) {		
+		if (service.deleteUser(id)) {
+			return "Usuario borrado";
 		} else {
-			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+			return "No se ha podido borrar el usuario";
 		}		
 	}
 
-	
+
 	/**
-	 * @author Pedro<br>
-	 * Metodo para borrar un usuario    
-	 * @param id Recibe un long con el id del usuario.
-	 * @param request Recibe un objeto HttpServletRequest
-	 * @return Retorna un string dependiendo del resultado.
+	 * Metodo para dar de baja un user por su username
+	 * @param username Recibe un String con el username
+	 * @return Retorna un String con el mensaje.
 	 */
-	@DeleteMapping("/delete/{id}")
-	public String deleteUser(@PathVariable("id") Long id, HttpServletRequest request) {
-		if (!Utils.blackList(request)) {
-			try {
-				service.deleteUser(id);
-				return "Delete User";
-			} catch (Exception e) {
-				return "User not found";
-			}
+	@PutMapping("/baja/{username}")
+	public String bajaClient(@PathVariable("username") String username) {		
+		if (service.bajaUser(username)) {
+			return "Usuario dado de baja";
 		} else {
-			return "Token expirado";
-		}
-		
-
-	}  	
-
+			return "No se ha podido dar de baja el usuario: " + username;
+		}		
+	}
 
 }

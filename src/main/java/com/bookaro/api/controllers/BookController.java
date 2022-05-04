@@ -1,6 +1,7 @@
 package com.bookaro.api.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class BookController {
 	 * @return Retorna un objeto Book.
 	 */
 	@GetMapping("/author/{author}")
-	public Book findBookByAuthor(@PathVariable("author") String author) {		
+	public List<Book> findBookByAuthor(@PathVariable("author") String author) {		
 		return bookService.findBookByAuthor(author);
 	}
 
@@ -47,7 +48,7 @@ public class BookController {
 	 * @return Retorna un objeto Book.
 	 */
 	@GetMapping("/category/{category}")
-	public Book findBookByCategory(@PathVariable("category") String category) {
+	public List<Book> findBookByCategory(@PathVariable("category") String category) {
 		return bookService.findBookByCategory(category);
 	}
 
@@ -57,7 +58,7 @@ public class BookController {
 	 * @return Retorna un objeto Book.
 	 */
 	@GetMapping("/editorial/{editorial}")
-	public Book findBookByEditorial(@PathVariable("editorial") String editorial) {
+	public List<Book> findBookByEditorial(@PathVariable("editorial") String editorial) {
 		return bookService.findBookByEditorial(editorial);
 	}
 
@@ -122,12 +123,11 @@ public class BookController {
 	 */
 	@PutMapping("/update")
 	public String updateBook(@RequestBody Book book) {
-	    if(book != null) {
-	    	bookService.update(book);
-	        return "Updated book.";
-	    } else {
-	        return "Request does not contain a body";
-	    }
+		if(bookService.update(book)) {
+			return "Updated book.";
+		} else {
+			return "Error actualizando";
+		}
 	}
 	
 	/**

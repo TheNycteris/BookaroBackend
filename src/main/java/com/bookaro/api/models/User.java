@@ -56,6 +56,8 @@ public class User implements UserDetails {
 	private String name, surname, address, roles; 	
 	private int age;
 	
+	private boolean active;
+	
 	/**
 	 * Constructor	
 	 * @param id_user ID de usuario. Tipo de dato String
@@ -71,8 +73,7 @@ public class User implements UserDetails {
 	 */
 	public User(Long id_user, String username, String password, 
 			    String name, String surname, String dni, String address,
-			    String email, int age, String roles) {		
-		//this.id_user = id_user;
+			    String email, int age, String roles, boolean active) {		
 		this.id = id_user;
 		this.username = username;
 		this.password = password;
@@ -83,6 +84,7 @@ public class User implements UserDetails {
 		this.email = email;
 		this.age = age;		
 		this.roles = roles;
+		this.active = active;
 	}
 
 	/**
@@ -307,6 +309,24 @@ public class User implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	/**
+	 * Metodo que obtiene si un User está activo o no
+	 * @return Retorna true o false
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * Metodo para modificar el estado de un usuario
+	 * @param active Recibe un parametro boolean
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	
 	
 
 }

@@ -47,10 +47,12 @@ public class UserService {
 	 * @param email Recibe el email como String
 	 * @return Retorna un objet User
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER') or principal.equals(returnObject.get().getUsername())")
-	public  Optional<User> findUserByEmail(String email) {
-		return Optional.of(repository.findUserByEmail(email));
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
+	public User findUserByEmail(String email) {		
+		User user = repository.findUserByEmail(email);		
+		return user;		
 	}
+	
 
 	/**
 	 * Metodo que devuelve una lista de todos los usuarios registrados.
@@ -84,6 +86,7 @@ public class UserService {
     public Optional<User> findById (Long id) {
         return repository.findById(id);
     }
+	
 
 	/**
 	 * Metodo para crear objetos de tipo User.
@@ -108,7 +111,8 @@ public class UserService {
                 user.getAddress(),
                 user.getEmail(),
                 user.getAge(),                
-                user.getRole()
+                user.getRole(),
+                user.isActive()
         );
         return repository.save(copy);
     }
@@ -133,7 +137,8 @@ public class UserService {
                 user.getAddress(),
                 user.getEmail(),
                 user.getAge(),               
-                user.getRole()
+                user.getRole(),
+                user.isActive()
         );
         return repository.save(copy);
     }
@@ -148,15 +153,50 @@ public class UserService {
     	updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
     	return repository.save(updatedUser);
     }
-
-    
-    /**
-     * Metodo para eliminar usuarios
-     * @param id Recibe un parametro de tipo Long con el ID del usuario
-     */	
+	
+	
+	/**
+	 * Metodo para borrar un usuario por su ID
+	 * @param id Recibi un long con el ID
+	 * @return Retorna true o false
+	 */
 	@PreAuthorize(value = "hasRole('ADMIN')")
-    public void deleteUser(Long id) {
-        repository.deleteById(id);
-    }
+	public boolean deleteUser (Long id) {
+		try {
+			repository.deleteById(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * Metodo para dar de baja un user por su username
+	 * @param username Recibe un String con el username
+	 * @return Retorna un String con el mensaje.
+	 */		
+	@PreAuthorize("hasAnyRole('ADMIN') or #username == authentication.name")
+	public boolean bajaUser(String username) {
+		try {			
+			User aux = repository.findByUsername(username);
+			
+			if(aux instanceof Client) {
+				List<Order> orders =((Client) aux).getOrders();
+				for (Order or: orders) {
+					if (or.isActive()) {
+						return false;
+					}
+				}
+			}
+			
+			aux.setRole("ROLE_DOWN");
+			aux.setActive(false);			
+			repository.save(aux);		
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 }

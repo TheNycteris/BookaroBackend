@@ -1,23 +1,20 @@
 package com.bookaro.api.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
 import com.bookaro.api.models.Book;
-import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.BookRepository;
 
 /**
  * 
  * @author Pedro<br>
  * Clase que hace la funcion de Service para la entidad Book<br>
- * Inyecto la dependencia BookRepository.
+ * Inyecta la dependencia BookRepository.
  *
  */
 @Service
@@ -33,9 +30,9 @@ public class BookService {
 	 * @return Retorna un Book
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
-	public Book findBookByAuthor(String author) {
-		Book book = bookRepository.findBookByAuthor(author);		
-		return book;		
+	public List<Book> findBookByAuthor(String author) {
+		List<Book> books = bookRepository.findBookByAuthor(author);		
+		return books;		
 	}
 
 	/**
@@ -44,7 +41,7 @@ public class BookService {
 	 * @return Retorna un Book
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
-	public Book findBookByCategory(String category) {
+	public List<Book> findBookByCategory(String category) {
 		return bookRepository.findBookByCategory(category);
 	}
 
@@ -54,7 +51,7 @@ public class BookService {
 	 * @return Retorna un Book
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
-	public Book findBookByEditorial(String editorial) {
+	public List<Book> findBookByEditorial(String editorial) {
 		return bookRepository.findBookByEditorial(editorial);
 	}
 
@@ -109,8 +106,7 @@ public class BookService {
 	    try {
 	    	bookRepository.save(book);
 	        return true;
-	    } catch (Exception e) {
-	        System.out.println(e.getMessage());
+	    } catch (Exception e) {	        
 	        return false;
 	    }
 	}

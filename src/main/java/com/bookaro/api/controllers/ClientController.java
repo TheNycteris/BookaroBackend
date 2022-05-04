@@ -36,13 +36,21 @@ public class ClientController {
 	@Autowired
 	private ClientService clientService;	
 	
+		
 	
-	
-	
-	
+	/**
+	 * Metodo que recupera un Client por su username
+	 * @param username Recibe String
+	 * @return Retorna objeto Client.
+	 */
+	@GetMapping("/username/{username}")
+	public Client findClientByUsername(@PathVariable ("username") String username) {
+		return clientService.findClientByUsername(username);
+	}
+
 
 	@GetMapping("/orders/{id}")
-	public List<Order> orders(@PathVariable ("id")Long id, Principal pri, HttpServletRequest request) {		
+	public List<Order> orders(@PathVariable ("id")Long id, Principal pri) {		
 		Optional<Client> client = clientService.findById(id);
 		List<Order> orders = client.get().getOrders();
 		return orders;		
@@ -108,22 +116,17 @@ public class ClientController {
 	 * @return Retorna un String en funcion del resultado.
 	 */
 	@PutMapping("/update")
-	public String updateClient (@RequestBody Client client/*, Principal pri, HttpServletRequest request*/) {
+	public String updateClient (@RequestBody Client client) {
 		
 	    if(client != null) {
 	    	clientService.update(client);
-	        return "Updated employee.";
+	        return "Updated Client.";
 	    } else {
 	        return "Request does not contain a body";
 	    }
 	}
 	
 	
-	
-	
-
-	
-
 
 	/**
 	 * @author Pedro<br>
@@ -133,7 +136,7 @@ public class ClientController {
 	 */
 	@DeleteMapping("{id}")
 	public String deleteClient (@PathVariable("id") long id) {
-		if(id > 0) {
+		if(id > 0) {			
 			if(clientService.delete(id)) {
 				return "Deleted the client.";
 			} else {
@@ -141,6 +144,22 @@ public class ClientController {
 			}
 		}
 		return "The id is invalid for the client.";
+	}
+
+
+	/**
+	 * Metodo para dar de baja un cliente
+	 * @param username Recibe un String con el username del cliente
+	 * @return Retorna un String con el mensaje.
+	 */
+	@PutMapping("/baja/{username}")
+	public String bajaClient(@PathVariable("username") String username) {
+		if (clientService.bajaClient(username)) {
+			return "Client dado de baja";
+		} else {
+			return "No se ha podido dar de baja el cliente: " + username;
+		}	
+		
 	}
 
 

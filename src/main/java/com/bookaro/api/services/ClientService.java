@@ -40,13 +40,28 @@ public class ClientService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;	
 	
+		
+	
+	/**
+	 * Metodo que recupera un cliente por su username
+	 * @param username Recibe un String con el username
+	 * @return Retorna un objeto Client.
+	 */
+	@PostAuthorize("hasAnyRole('ADMIN', 'MOD') or #username == authentication.name")
+	public Client findClientByUsername(String username) {
+		return clientRepository.findClientByUsername(username);
+	}
+	
+	
 
-	
-	
-	
+	/**
+	 * Método para buscar una lista de orders por el id del cliente
+	 * @param id
+	 * @return
+	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
-	public List<Order> orders(Long id) {
-		Optional<Client> client = clientRepository.findById(id);
+	public List<Order> orders(Long idClient) {
+		Optional<Client> client = clientRepository.findById(idClient);
 		List<Order> orders = client.get().getOrders();
 		return orders;		
 	}
@@ -57,7 +72,7 @@ public class ClientService {
 	 * @return Retorna una lista con los clientes de una determinada subscripcion
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
-	public List<Client> findBySubscription(Subscription subscription) {
+	public List<Client> findBySubscription(Subscription subscription) {		
 		return clientRepository.findBySubscription(subscription);
 	}	
 	
@@ -76,7 +91,7 @@ public class ClientService {
 	 * @param id Recibe un Long con el id del cliente
 	 * @return Retorna el cliente si lo encuentra
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")	
 	public Optional<Client> findById(Long id) {
 		return clientRepository.findById(id);
 	}
@@ -86,8 +101,7 @@ public class ClientService {
 	 * Metodo para crear clientes
 	 * @param client Recibe un objeto de tipo Client
 	 * @return Retorna el cliente
-	 */
-	//@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
+	 */	
 	public Client add (Client client) {
 		
 		Client copy = new Client();
@@ -100,17 +114,14 @@ public class ClientService {
 		copy.setUsername(client.getUsername());			
 		copy.setEmail(client.getEmail());	
 		copy.setRole("ROLE_USER");
-		copy.setSubscription(client.getSubscription());		
-		
+		copy.setSubscription(client.getSubscription());	
+		copy.setActive(client.isActive());
 		return clientRepository.save(copy);
-	}
+	}	
 	
-	//@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals('cliente2')")
-	//@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
 	@PreAuthorize("hasAnyRole('ADMIN', 'MOD') or #client.getUsername() == authentication.name")
-	public boolean update (Client client/*, Principal principal*/) {
-	    try {
-	    	//System.out.println(principal.getName());
+	public boolean update (Client client) {
+	    try {	    	
 	    	client.setPassword(passwordEncoder.encode(client.getPassword()));
 	    	client.setRole("ROLE_USER");
 	    	clientRepository.save(client);
@@ -133,15 +144,41 @@ public class ClientService {
 	@PreAuthorize(value = "hasRole('ADMIN')")	
 	public boolean delete (long id) {
 		try {
+			Client aux = clientRepository.findById(id).get();		
 			clientRepository.deleteById(id);
 	        return true;
-	    } catch (Exception e) {
-	        System.out.println(e.getMessage());
+	    } catch (Exception e) {	        
 	        return false;
 	    }
 	}
 
 	
+	
+	/**
+	 * Metodo para dar de baja un user por su username
+	 * @param username Recibe un String con el username
+	 * @return Retorna un boolean
+	 */		
+	@PreAuthorize("hasAnyRole('ADMIN', 'MOD') or #username == authentication.name")
+	public boolean bajaClient(String username) {
+		try {			
+			Client aux = clientRepository.findClientByUsername(username);			
+			
+			List<Order> orders = aux.getOrders();
+			for (Order or: orders) {
+				if (or.isActive()) {
+					return false;
+				}
+			}
+						
+			aux.setRole("ROLE_DOWN");
+			aux.setActive(false);			
+			clientRepository.save(aux);		
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 	
 

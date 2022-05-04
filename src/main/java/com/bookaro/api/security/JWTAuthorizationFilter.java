@@ -7,6 +7,9 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +20,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.bookaro.api.utils.Utils;
 
 
 /**
@@ -45,17 +49,29 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader(SecurityConstants.HEADER_STRING);
+    	
+    	if (!Utils.blackList(req)) {
 
-        if (header == null || !header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
-            chain.doFilter(req, res);
-            return;
-        }
+    		String header = req.getHeader(SecurityConstants.HEADER_STRING);
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+    		if (header == null || !header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+    			chain.doFilter(req, res);
+    			return;
+    		}
+    		
+    		UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
+    		SecurityContextHolder.getContext().setAuthentication(authentication);
+    		chain.doFilter(req, res);
+    	} else {
+    		// Llegara al body el mensaje de Token expirado
+    		res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        	String body = "Token expirado";
+            res.getWriter().write(body);
+            res.getWriter().flush();
+    	}
+    	
+       
     }
 
     
@@ -64,31 +80,34 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
      * @param request Recibe un objeto HttpServletRequest
      * @return Retorna un objeto UsernamePasswordAuthenticationTokeno null
      */
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(SecurityConstants.HEADER_STRING);
-        
-        if (token != null) {
-            // Parseamos el token
-            String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
-                    .build()
-                    .verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
-                    .getSubject();
-            // Decodificamos con JWT
-            DecodedJWT jwt = JWT.decode(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
-            // Añadimos los roles
-            Claim claim = jwt.getClaim("role");
-            List<String> rolesList = claim.asList(String.class);;
-            ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-            for(String role:rolesList) {
-            	authorities.add(new SimpleGrantedAuthority(role));
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {    	
+
+    	String token = request.getHeader(SecurityConstants.HEADER_STRING);
+
+    	if (token != null) {
+    		// Parseamos el token
+    		String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
+    				.build()
+    				.verify(token.replace(SecurityConstants.TOKEN_PREFIX, ""))
+    				.getSubject();
+    		// Decodificamos con JWT
+    		DecodedJWT jwt = JWT.decode(token.replace(SecurityConstants.TOKEN_PREFIX, ""));
+    		// Añadimos los roles
+    		Claim claim = jwt.getClaim("role");
+    		List<String> rolesList = claim.asList(String.class);;
+    		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+    		for(String role:rolesList) {
+    			authorities.add(new SimpleGrantedAuthority(role));
     		}
-            // Comprobamos si "user" es null antes de crear el objeto "UsernamePasswordAuthenticationToken"
-            if (user != null) {                
-                return new UsernamePasswordAuthenticationToken(user, null, authorities);
-            }
-            return null;
-        }
-        return null;
+    		
+    		// Comprobamos si "user" es null antes de crear el objeto "UsernamePasswordAuthenticationToken"           
+    		if (user != null) {                
+    			return new UsernamePasswordAuthenticationToken(user, null, authorities);
+    		}
+    		return null;
+    	}    	
+
+    	return null;
     }
     
     
