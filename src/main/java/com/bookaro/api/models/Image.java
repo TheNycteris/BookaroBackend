@@ -1,11 +1,11 @@
 package com.bookaro.api.models;
 
 import javax.persistence.*;
-
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -40,6 +40,7 @@ public class Image {
 	
 	
 	@OneToOne
+	@OnDelete(action = OnDeleteAction.CASCADE) ///////////
 	@JoinColumn(name = "book_id")	
 	private Book book;
 	

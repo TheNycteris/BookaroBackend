@@ -410,6 +410,7 @@ class BookaroTest {
 		System.out.println("Actualizamos el estado de la order1 a false o no active.");
 		Order order1 = orderRepository.findById(1L).get();
 		order1.setActive(false);
+		//order1.setClient(clientRepository.findClientByUsername("cliente2"));
 		orderRepository.save(order1);
 		// Comprobamos que el cambio ha tenido efecto.
 		assert orderRepository.findById(1L).get().isActive() == false;
@@ -463,7 +464,7 @@ class BookaroTest {
 	@Disabled
 	void test4 () {
 		System.out.println("*************************** TEST DELETE ***************************");
-		for (Order o: orders) {
+		/*for (Order o: orders) {
 			o.setClient(null);
 			orderRepository.save(o);
 		}
@@ -471,7 +472,7 @@ class BookaroTest {
 		for (Image i: imageRepository.findAll()) {
 			i.setBook(null);
 			imageRepository.save(i);
-		}
+		}*/
 		
 		System.out.println("Borrado Orders");
 		orderRepository.deleteAll();

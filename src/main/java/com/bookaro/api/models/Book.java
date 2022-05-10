@@ -3,6 +3,9 @@ package com.bookaro.api.models;
 import java.util.List;
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -28,7 +31,7 @@ public class Book {
 	private Long id;	
 	
 	
-	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "book", /*cascade = CascadeType.ALL*/ cascade = CascadeType.REMOVE, fetch=FetchType.EAGER/*, orphanRemoval = true*/ )
 	@JsonIgnore 
 	private List<Order> orders;
 	
@@ -41,7 +44,8 @@ public class Book {
 	private boolean active;
 	
 	// Enlace con la clase Book
-	@OneToOne(mappedBy="book")
+	@OneToOne(mappedBy="book"/*, orphanRemoval = true*/ )
+	@OnDelete(action = OnDeleteAction.CASCADE) ////// <--
 	@JsonIgnore
 	private Image image;
 	

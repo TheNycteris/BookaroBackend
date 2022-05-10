@@ -128,9 +128,9 @@ public class OrderController {
 	public String deleteOrder (@PathVariable("id") long id) {
 		if(id > 0) {
 			if(orderService.delete(id)) {
-				if (orderService.findById(id) != null ) {
+				/*if (orderService.findById(id) != null ) {
 					return "Cannot delete the order.";
-				}
+				}*/
 				return "Deleted the order.";
 			} else {
 				return "Cannot delete the order.";

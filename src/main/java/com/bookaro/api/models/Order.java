@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * <li> Tiene vinculación con las clases Client y Book</li>
  *
  */
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -41,7 +41,7 @@ public class Order {
 	private boolean active;	
 	
 	@ManyToOne()
-	@JsonIgnore
+	//@JsonIgnore
     @JoinColumn(name = "id_user")
 	private Client client;
 	
