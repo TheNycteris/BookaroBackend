@@ -39,14 +39,8 @@ public class Image {
 	private byte[] image;
 	
 	
-	// Enlace con la clase Book
-	/*@OneToOne(mappedBy="image")
-	//@JsonIgnore
-	private Book book;*/
-	
 	@OneToOne
-	@JoinColumn(name = "book_id")
-	//@JsonIgnore <--------------------
+	@JoinColumn(name = "book_id")	
 	private Book book;
 	
 	/**
@@ -72,43 +66,84 @@ public class Image {
 	 */
 	public Image() {}
 	
-	// Getters/Setters
+	// Getters/Setters	
+	/**
+	 * Getter atributo id
+	 * @return Retorna Long con el id
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * Setter id
+	 * @param id Recibe un objeto Long con el id 
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Getter atributo name
+	 * @return Retorna String con el name.
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Setter name
+	 * @param name Recibe String con el name.
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Getter atributo type
+	 * @return Retorna String con el type.
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * Setter atributo type
+	 * @param type Recibe String con el type.
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	
+	
+	/**
+	 * Getter atributo image
+	 * @return Retorn array de byte[]
+	 */
 	public byte[] getImage() {
 		return image;
 	}
 
+	/**
+	 * Setter atributo image
+	 * @param image Recibe un array de byte[]
+	 */
 	public void setImage(byte[] image) {
 		this.image = image;
 	}
 	
+	/**
+	 * Getter atributo book
+	 * @return Retorn objeto Book.
+	 */
 	public Book getBook () {
 		return book;
 	}
 	
+	/**
+	 * Setter atributo book
+	 * @param book Recibe objeto Book.
+	 */
 	public void setBook (Book book) {
 		this.book = book;
 	}

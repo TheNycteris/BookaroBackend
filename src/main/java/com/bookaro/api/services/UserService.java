@@ -95,8 +95,7 @@ public class UserService {
 	 * @return Retorna un objeto de tipo User.
 	 */	
 	@PreAuthorize(value = "hasRole('ADMIN')")
-    public User create(User user) {       
-    			
+    public User create(User user) {   			
     	if (user.getRole() == null) {			
     		user.setRole("ROLE_USER");
 		}     	

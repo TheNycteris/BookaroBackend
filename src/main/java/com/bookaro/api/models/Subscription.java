@@ -105,8 +105,7 @@ public class Subscription {
 	 * @return retorna el id de la subscripcion "Long"
 	 */
 	public Long getId_sub() {
-		return id_sub;
-		//return id;
+		return id_sub;		
 	}
 
 	/**
@@ -114,8 +113,7 @@ public class Subscription {
 	 * @param id_sub Recibe un Long con el id de la subscripcion
 	 */
 	public void setId_sub(Long id_sub) {
-		this.id_sub = id_sub;
-		//this.id = id_sub;
+		this.id_sub = id_sub;		
 	}
 	
 	

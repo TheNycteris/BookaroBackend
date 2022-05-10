@@ -1,6 +1,5 @@
 package com.bookaro.api.services;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,15 +8,11 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
-import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.ClientRepository;
-import com.bookaro.api.repositories.SubscriptionRepository;
+
 
 /**
  * 
@@ -38,8 +33,7 @@ public class ClientService {
 	ClientRepository clientRepository;
 	
 	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;	
-	
+	private BCryptPasswordEncoder passwordEncoder;		
 		
 	
 	/**
@@ -50,14 +44,13 @@ public class ClientService {
 	@PostAuthorize("hasAnyRole('ADMIN', 'MOD') or #username == authentication.name")
 	public Client findClientByUsername(String username) {
 		return clientRepository.findClientByUsername(username);
-	}
-	
+	}	
 	
 
 	/**
 	 * Método para buscar una lista de orders por el id del cliente
-	 * @param id
-	 * @return
+	 * @param idClient Recibe Long con el id del cliente
+	 * @return Retorna una lista de Order
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
 	public List<Order> orders(Long idClient) {
@@ -65,6 +58,7 @@ public class ClientService {
 		List<Order> orders = client.get().getOrders();
 		return orders;		
 	}
+	
 
 	/**
 	 * Metodo que devuelve una lista de clientes
@@ -75,6 +69,7 @@ public class ClientService {
 	public List<Client> findBySubscription(Subscription subscription) {		
 		return clientRepository.findBySubscription(subscription);
 	}	
+	
 	
 	/**
 	 * Metodo que devuelve una lista de clientes
@@ -102,8 +97,7 @@ public class ClientService {
 	 * @param client Recibe un objeto de tipo Client
 	 * @return Retorna el cliente
 	 */	
-	public Client add (Client client) {
-		
+	public Client add (Client client) {		
 		Client copy = new Client();
 		copy.setAddress(client.getAddress());
 		copy.setAge(client.getAge());
@@ -119,11 +113,22 @@ public class ClientService {
 		return clientRepository.save(copy);
 	}	
 	
+	
+	/**
+	 * Metodo para actualizar un cliente. Sólo podrá actualizar algunos datos puesto
+	 * que tiene acceso el propio cliente.
+	 * @param client Recibe un objeto Client
+	 * @return Retorna true o false dependiendo del resultado.
+	 */
 	@PreAuthorize("hasAnyRole('ADMIN', 'MOD') or #client.getUsername() == authentication.name")
 	public boolean update (Client client) {
+		Optional<Client> aux = clientRepository.findById(client.getId());
 	    try {	    	
 	    	client.setPassword(passwordEncoder.encode(client.getPassword()));
 	    	client.setRole("ROLE_USER");
+	    	client.setDni(aux.get().getDni());
+	    	client.setId(aux.get().getId());
+	    	client.setUsername(aux.get().getUsername());
 	    	clientRepository.save(client);
 	        return true;
 	    } catch (Exception e) {
@@ -133,7 +138,21 @@ public class ClientService {
 	}
 	
 	
-	
+	/**
+	 * Metodo para actualizar un cliente. Solo tiene acceso ADMIN
+	 * @param client Recibe un objeto Client
+	 * @return Retorna true o false dependiendo del resultado.
+	 */
+	@PreAuthorize("hasRole('ADMIN')")
+	public boolean updateA (Client client) {		
+	    try {	    	
+	    	clientRepository.save(client);
+	        return true;
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	        return false;
+	    }
+	}
 	
 
 	/**
@@ -143,8 +162,7 @@ public class ClientService {
 	 */
 	@PreAuthorize(value = "hasRole('ADMIN')")	
 	public boolean delete (long id) {
-		try {
-			Client aux = clientRepository.findById(id).get();		
+		try {					
 			clientRepository.deleteById(id);
 	        return true;
 	    } catch (Exception e) {	        
@@ -160,7 +178,7 @@ public class ClientService {
 	 * @return Retorna un boolean
 	 */		
 	@PreAuthorize("hasAnyRole('ADMIN', 'MOD') or #username == authentication.name")
-	public boolean bajaClient(String username) {
+	public boolean clientCancelation (String username) {
 		try {			
 			Client aux = clientRepository.findClientByUsername(username);			
 			

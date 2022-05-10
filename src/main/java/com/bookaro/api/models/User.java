@@ -37,8 +37,7 @@ public class User implements UserDetails {
 	// ******* Atributos de clase ******* 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(unique = true, nullable = true)
-	//private Long id_user;
+	@Column(unique = true, nullable = true)	
 	private Long id;
 	
 	@Column(unique = true, nullable = false)
@@ -58,8 +57,9 @@ public class User implements UserDetails {
 	
 	private boolean active;
 	
+	
 	/**
-	 * Constructor	
+	 Constructor	
 	 * @param id_user ID de usuario. Tipo de dato String
 	 * @param username Usuario. Tipo de dato String
 	 * @param password Password del usuario. Tipo de dato String
@@ -70,6 +70,7 @@ public class User implements UserDetails {
 	 * @param email Email del usuario. Tipo de dato String
 	 * @param age Edad del usuario. Tipo de dato int
 	 * @param roles Role para la autorización del usuario. Tipo de dato String
+	 * @param active Recibe boolean
 	 */
 	public User(Long id_user, String username, String password, 
 			    String name, String surname, String dni, String address,
@@ -325,8 +326,6 @@ public class User implements UserDetails {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-	
 	
 
 }

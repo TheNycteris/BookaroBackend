@@ -29,9 +29,20 @@ import com.bookaro.api.services.BookService;
 public class BookController {
 	
 	@Autowired
-	private BookService bookService;
+	private BookService bookService;	
 	
 	
+	
+	/**
+	 * Metodo que filtra una lista de libros por su estado
+	 * @param active Recibe boolean 
+	 * @return Retorna una lista de lisbros
+	 */
+	@GetMapping("/status/{active}")
+	public List<Book> findBookByActive(@PathVariable("activestat") boolean active) {
+		return bookService.findBookByActive(active);
+	}
+
 	/**
 	 * Metodo que busca un libro por su autor
 	 * @param author Recibe un String con el autor del libro

@@ -1,15 +1,12 @@
 package com.bookaro.api.services;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.repositories.OrderRepository;
@@ -34,7 +31,11 @@ public class OrderService {
 	OrderRepository orderRepository;
 	
 	
-	
+	/**
+	 * Método para ver las Orders de un cliente
+	 * @param client Recibe un objeto Client
+	 * @return Retorna una lista de objetos Order
+	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")	
 	public List<Order> findAllOrderByClient(Client client) {
 		return orderRepository.findAllOrderByClient(client);

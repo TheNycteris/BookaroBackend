@@ -32,19 +32,24 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;	
 	
-	
-	
-	
+		
+	/**
+	 * Metodo para buscar las Orders de un cliente
+	 * @param client Recibe objeto Client
+	 * @param pri Recibe objet Principal
+	 * @return Retorna lista de objetos Order
+	 */
 	@GetMapping("/client")
 	public List<Order> findAllOrderByClient(@RequestBody Client client, Principal pri) {
 		List<Order> todas = orderService.findAllOrderByClient(client);
 		return todas;
 	}
 
-
+	
 	/**
 	 * Metodo que devuelve una lista de orders
-	 * @param active Recibe un boolean
+	 * @param active Rebice boolean 
+	 * @param pri Recibe objeto Principal
 	 * @return Retorna una lista de orders
 	 */
 	@GetMapping (value = "/active/{active}")
@@ -123,6 +128,9 @@ public class OrderController {
 	public String deleteOrder (@PathVariable("id") long id) {
 		if(id > 0) {
 			if(orderService.delete(id)) {
+				if (orderService.findById(id) != null ) {
+					return "Cannot delete the order.";
+				}
 				return "Deleted the order.";
 			} else {
 				return "Cannot delete the order.";

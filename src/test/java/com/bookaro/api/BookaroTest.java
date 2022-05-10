@@ -172,8 +172,7 @@ class BookaroTest {
 		employee.setSalary(1000);
 		employee.setEmail("pedro@bookaro.com");		
 		employee.setRole("ROLE_MOD");	
-		employee.setActive(true);
-		//employee.setRole("MOD");
+		employee.setActive(true);		
 		employeeRepository.save(employee);
 		
 
@@ -230,8 +229,7 @@ class BookaroTest {
 		client2.setEmail("cliente2@bookaro.com");
 		client2.setAge(40);		
 		client2.setRole("ROLE_USER");
-		client2.setActive(true);
-		//client2.setSubscription(subscription2);		
+		client2.setActive(true);				
 		clientRepository.save(client2);
 		
 			
@@ -247,7 +245,8 @@ class BookaroTest {
 		book1.setIsbn("isbn1");
 		book1.setCategory("category1");
 		book1.setEditorial("editorial1");
-		book1.setSynopsis("synopsis1");		
+		book1.setSynopsis("synopsis1");	
+		book1.setActive(true);
 		bookRepository.save(book1);
 		
 		// Cremos book1
@@ -258,12 +257,11 @@ class BookaroTest {
 		book2.setIsbn("isbn2");
 		book2.setCategory("category2");
 		book2.setEditorial("editorial2");
-		book2.setSynopsis("synopsis2");				
+		book2.setSynopsis("synopsis2");	
+		book2.setActive(true);
 		bookRepository.save(book2);
 		
-		
-		
-		
+				
 		
 		/**
 		 * ************ Image ************	
@@ -288,8 +286,7 @@ class BookaroTest {
 		} catch (IOException e ) {			
 			e.printStackTrace();
 		}
-		
-		
+				
 		
 		
 		/**
@@ -300,8 +297,7 @@ class BookaroTest {
 		Order order1 = new Order();
 		order1.setStartDate(new Date());
 		order1.setActive(true);		
-		order1.setClient(client1);
-		//order1.setClient(client2);
+		order1.setClient(client1);		
 		order1.setBook(book1);
 		orderRepository.save(order1);
 		
@@ -323,8 +319,7 @@ class BookaroTest {
 		order3.setBook(book2);
 		orderRepository.save(order3);	
 		
-		
-				
+						
 				
 		// Comprobamos que los datos se han guardado en la lista y en la BD
 		subscriptions = (List<Subscription>) subscriptionRepository.findAll();		
@@ -348,46 +343,7 @@ class BookaroTest {
 		assert !images.isEmpty();
 		assert images.size() == imageRepository.count();
 		
-		cont++; // Actualizamos variable
-		
-		//clients = (List<Client>) clientRepository.findAll();
-		/*System.out.println("SUSBSCRIPCION CLIENTE: " + clients.get(0).getSubscription().getType());
-		System.out.println("ORDER CLIENTE: " + clients.get(1).getOrders().get(0).isActive());
-		
-		if (clients.get(0).getOrders() == null) {
-			System.out.println("ESSSS NULLLOO");
-		} else {
-			System.out.println("HAY ELEMENTOS");
-			List<Order> ordenes = clients.get(0).getOrders();
-			
-			System.out.println(ordenes.size());
-			System.out.println(ordenes.get(0).getClient().getName());
-			
-		}*/
-		//System.out.println("ORDERS: " + clients.get(0).getOrders().size());
-		
-		/*int contador = 0;
-		
-		for (Order order: orders) {
-			if (order.getClient().getId() == 3 && order.isActive()) {
-				contador++;
-			}
-		}
-		
-		System.out.println("Puede ordenar: " + order2.countActiveOrders(client2));
-		
-		System.out.println("CANTIDAD DE ORDENES CLIENTE: " + orders.get(0).countActiveOrders(clients.get(1)));
-		
-		System.out.println("CONTADOR DE ORDERS CON EL CLIENTE CON ID 3:" + contador);*/
-		
-		List<Subscription> subs = (List<Subscription>) subscriptionRepository.findAll();
-		List<Client> cli = (List<Client>) clientRepository.findAll();
-		List<Order> ord = cli.get(0).getOrders();
-		
-		System.out.println(cli.get(0));
-		
-		System.out.println(ord);
-		System.out.println(subs.get(0).getAllClients().get(0).getUsername());
+		cont++; // Actualizamos variable	
 		
 	}
 	

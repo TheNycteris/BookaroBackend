@@ -10,12 +10,10 @@ import org.springframework.stereotype.Service;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.repositories.BookRepository;
 
-/**
- * 
+/** 
  * @author Pedro<br>
  * Clase que hace la funcion de Service para la entidad Book<br>
  * Inyecta la dependencia BookRepository.
- *
  */
 @Service
 public class BookService {
@@ -24,6 +22,17 @@ public class BookService {
 	BookRepository bookRepository;
 	
 	
+	
+	/**
+	 * Metodo que filtra una lista de libros por su estado
+	 * @param active Recibe boolean 
+	 * @return Retorna una lista de lisbros
+	 */
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	public List<Book> findBookByActive(boolean active) {
+		return bookRepository.findBookByActive(active);
+	}
+
 	/**
 	 * Metodo para buscar un libro por su autor
 	 * @param author Recibe un String con el autor

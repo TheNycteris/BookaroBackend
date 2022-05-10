@@ -6,14 +6,17 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.map.repository.config.EnableMapRepositories;
 import org.springframework.stereotype.Service;
+
+import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Employee;
+import com.bookaro.api.models.Order;
+import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.EmployeeRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-/**
- * 
+/** 
  * @author Pedro<br>
  * Clase que hace la función de repositorio. Implementa los metodos:
  * <li> List<Employee> findEmployeesByPosition </li>
@@ -26,16 +29,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * Inyecta las dependencias:
  * <li> EmployeeRepository </li>
  * <li> BCryptPasswordEncoder </li>
- *
  */
 @Service
 @EnableMapRepositories
 public class EmployeeService {
 	
 	@Autowired	
-	EmployeeRepository employeeRepository;
-	
-	
+	EmployeeRepository employeeRepository;	
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;	
@@ -137,6 +137,12 @@ public class EmployeeService {
 	    }
 	}
 	
+	
+	/**
+	 * Metodo para borrar un employee de la BD
+	 * @param id Recibe Long con el id del employee
+	 * @return Retorna true o false
+	 */
 	@PreAuthorize(value = "hasRole('ADMIN')")
 	public boolean delete (long id) {
 		try {			
@@ -146,8 +152,24 @@ public class EmployeeService {
 	        System.out.println(e.getMessage());
 	        return false;
 	    }
-	}
-
+	}	
 	
+	/**
+	 * Metodo para dar de baja un user por su username
+	 * @param username Recibe un String con el username
+	 * @return Retorna un String con el mensaje.
+	 */		
+	@PreAuthorize("hasRole('ADMIN')")
+	public boolean bajaEmployee(String username) {
+		try {			
+			Employee aux = employeeRepository.findEmployeeByUsername(username);			
+			aux.setRole("ROLE_DOWN");
+			aux.setActive(false);			
+			employeeRepository.save(aux);		
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 	
 }

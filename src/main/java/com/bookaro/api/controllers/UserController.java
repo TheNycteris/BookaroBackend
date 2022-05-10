@@ -136,9 +136,9 @@ public class UserController {
 	 * @author Pedro<br>
 	 * Metodo que busca un usuario por su id
 	 * @param id Recibe un long con el id del usuario
-	 * @param priRecibe un objeto Principal	
+	 * @param pri Recibe un objeto Principal	
 	 * @return Retorna un objeto de tipo User
-	 */
+	 */	
 	@GetMapping("/{id}")
 	public ResponseEntity<User> findById(@PathVariable("id") Long id, Principal pri) {
 		try {
@@ -156,7 +156,7 @@ public class UserController {
 	 * @return Retorna un objeto User
 	 */
 	@PostMapping("/insertA")
-	public ResponseEntity<User> create(@RequestBody User user) {
+	public ResponseEntity<User> createU(@RequestBody User user) {
 		User created = service.create(user);		
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
@@ -164,7 +164,6 @@ public class UserController {
 				.toUri();
 		return ResponseEntity.created(location).body(created);
 	}
-
 
 
 	/**
@@ -178,30 +177,7 @@ public class UserController {
 	public ResponseEntity<User> createUser(@RequestBody User user) {
 		return ResponseEntity.ok(service.createUser(user));
 	}
-
-
-
-	/**
-	 * @author Pol Casals<br>
-	 * Metodo para actualizar un usuario
-	 * @param id Recibe un long con el id del usuario
-	 * @param patch Recibe un objeto JsonPatch
-	 * @return Retorna un objeto User
-	 */
-	@PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-	public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody JsonPatch patch) {    	
-		try {
-			User user = service.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found."));
-			User patchedUser = service.updateUser((User) Utils.applyPatch(patch, user));
-			return ResponseEntity.ok(patchedUser);            
-		} catch (JsonPatchException | JsonProcessingException e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		} catch (UsernameNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}    	
-	} 
-
+	
 
 	/**
 	 * Metodo para actualizar un objeto User
@@ -209,7 +185,7 @@ public class UserController {
 	 * @return Retorna un objeto User
 	 */
 	@PutMapping("/update")
-	public ResponseEntity<User> update(@RequestBody User updatedUser) {		
+	public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {		
 		return ResponseEntity.ok(service.updateUser(updatedUser));		
 	}
 
@@ -235,7 +211,7 @@ public class UserController {
 	 * @return Retorna un String con el mensaje.
 	 */
 	@PutMapping("/baja/{username}")
-	public String bajaClient(@PathVariable("username") String username) {		
+	public String userDown(@PathVariable("username") String username) {		
 		if (service.bajaUser(username)) {
 			return "Usuario dado de baja";
 		} else {

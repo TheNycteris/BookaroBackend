@@ -1,6 +1,5 @@
 package com.bookaro.api.controllers;
 
-
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Subscription;
 import com.bookaro.api.services.SubscriptionService;
 

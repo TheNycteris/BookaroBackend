@@ -30,14 +30,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	@Autowired
     private AuthenticationManager authenticationManager;
+	
 
     /**
      * Constructor
      * @param authenticationManager Recibe un objeto AuthenticationManager
      */
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;   
-        
+        this.authenticationManager = authenticationManager;           
                 
         // Filtro endPoing para el login
         setFilterProcessesUrl("/api/user/login");        
@@ -57,7 +57,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
         	// Mapeamos el objeto
             User creds = new ObjectMapper()
-                    .readValue(req.getInputStream(), User.class);            
+                    .readValue(req.getInputStream(), User.class);        
             
             // Retornamos un objeto Authentication
             // Le pasamos un objeto UsernamePasswordAuthenticationToken, con los atributos username y password.
@@ -99,8 +99,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));    	
     	
     	
-        // Llegara al body username y token
-    	String body = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername() + " " + token;
+    	String body = "";
+    	
+    	if (roles.get(0).equals("ROLE_DOWN")) {
+    		body = "Usuario dado de baja";
+    	} else {
+    		body = ((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername() + " " + token;
+    	}    	
+    	
+        // Llegara al body username y token    	
         res.getWriter().write(body);
         res.getWriter().flush();
     }

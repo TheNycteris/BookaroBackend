@@ -23,8 +23,8 @@ public class BookaroApiApplication {
 	}
 	
 	/**
-	 * Enlace al objeto "BCryptPasswordEncoder"
-	 * @return
+	 * Enlace al objeto BCryptPasswordEncoder
+	 * @return Retorna un objeto BCryptPasswordEncoder
 	 */
 	@Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder(); 

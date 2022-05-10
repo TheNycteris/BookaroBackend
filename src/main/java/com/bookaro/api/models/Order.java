@@ -45,19 +45,15 @@ public class Order {
     @JoinColumn(name = "id_user")
 	private Client client;
 	
-	/*@OneToMany(mappedBy = "orderBook", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private List<Book> books;*/ 
 	
 	@ManyToOne()
-    @JoinColumn(name = "id_book")
-	//@JsonIgnore
+    @JoinColumn(name = "id_book")	
 	private Book book;	
 
 	/**
 	 * Métodeo para contar order activas
 	 * <b> Aún por implantar </b>
-	 * @param clientId Recibe el id del cliente
+	 * @param client Recibe el id del cliente
 	 * @return Retorna true o false dependien de la cantidad de libros adquiridos.
 	 */
 	public boolean countActiveOrders (Client client) {
@@ -118,32 +114,23 @@ public class Order {
 		this.active = active;
 	}
 
+		
 	/**
-	 * Getter books
-	 * @return Retorna una lista de libros asociados a la order
+	 * getter Book
+	 * @return Retorna Book
 	 */
-	/*public List<Book> getBooks() {
-		return books;
-	}*/
-
-	/**
-	 * Setter books
-	 * @param books Recibe una lista de libros
-	 */
-	/*public void setBooks(List<Book> books) {
-		this.books = books;
-	}*/
-	
-	
 	public Book getBook() {
 		return book;
 	}
 
 
+	/**
+	 * setter Book
+	 * @param book Recibe un parámetor de tipo Book.
+	 */
 	public void setBook(Book book) {
 		this.book = book;
-	}
-	
+	}	
 	
 
 	/**
@@ -152,9 +139,7 @@ public class Order {
 	 */
 	public Long getId() {
 		return id;
-	}
-
-	
+	}	
 
 
 	/**
@@ -177,26 +162,29 @@ public class Order {
 
 	/**
 	 * Setter clients
-	 * @param clients Recibe un objeto Client
+	 * @param client Recibe un objeto Client
 	 */
 	public void setClient(Client client) {
 		this.client = client;
 	}
 	
 	
+	/**
+	 * Getter atributo username
+	 * @return Retorna String username
+	 */
 	public String getUsername() {
 		return this.client.getUsername();
 	}
 
 
+	/**
+	 * Método toString()
+	 */
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", startDate=" + startDate + ", active=" + active + "]";
 	}
-
-
-	
-	
 	
 		
 }

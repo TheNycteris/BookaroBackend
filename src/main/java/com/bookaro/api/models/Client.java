@@ -2,7 +2,6 @@ package com.bookaro.api.models;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -10,10 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /** 
@@ -34,14 +30,11 @@ public class Client extends User {
 	
 	// ******* Atributos de clase  *******
 	
-	@ManyToOne()
-    //@JoinColumn(name = "id_sub")
-	@JoinColumn(name = "id_sub")
-	//@JsonIgnore
+	@ManyToOne()    
+	@JoinColumn(name = "id_sub")	
 	private Subscription subscription;
 	
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-	//@JsonIgnore <-----------------
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch=FetchType.EAGER)	
 	private List<Order> orders; 
 	
 	/**
@@ -52,15 +45,8 @@ public class Client extends User {
 		orders = new ArrayList<Order>(); 
 	}	
 	
-	
-	
 
 	//  ******* Getter/Setter ******* 
-	
-	
-
-
-
 	/**
 	 * Getter que devuelve el tipo de subscripcion
 	 * @return retorna un objeto de tipo Subscription
@@ -88,15 +74,16 @@ public class Client extends User {
 
 	/**
 	 * Setter Order
-	 * @param order Recibe una lista de tipo Order
+	 * @param orders Recibe una lista de tipo Order
 	 */
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
+	
 
-
-
-
+	/**
+	 * Metodo toString
+	 */
 	@Override
 	public String toString() {
 		return "Client [subscription=" + subscription + ", orders=" + orders + ", getId()=" + getId()

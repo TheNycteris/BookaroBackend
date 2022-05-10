@@ -126,5 +126,20 @@ public class EmployeeController {
 		return "The id is invalid for the employee.";
 	}	
 	
+	
+	/**
+	 * Metodo para dar de baja un user por su username
+	 * @param username Recibe un String con el username
+	 * @return Retorna un String con el mensaje.
+	 */
+	@PutMapping("/baja/{username}")
+	public String employeeDown(@PathVariable("username") String username) {		
+		if (employeeService.bajaEmployee(username)) {
+			return "Empleado dado de baja";
+		} else {
+			return "No se ha podido dar de baja el empleado: " + username;
+		}		
+	}
+	
 
 }

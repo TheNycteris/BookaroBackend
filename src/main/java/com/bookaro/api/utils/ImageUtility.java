@@ -1,12 +1,21 @@
 package com.bookaro.api.utils;
 
-
 import java.io.ByteArrayOutputStream;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+/**
+ * Clase de utilidades para comprimir y descomprimir una imagen
+ * @author Pedro
+ *
+ */
 public class ImageUtility {
 
+	/**
+	 * Comprime un imagen
+	 * @param data Recibe los datos en formato byte[]
+	 * @return Retorna un objeto byte[]
+	 */
     public static byte[] compressImage(byte[] data) {
 
         Deflater deflater = new Deflater();
@@ -27,6 +36,11 @@ public class ImageUtility {
         return outputStream.toByteArray();
     }
 
+    /**
+     * Metodo para descomprimir una imagen
+     * @param data Recibe un array de byte[]
+     * @return Retorna un array de byte[]
+     */
     public static byte[] decompressImage(byte[] data) {
         Inflater inflater = new Inflater();
         inflater.setInput(data);

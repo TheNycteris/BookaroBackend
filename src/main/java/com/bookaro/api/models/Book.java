@@ -27,10 +27,6 @@ public class Book {
 	@Column(unique = true, nullable = false)
 	private Long id;	
 	
-	/*@ManyToOne()
-    @JoinColumn(name = "orderBook")
-	@JsonIgnore
-	private Order orderBook;	*/
 	
 	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JsonIgnore 
@@ -40,13 +36,9 @@ public class Book {
 	private String name, author, category, editorial, synopsis;
 	
 	@Column(unique = true, nullable = false)
-	private String isbn; 
+	private String isbn;	
 	
-	
-	/*@OneToOne
-	@JoinColumn(name = "image_id")
-	@JsonIgnore
-	private Image image;*/
+	private boolean active;
 	
 	// Enlace con la clase Book
 	@OneToOne(mappedBy="book")
@@ -57,9 +49,10 @@ public class Book {
 	 * Constructor vacio
 	 */
 	public Book() {}
-
-	// ******  Getter/Setter ****** 
 	
+	
+
+	// ******  Getter/Setter ****** 	
 	/**
 	 * Getter ID del libro
 	 * @return Retor el id del libro
@@ -172,42 +165,59 @@ public class Book {
 		this.synopsis = synopsis;
 	}
 
-	/**
-	 * Getter orderBook
-	 * @return Retorna un objeto de tipo Order.
-	 */
-	/*public Order getOrderBook() {
-		return orderBook;
-	}*/
 	
 	/**
-	 * Setter orderBook
-	 * @param orderBook Recibe un objeto de tipo Order.
+	 * Getter atributo List<Order>
+	 * @return Retorna lista de objetos Order
 	 */
-	/*public void setOrderBook(Order orderBook) {
-		this.orderBook = orderBook;
-	}*/
-	
-	
 	public List<Order> getOrders() {
 		return orders;
 	}
 
+	/**
+	 * Setter atributo List<Order>
+	 * @param orders Recibe una lista de objetos Order
+	 */
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
 	
 	
-	
-
+	/**
+	 * Getter atributo image
+	 * @return Retorn objeto Image
+	 */
 	public Image getImage() {
 		return image;
 	}
 	
 
+	/**
+	 * Setter atributo image
+	 * @param image Recibe un objeto Image
+	 */
 	public void setImage(Image image) {
 		this.image = image;
-	}	
+	}
+
+
+	/**
+	 * Getter atributo active
+	 * @return Retorna boolean
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+
+	/**
+	 * Setter atributo active
+	 * @param active Recibe boolean
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}		
+	
 	
 	
 	

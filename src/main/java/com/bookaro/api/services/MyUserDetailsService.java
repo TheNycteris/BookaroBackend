@@ -14,13 +14,11 @@ import org.springframework.stereotype.Service;
 import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.UserRepository;
 
-/**
- * 
+/** 
  * @author Pedro<br>
  * <li>Clase que implementa la interface UserDetailService</li>
  * <li>Se utiliza para autorizr el usuario</li>
  * <li>Inyecta la dependencia UserRepository</li>
- *
  */
 @Service
 public class MyUserDetailsService implements UserDetailsService {
