@@ -461,7 +461,7 @@ class BookaroTest {
 	 * Test en el que borramos todos los registros
 	 */
 	@Test
-	@Disabled
+	//@Disabled
 	void test4 () {
 		System.out.println("*************************** TEST DELETE ***************************");
 		/*for (Order o: orders) {

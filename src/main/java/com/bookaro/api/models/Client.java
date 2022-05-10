@@ -34,7 +34,7 @@ public class Client extends User {
 	@JoinColumn(name = "id_sub")	
 	private Subscription subscription;
 	
-	@OneToMany(mappedBy = "client", /*cascade = CascadeType.ALL*/cascade = CascadeType.MERGE, fetch=FetchType.EAGER, orphanRemoval = true)	
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL /*cascade = CascadeType.MERGE*/, fetch=FetchType.EAGER, orphanRemoval = true)	
 	private List<Order> orders; 
 	
 	/**
