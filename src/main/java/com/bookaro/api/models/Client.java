@@ -10,7 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /** 
  * @author Pedro <br>
@@ -34,7 +37,7 @@ public class Client extends User {
 	@JoinColumn(name = "id_sub")	
 	private Subscription subscription;
 	
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL /*cascade = CascadeType.MERGE*/, fetch=FetchType.EAGER, orphanRemoval = true)	
+	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval = true)	
 	private List<Order> orders; 
 	
 	/**
@@ -68,6 +71,8 @@ public class Client extends User {
 	 * Getter Order	  
 	 * @return Devuelve una lista de tipo Order
 	 */
+	//@JsonIgnore
+	@JsonProperty(access = Access.READ_ONLY)
 	public List<Order> getOrders() {
 		return orders;
 	}
@@ -76,6 +81,7 @@ public class Client extends User {
 	 * Setter Order
 	 * @param orders Recibe una lista de tipo Order
 	 */
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
@@ -84,6 +90,7 @@ public class Client extends User {
 	/**
 	 * Metodo toString
 	 */
+	//@JsonIgnore
 	@Override
 	public String toString() {
 		return "Client [subscription=" + subscription + ", orders=" + orders + ", getId()=" + getId()

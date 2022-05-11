@@ -56,8 +56,8 @@ public class OrderService {
 	 * @return Retorna todas las Orders
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
-	public ArrayList<Order> findAll(){
-		return (ArrayList<Order>) orderRepository.findAll();
+	public List<Order> findAll(){
+		return (List<Order>) orderRepository.findAll();
 	}
 	
 	/**

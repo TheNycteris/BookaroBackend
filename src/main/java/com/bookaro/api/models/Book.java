@@ -31,7 +31,7 @@ public class Book {
 	private Long id;	
 	
 	
-	@OneToMany(mappedBy = "book", /*cascade = CascadeType.ALL*/ cascade = CascadeType.REMOVE, fetch=FetchType.EAGER/*, orphanRemoval = true*/ )
+	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
 	@JsonIgnore 
 	private List<Order> orders;
 	
@@ -44,8 +44,8 @@ public class Book {
 	private boolean active;
 	
 	// Enlace con la clase Book
-	@OneToOne(mappedBy="book"/*, orphanRemoval = true*/ )
-	@OnDelete(action = OnDeleteAction.CASCADE) ////// <--
+	@OneToOne(mappedBy="book")
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	@JsonIgnore
 	private Image image;
 	
@@ -220,9 +220,7 @@ public class Book {
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
-	}		
-	
-	
+	}	
 	
 	
 }

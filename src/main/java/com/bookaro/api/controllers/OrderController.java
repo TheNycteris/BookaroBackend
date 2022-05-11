@@ -63,7 +63,7 @@ public class OrderController {
 	 * @return Retorna una lista de order
 	 */
 	@GetMapping("/all")
-	public ArrayList<Order> getAllOrders(){
+	public List<Order> getAllOrders(){
 		return orderService.findAll();
 	}
 	

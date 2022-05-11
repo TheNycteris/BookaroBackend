@@ -1,8 +1,7 @@
 package com.bookaro.api.models;
 
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
@@ -30,8 +29,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "orders")
 public class Order {
 	
-	// ****** Atributos de clase ****** 
-	
+	// ****** Atributos de clase ****** 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
@@ -40,10 +38,12 @@ public class Order {
 	private Date startDate;
 	private boolean active;	
 	
-	@ManyToOne()
+	@ManyToOne()	
+    //@JoinColumn(name = "id_user")
 	//@JsonIgnore
-    @JoinColumn(name = "id_user")
+	@JoinColumn(name = "id_client")
 	private Client client;
+	//private Long client;
 	
 	
 	@ManyToOne()
@@ -80,8 +80,7 @@ public class Order {
 	}
 	
 	
-	// ******  Getter/Setter ******	
-	
+	// ******  Getter/Setter ******		
 	/**
 	 * Getter startDate
 	 * @return Retorna un Date
@@ -155,6 +154,7 @@ public class Order {
 	 * Getter clients
 	 * @return Retorna un Objeto Client
 	 */
+	//@JsonIgnore
 	public Client getClient() {
 		return client;
 	}
@@ -164,6 +164,7 @@ public class Order {
 	 * Setter clients
 	 * @param client Recibe un objeto Client
 	 */
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public void setClient(Client client) {
 		this.client = client;
 	}
@@ -173,10 +174,11 @@ public class Order {
 	 * Getter atributo username
 	 * @return Retorna String username
 	 */
+	@JsonIgnore
 	public String getUsername() {
 		return this.client.getUsername();
-	}
-
+	}	
+	
 
 	/**
 	 * Método toString()
@@ -185,6 +187,7 @@ public class Order {
 	public String toString() {
 		return "Order [id=" + id + ", startDate=" + startDate + ", active=" + active + "]";
 	}
-	
+
+
 		
 }

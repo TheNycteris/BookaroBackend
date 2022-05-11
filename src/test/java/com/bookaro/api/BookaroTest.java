@@ -306,11 +306,11 @@ class BookaroTest {
 		Order order2 = new Order();
 		order2.setStartDate(new Date());
 		order2.setActive(true);		
-		order2.setClient(client1);
+		order2.setClient(client2);
 		order2.setBook(book2);
 		orderRepository.save(order2);	
 
-		System.out.println("Insertamos Order2");
+		System.out.println("Insertamos Order3");
 		// Creamos una Order
 		Order order3 = new Order();
 		order3.setStartDate(new Date());
@@ -461,18 +461,9 @@ class BookaroTest {
 	 * Test en el que borramos todos los registros
 	 */
 	@Test
-	//@Disabled
+	@Disabled
 	void test4 () {
-		System.out.println("*************************** TEST DELETE ***************************");
-		/*for (Order o: orders) {
-			o.setClient(null);
-			orderRepository.save(o);
-		}
-		
-		for (Image i: imageRepository.findAll()) {
-			i.setBook(null);
-			imageRepository.save(i);
-		}*/
+		System.out.println("*************************** TEST DELETE ***************************");		
 		
 		System.out.println("Borrado Orders");
 		orderRepository.deleteAll();

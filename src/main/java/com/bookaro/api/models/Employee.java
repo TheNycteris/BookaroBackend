@@ -29,8 +29,7 @@ public class Employee extends User {
 	public Employee() {}	
 
 	
-	// ******* Getter/Setter *******
-	
+	// ******* Getter/Setter *******	
 	/**
 	 * Getter salary
 	 * @return Retorna un double con el salario del empleado
@@ -62,7 +61,6 @@ public class Employee extends User {
 	public void setPosition(String position) {
 		this.position = position;
 	}	
-	
 	
 		
 }

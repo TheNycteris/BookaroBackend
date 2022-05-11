@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * 
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_user")
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "userbookaro")
@@ -39,6 +40,7 @@ public class User implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = true)	
 	private Long id;
+	//private Long id_user;
 	
 	@Column(unique = true, nullable = false)
 	private String username; 
@@ -76,6 +78,7 @@ public class User implements UserDetails {
 			    String name, String surname, String dni, String address,
 			    String email, int age, String roles, boolean active) {		
 		this.id = id_user;
+		//this.id_user = id_user;
 		this.username = username;
 		this.password = password;
 		this.name = name;

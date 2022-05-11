@@ -4,7 +4,6 @@ import javax.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Builder;
 import lombok.Data;
@@ -36,11 +35,10 @@ public class Image {
 	private String type;
 	
 	@Column(name = "image", unique = false, nullable = false, length = 100000)
-	private byte[] image;
-	
+	private byte[] image;	
 	
 	@OneToOne
-	@OnDelete(action = OnDeleteAction.CASCADE) ///////////
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	@JoinColumn(name = "book_id")	
 	private Book book;
 	
