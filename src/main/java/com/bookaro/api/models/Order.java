@@ -38,12 +38,9 @@ public class Order {
 	private Date startDate;
 	private boolean active;	
 	
-	@ManyToOne()	
-    //@JoinColumn(name = "id_user")
-	//@JsonIgnore
+	@ManyToOne()    
 	@JoinColumn(name = "id_client")
 	private Client client;
-	//private Long client;
 	
 	
 	@ManyToOne()
@@ -59,7 +56,7 @@ public class Order {
 	public boolean countActiveOrders (Client client) {
 		System.out.println(client.getId());
 		System.out.println(this.getClient().getUsername());
-		if (client.getSubscription() == null) {
+		if (client.getSubscription().getType().equalsIgnoreCase("Sin Subscripción")) {
 			System.out.println("Estoy en el primer IF");
 			return false;
 		} 
@@ -153,8 +150,7 @@ public class Order {
 	/**
 	 * Getter clients
 	 * @return Retorna un Objeto Client
-	 */
-	//@JsonIgnore
+	 */	
 	public Client getClient() {
 		return client;
 	}

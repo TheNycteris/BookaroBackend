@@ -155,6 +155,13 @@ class BookaroTest {
 		subscription2.setPrice(10);
 		subscriptionRepository.save(subscription2);
 		
+		System.out.println("Insertamos subscripción3");
+		// subscription2
+		Subscription subscription3 = new Subscription();		
+		subscription3.setType("Sin Subscripción");
+		subscription3.setPrice(0);
+		subscriptionRepository.save(subscription3);
+		
 		/**
 		 * ************ Users/employee ************		
 		 */
@@ -230,6 +237,7 @@ class BookaroTest {
 		client2.setEmail("cliente2@bookaro.com");
 		client2.setAge(40);		
 		client2.setRole("ROLE_USER");
+		client2.setSubscription(subscription3);
 		client2.setActive(true);				
 		clientRepository.save(client2);
 		

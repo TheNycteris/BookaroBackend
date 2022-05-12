@@ -70,8 +70,7 @@ public class Client extends User {
 	/**
 	 * Getter Order	  
 	 * @return Devuelve una lista de tipo Order
-	 */
-	//@JsonIgnore
+	 */	
 	@JsonProperty(access = Access.READ_ONLY)
 	public List<Order> getOrders() {
 		return orders;
@@ -89,8 +88,7 @@ public class Client extends User {
 
 	/**
 	 * Metodo toString
-	 */
-	//@JsonIgnore
+	 */	
 	@Override
 	public String toString() {
 		return "Client [subscription=" + subscription + ", orders=" + orders + ", getId()=" + getId()

@@ -21,7 +21,7 @@ import com.bookaro.api.models.Subscription;
 public interface ClientRepository extends CrudRepository<Client, Long> {
 
 	List<Client> findBySubscription (Subscription subscription);
-	List<Order> orders (Long id);
+	List<Order> findAllOrderByActive (String username);
 	Client findClientByUsername (String username);
 	
 }

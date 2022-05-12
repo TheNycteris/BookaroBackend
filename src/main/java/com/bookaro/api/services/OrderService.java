@@ -1,6 +1,5 @@
 package com.bookaro.api.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +34,9 @@ public class OrderService {
 	 * Método para ver las Orders de un cliente
 	 * @param client Recibe un objeto Client
 	 * @return Retorna una lista de objetos Order
-	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")	
-	public List<Order> findAllOrderByClient(Client client) {
+	 */		
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or #client.getUsername() == authentication.name")
+	public List<Order> findAllOrderByClient(Client client) {		
 		return orderRepository.findAllOrderByClient(client);
 	}
 
@@ -46,7 +45,7 @@ public class OrderService {
 	 * @param active Recibe boolean 
 	 * @return Retorna una lista de Order
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")	
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")	
 	public List<Order> findAllOrderByActive(boolean active) {
 		return orderRepository.findAllOrderByActive(active);
 	}
@@ -60,6 +59,8 @@ public class OrderService {
 		return (List<Order>) orderRepository.findAll();
 	}
 	
+	
+
 	/**
 	 * Metodo que devuelve un objeto Order
 	 * @param id Recibe un Long con el id de la Order

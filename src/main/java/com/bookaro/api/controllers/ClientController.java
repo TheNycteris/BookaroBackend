@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
@@ -33,8 +34,20 @@ public class ClientController {
 	@Autowired
 	private ClientService clientService;	
 	
-		
 	
+	
+	/**
+	 * Metodo que busca ordenes de un cliente por su estado
+	 * @param username Recibe String con el username del cliente.
+	 * @param active Recibe boolean true o false según el estatus de la order
+	 * @return Retorna una lista de orders
+	 */
+	@GetMapping("/ordersStatus/{username}")
+	public List<Order> findOrdersByActive(@PathVariable ("username") String username, @RequestParam boolean active) {
+		return clientService.findOrdersByActive(username, active);
+	}
+
+
 	/**
 	 * Metodo que recupera un Client por su username
 	 * @param username Recibe String
@@ -44,7 +57,8 @@ public class ClientController {
 	public Client findClientByUsername(@PathVariable ("username") String username) {
 		return clientService.findClientByUsername(username);
 	}
-
+	
+	
 
 	/**
 	 * Metodo que busca orders por id del cliente
@@ -103,7 +117,7 @@ public class ClientController {
 	 */
 	@PostMapping("/insert")
 	public String addClient (@RequestBody Client client) {
-		if (client != null) {
+		if (client != null) {			
 			clientService.add(client);
 			return "Added a client";
 		} else {

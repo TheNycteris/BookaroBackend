@@ -40,7 +40,7 @@ public class OrderController {
 	 * @return Retorna lista de objetos Order
 	 */
 	@GetMapping("/client")
-	public List<Order> findAllOrderByClient(@RequestBody Client client, Principal pri) {
+	public List<Order> findAllOrderByClient(@RequestBody Client client) {
 		List<Order> todas = orderService.findAllOrderByClient(client);
 		return todas;
 	}
@@ -53,7 +53,7 @@ public class OrderController {
 	 * @return Retorna una lista de orders
 	 */
 	@GetMapping (value = "/active/{active}")
-	public List<Order> findAllOrderByActive(@PathVariable("active") boolean active, Principal pri) {		
+	public List<Order> findAllOrderByActive(@PathVariable ("active") boolean active) {
 		return orderService.findAllOrderByActive(active);
 	}
 
@@ -66,8 +66,9 @@ public class OrderController {
 	public List<Order> getAllOrders(){
 		return orderService.findAll();
 	}
-	
-	
+		
+
+
 	/**
 	 * Metodo que obtiene un Order por su id
 	 * @param id Recibe un long con el id de la Order
@@ -88,7 +89,7 @@ public class OrderController {
 	 * @return Retorna un String con el resultado.
 	 */
 	@PostMapping("/insert")
-	public String addOrder (@RequestBody Order order, Principal pri) {
+	public String addOrder (@RequestBody Order order/*, Principal pri*/) {
 		if (order != null) {	
 			System.out.println(order.countActiveOrders(order.getClient()));
 			if (order.countActiveOrders(order.getClient())) {

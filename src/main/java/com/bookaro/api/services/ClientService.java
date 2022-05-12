@@ -36,6 +36,26 @@ public class ClientService {
 	private BCryptPasswordEncoder passwordEncoder;		
 		
 	
+		
+	
+	/**
+	 * Metodo que busca ordenes de un cliente por su estado
+	 * @param username Recibe String con el username del cliente.
+	 * @param active Recibe boolean true o false según el estatus de la order
+	 * @return Retorna una lista de orders
+	 */
+	@PostAuthorize("hasAnyRole('ADMIN', 'MOD') or #username == authentication.name")
+	public List<Order> findOrdersByActive(String username, boolean active) {
+		Client client = clientRepository.findClientByUsername(username);
+		List<Order> orders = new ArrayList<Order>();
+		for (Order order: client.getOrders()) {
+			if (order.isActive() == active) {
+				orders.add(order);
+			}
+		}
+		return orders;
+	}
+
 	/**
 	 * Metodo que recupera un cliente por su username
 	 * @param username Recibe un String con el username
@@ -59,6 +79,7 @@ public class ClientService {
 		return orders;		
 	}
 	
+
 
 	/**
 	 * Metodo que devuelve una lista de clientes
@@ -107,8 +128,8 @@ public class ClientService {
 		copy.setSurname(client.getSurname());		
 		copy.setUsername(client.getUsername());			
 		copy.setEmail(client.getEmail());	
-		copy.setRole("ROLE_USER");
-		copy.setSubscription(client.getSubscription());	
+		copy.setRole("ROLE_USER");		
+		copy.setSubscription(client.getSubscription());				
 		copy.setActive(client.isActive());
 		return clientRepository.save(copy);
 	}	

@@ -32,7 +32,7 @@ public class SubscriptionService {
 	 * Metodo que devuelve una lista de Subscription
 	 * @return Retorna todas las subscripciones creadas
 	 */
-	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	//@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	public List<Subscription> findAll(){
 		return (List<Subscription>) subscriptionRepository.findAll();
 	}
@@ -66,7 +66,8 @@ public class SubscriptionService {
 	 * @param subscription Recibe un objeto de tipo Subscription
 	 * @return Retorna un objeto Subscription
 	 */
-	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	//@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public Subscription update(Subscription subscription) {
 	    try {
 	    	subscriptionRepository.save(subscription);

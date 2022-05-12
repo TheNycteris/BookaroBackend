@@ -34,6 +34,8 @@ public class RestConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable().authorizeRequests()       		
 		.antMatchers(HttpMethod.POST, "/api/user/logout").permitAll()   
 		.antMatchers(HttpMethod.POST, "/api/client/insert").permitAll()
+		.antMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+		.antMatchers(HttpMethod.GET, "/api/subscription/all").permitAll()
 		.anyRequest().authenticated()                
 		.and()
 		.logout()
