@@ -33,6 +33,19 @@ public class BookController {
 	
 	
 	
+	
+	/**
+	 * Metodo que devuelve todos los libros con paginacion
+	 * @param pageNo Recibe un entero con el numero de pagina o bloque
+	 * @param pageSize Recibe un entero con los elementos por pagina
+	 * @return Retorna una lista de libros paginada
+	 */
+	@GetMapping("/pagination/{pageNo}/{pageSize}")
+	public List<Book> findPaginated(@PathVariable int pageNo, @PathVariable int pageSize) {
+		return bookService.findPaginated(pageNo, pageSize);
+	}
+	
+
 	/**
 	 * Metodo que filtra una lista de libros por su estado
 	 * @param active Recibe boolean 

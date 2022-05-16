@@ -2,6 +2,7 @@ package com.bookaro.api.repositories;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import com.bookaro.api.models.Book;
@@ -13,7 +14,7 @@ import com.bookaro.api.models.Book;
  *
  */
 @Repository
-public interface BookRepository extends CrudRepository<Book, Long> {
+public interface BookRepository extends /*CrudRepository*/ JpaRepository <Book, Long> {
 	
 	Book findBookByName (String name);
 	List<Book> findBookByAuthor (String author);

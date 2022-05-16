@@ -116,7 +116,7 @@ public class ImageService {
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	public List<Image> findAll() {
 		List<Image> images = (List<Image>) imageRepository.findAll();
-		
+
 		for (Image img: images) {
 			Image.builder()
 			.id(img.getId())
@@ -125,7 +125,7 @@ public class ImageService {
 			.book(img.getBook())
 			.image(ImageUtility.decompressImage(img.getImage())).build();			
 		}
-		
+
 		return images;
 	}
 

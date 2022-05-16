@@ -37,7 +37,7 @@ public class Client extends User {
 	@JoinColumn(name = "id_sub")	
 	private Subscription subscription;
 	
-	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval = true)	
+	@OneToMany(mappedBy = "client", cascade = CascadeType.MERGE, fetch=FetchType.EAGER, orphanRemoval = true)	
 	private List<Order> orders; 
 	
 	/**
@@ -54,6 +54,7 @@ public class Client extends User {
 	 * Getter que devuelve el tipo de subscripcion
 	 * @return retorna un objeto de tipo Subscription
 	 */
+	@JsonProperty(access = Access.READ_WRITE)
 	public Subscription getSubscription() {
 		return subscription;
 	}
@@ -62,6 +63,7 @@ public class Client extends User {
 	 * Setter subscripcion
 	 * @param subscription Recibe un parametro de Subscription con la subscripcion
 	 */
+	@JsonProperty(access = Access.READ_WRITE)
 	public void setSubscription(Subscription subscription) {
 		this.subscription = subscription;
 	}

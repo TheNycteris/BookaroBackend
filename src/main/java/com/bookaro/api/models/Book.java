@@ -31,7 +31,7 @@ public class Book {
 	private Long id;	
 	
 	
-	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER/*, orphanRemoval = true*/)
 	@JsonIgnore 
 	private List<Order> orders;
 	

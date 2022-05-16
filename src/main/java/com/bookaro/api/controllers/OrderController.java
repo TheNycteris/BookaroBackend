@@ -89,14 +89,13 @@ public class OrderController {
 	 * @return Retorna un String con el resultado.
 	 */
 	@PostMapping("/insert")
-	public String addOrder (@RequestBody Order order/*, Principal pri*/) {
-		if (order != null) {	
-			System.out.println(order.countActiveOrders(order.getClient()));
+	public String addOrder (@RequestBody Order order, Principal pri) {		
+		if (order != null) {			
 			if (order.countActiveOrders(order.getClient())) {
 				orderService.add(order);
 				return "Added a order";
 			} else {
-				return "Tiene demasiadas ordenes";
+				return "Tiene demasiadas ordenes o no tiene subscripción";
 			}			
 			
 		} else {
@@ -127,11 +126,8 @@ public class OrderController {
 	 */
 	@DeleteMapping("{id}")
 	public String deleteOrder (@PathVariable("id") long id) {
-		if(id > 0) {
-			if(orderService.delete(id)) {
-				/*if (orderService.findById(id) != null ) {
-					return "Cannot delete the order.";
-				}*/
+		if(id > 0) {			
+			if(orderService.delete(id)) {				
 				return "Deleted the order.";
 			} else {
 				return "Cannot delete the order.";

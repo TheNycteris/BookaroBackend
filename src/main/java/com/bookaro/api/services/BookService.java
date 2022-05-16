@@ -8,7 +8,11 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import com.bookaro.api.models.Book;
+import com.bookaro.api.pagination.IBookService;
 import com.bookaro.api.repositories.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 /** 
  * @author Pedro<br>
@@ -16,12 +20,25 @@ import com.bookaro.api.repositories.BookRepository;
  * Inyecta la dependencia BookRepository.
  */
 @Service
-public class BookService {
+public class BookService implements IBookService {
 	
 	@Autowired
-	BookRepository bookRepository;
+	private BookRepository bookRepository;
 	
 	
+	/**
+	 * Metodo para buscar todos los libros con paginacion
+	 * @param pageNo Recibe un entero con el numero de pagina
+	 * @param pageSize Recibe un entero con los elementos por pagina
+	 * return Retorna una lista de libros
+	 */
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	@Override	
+	public List<Book> findPaginated(int pageNo, int pageSize) {
+		Pageable paging = PageRequest.of(pageNo, pageSize);
+		Page<Book> pagedResult = bookRepository.findAll(paging);
+		return pagedResult.toList();
+	}
 	
 	/**
 	 * Metodo que filtra una lista de libros por su estado
@@ -135,5 +152,7 @@ public class BookService {
 	        return false;
 	    }
 	}
+
+	
 
 }

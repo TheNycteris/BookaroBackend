@@ -237,7 +237,7 @@ class BookaroTest {
 		client2.setEmail("cliente2@bookaro.com");
 		client2.setAge(40);		
 		client2.setRole("ROLE_USER");
-		client2.setSubscription(subscription3);
+		client2.setSubscription(subscription2);
 		client2.setActive(true);				
 		clientRepository.save(client2);
 		
@@ -436,20 +436,14 @@ class BookaroTest {
 	void test3 () {	
 		System.out.println("*************************** TEST EXCEPTION ***************************");
 		System.out.println("Comprobamos que no podemos introducir una subscripción con el mismo id.");
-		// Comprobamos que no podemos introducir una subscripción con el mismo "id"		
-		// Debe saltar una excepción del tipo "JpaSystemException"		 
-		JpaSystemException thrown1 = Assertions.assertThrows(JpaSystemException.class, () -> {
-			Subscription subscription3 = new Subscription();
-			subscription3.setId_sub(1L);
-			subscription3.setType("Básica");
-			subscription3.setPrice(10);			
-			subscriptionRepository.save(subscription3);
-		}, "JpaSystemException was expected");		
-
-		assertEquals("A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: "
-				+ "com.bookaro.api.models.Subscription.allClients; nested exception is org.hibernate.HibernateException: "
-				+ "A collection with cascade=\"all-delete-orphan\" was no longer referenced by the owning entity instance: "
-				+ "com.bookaro.api.models.Subscription.allClients", thrown1.getMessage());
+		// Comprobamos que no podemos introducir una subscripción con el mismo "id" y tipo de subscripción			
+		Assertions.assertThrows(Exception.class, () -> {
+			Subscription subscription4 = new Subscription();
+			subscription4.setId_sub(1L);
+			subscription4.setType("Básica");
+			subscription4.setPrice(10);			
+			subscriptionRepository.save(subscription4);
+		}, "Exception was expected");		
 
 
 		System.out.println("Actualizaremos el email de cliente1 al mismo que tiene employee pedro@bookaro.com");
@@ -475,13 +469,13 @@ class BookaroTest {
 		System.out.println("*************************** TEST DELETE ***************************");		
 		
 		System.out.println("Borrado Orders");
-		orderRepository.deleteAll();
-		System.out.println("Borrado Subscriptions");
-		subscriptionRepository.deleteAll();
+		orderRepository.deleteAll();		
 		System.out.println("Borrado Books");
 		bookRepository.deleteAll();
 		System.out.println("Borrado Users");
 		userRepository.deleteAll();
+		System.out.println("Borrado Subscriptions");
+		subscriptionRepository.deleteAll();
 		System.out.println("Borrado Images");
 		imageRepository.deleteAll();
 		

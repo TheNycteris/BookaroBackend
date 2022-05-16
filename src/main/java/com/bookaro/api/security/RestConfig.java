@@ -36,6 +36,7 @@ public class RestConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, "/api/client/insert").permitAll()
 		.antMatchers(HttpMethod.POST, "/api/user/login").permitAll()
 		.antMatchers(HttpMethod.GET, "/api/subscription/all").permitAll()
+		.antMatchers(HttpMethod.GET, "/api/subscription/id/**").permitAll()
 		.anyRequest().authenticated()                
 		.and()
 		.logout()

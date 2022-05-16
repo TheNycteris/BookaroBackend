@@ -55,13 +55,16 @@ public class Order {
 	 */
 	public boolean countActiveOrders (Client client) {
 		System.out.println(client.getId());
-		System.out.println(this.getClient().getUsername());
+		System.out.println(client.getUsername());
+		System.out.println(client.getSubscription().getType());
+		System.out.println(client.getOrders().size());
 		if (client.getSubscription().getType().equalsIgnoreCase("Sin Subscripción")) {
 			System.out.println("Estoy en el primer IF");
 			return false;
 		} 
 		int contador = 0;
 		for (Order order: client.getOrders()) {
+			
 			if (order.isActive()) {
 				contador++;
 			}

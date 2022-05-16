@@ -57,8 +57,7 @@ public class OrderService {
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public List<Order> findAll(){
 		return (List<Order>) orderRepository.findAll();
-	}
-	
+	}	
 	
 
 	/**
@@ -107,7 +106,7 @@ public class OrderService {
 	@PreAuthorize(value = "hasRole('ADMIN')")
 	public boolean delete (long id) {
 		try {
-			orderRepository.deleteById(id);
+			orderRepository.deleteById(id);			
 	        return true;
 	    } catch (Exception e) {
 	        System.out.println(e.getMessage());

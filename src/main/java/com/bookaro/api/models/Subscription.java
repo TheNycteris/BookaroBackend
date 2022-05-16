@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Subscription {
 
 	// ***** Atributos de clase *****	
-	@OneToMany(mappedBy = "subscription", cascade = CascadeType.MERGE, orphanRemoval = true, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "subscription", cascade = CascadeType.MERGE, /*orphanRemoval = true,*/ fetch=FetchType.EAGER)
 	@JsonIgnore 
 	private List<Client> allClients;
 	
@@ -38,7 +38,10 @@ public class Subscription {
 	@Column(unique = true, nullable = false)
 	private Long id_sub;	
 	
+	@Column(unique = true, nullable = false)
 	private String type;
+	
+	@Column(nullable = false)
 	private double price;
 	
 	/**

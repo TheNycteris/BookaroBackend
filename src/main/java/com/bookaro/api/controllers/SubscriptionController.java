@@ -45,7 +45,7 @@ public class SubscriptionController {
 	 * @param pri Recibe un objeto de tipo Principal
 	 * @return Retorna un objeto de tipo Subscription
 	 */
-	@GetMapping (value = "{id}")
+	@GetMapping (value = "/id/{id}")
 	public Optional<Subscription> getSubscriptionId (@PathVariable ("id") long id/*, Principal pri*/) {
 		return subscriptionService.findById(id);
 	}

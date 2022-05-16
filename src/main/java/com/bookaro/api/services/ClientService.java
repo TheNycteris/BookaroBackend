@@ -217,9 +217,7 @@ public class ClientService {
 		} catch (Exception e) {
 			return false;
 		}
-	}
-
-	
+	}	
 
 	
 }
