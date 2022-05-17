@@ -47,7 +47,11 @@ public class AuthorService {
 	    }
 	}	
 
-	
+	/**
+	 * Metodo para borrar un Author
+	 * @param id Recibe Long con el id del author
+	 * @return Retorna true o false
+	 */
 	@PreAuthorize(value = "hasRole('ADMIN')")
 	public boolean delete(Long id) {
 		try {
