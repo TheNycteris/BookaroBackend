@@ -37,7 +37,7 @@ public class Image {
 	@Column(name = "image", unique = false, nullable = false, length = 100000)
 	private byte[] image;	
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.MERGE)
 	@OnDelete(action = OnDeleteAction.CASCADE) 
 	@JoinColumn(name = "book_id")	
 	private Book book;

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Image;
+import com.bookaro.api.services.BookService;
 import com.bookaro.api.services.ImageService;
 import com.bookaro.api.utils.ImageUploadResponse;
 
@@ -32,6 +33,7 @@ public class ImageController {
 
 	@Autowired
 	ImageService imageService;
+	
 
 
 	/**
@@ -45,6 +47,7 @@ public class ImageController {
 	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file, @RequestParam("book_id") Book id) throws IOException {		
 		return imageService.upload(file, id);		
 	}
+	
 	
 	
 

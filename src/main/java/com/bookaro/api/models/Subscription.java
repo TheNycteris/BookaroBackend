@@ -11,7 +11,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 
@@ -29,8 +35,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Subscription {
 
 	// ***** Atributos de clase *****	
-	@OneToMany(mappedBy = "subscription", cascade = CascadeType.MERGE, /*orphanRemoval = true,*/ fetch=FetchType.EAGER)
-	@JsonIgnore 
+	@OneToMany(mappedBy = "subscription", cascade = CascadeType.MERGE, fetch=FetchType.EAGER)
+	//@JsonIgnore 
 	private List<Client> allClients;
 	
 	@Id
@@ -63,6 +69,7 @@ public class Subscription {
 	 * Setter clients
 	 * @param allClients Recibe una lista de clientes.
 	 */
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public void setAllClients(List<Client> allClients) {
 		this.allClients = allClients;
 	}	

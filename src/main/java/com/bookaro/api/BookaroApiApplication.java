@@ -13,8 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /** 
- * @author Pedro
- * 
+ * @author Pedro 
  * Clase que inicia la aplicación.
  *
  */
@@ -38,7 +37,10 @@ public class BookaroApiApplication {
     }	
 	
 	
-	/////////////////////////////////////////////////////////////////////
+	/**
+	 * Metodo que inserta o añade al contexto el redireccionamiento. 
+	 * @return Retorna objeto ServletWebServerFactory
+	 */
 	@Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -56,6 +58,10 @@ public class BookaroApiApplication {
         return tomcat;
     }
 	
+	/**
+	 * Metodo para redireccionar las peticiones Http
+	 * @return Retorna objeto Connector
+	 */
 	private Connector redirectConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setScheme("http");
@@ -64,5 +70,5 @@ public class BookaroApiApplication {
         connector.setRedirectPort(8443);
         return connector;
     }	
-	/////////////////////////////////////////////////////////////////////
+	
 }

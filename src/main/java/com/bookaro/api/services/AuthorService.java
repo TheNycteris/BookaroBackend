@@ -1,0 +1,63 @@
+package com.bookaro.api.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+import com.bookaro.api.models.Author;
+import com.bookaro.api.repositories.AuthorRepository;
+
+@Service
+public class AuthorService {
+	
+	@Autowired
+	private AuthorRepository authorRepository;
+
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	public List<Author> findAll() {
+		return authorRepository.findAll();
+	}
+
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	public Optional<Author> findById(Long id) {
+		return authorRepository.findById(id);
+	}
+	
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	public boolean add (Author author) {
+		try {
+			authorRepository.save(author);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
+	
+	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
+	public boolean update(Author author) {
+	    try {
+	    	authorRepository.save(author);
+	        return true;
+	    } catch (Exception e) {	        
+	        return false;
+	    }
+	}	
+
+	
+	@PreAuthorize(value = "hasRole('ADMIN')")
+	public boolean delete(Long id) {
+		try {
+			authorRepository.deleteById(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	
+
+}

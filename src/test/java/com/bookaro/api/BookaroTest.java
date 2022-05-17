@@ -21,11 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
+
+import com.bookaro.api.models.Author;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Employee;
@@ -33,6 +34,7 @@ import com.bookaro.api.models.Image;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
 import com.bookaro.api.models.User;
+import com.bookaro.api.repositories.AuthorRepository;
 import com.bookaro.api.repositories.BookRepository;
 import com.bookaro.api.repositories.ClientRepository;
 import com.bookaro.api.repositories.EmployeeRepository;
@@ -84,6 +86,9 @@ class BookaroTest {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private AuthorRepository authorRepository;
+	
 	
 	static List<User> users = new ArrayList<User>();
 	static List<Client> clients = new ArrayList<Client>();
@@ -92,6 +97,8 @@ class BookaroTest {
 	static List<Book> books = new ArrayList<Book>();
 	static List<Subscription> subscriptions = new ArrayList<Subscription>();
 	static List<Image> images = new ArrayList<Image>();
+	
+	
 	
 	static int cont = 1;
 	
@@ -134,9 +141,7 @@ class BookaroTest {
 	 */
 	@Test
 	void test1() {
-		System.out.println("*************************** TEST INSERT ***************************");
-		
-	
+		System.out.println("*************************** TEST INSERT ***************************");	
 		
 		/**
 		 * ************ Subscription ************		
@@ -222,8 +227,7 @@ class BookaroTest {
 		client1.setRole("ROLE_USER");
 		client1.setActive(true);
 		client1.setSubscription(subscription1);		
-		clientRepository.save(client1);			
-		
+		clientRepository.save(client1);		
 		
 		// Creamos client2
 		System.out.println("Insertamos cliente2");
@@ -239,9 +243,22 @@ class BookaroTest {
 		client2.setRole("ROLE_USER");
 		client2.setSubscription(subscription2);
 		client2.setActive(true);				
-		clientRepository.save(client2);
-		
+		clientRepository.save(client2);		
 			
+		
+		/**
+		 * ************ Author ************		
+		 */
+		Author author1 = new Author();
+		author1.setName("author1");
+		author1.setNacionality("SPAIN");
+		authorRepository.save(author1);
+		
+		Author author2 = new Author();
+		author2.setName("author2");
+		author2.setNacionality("GERMANY");
+		authorRepository.save(author2);
+		
 		
 		/**
 		 * ************ Book ************		
@@ -250,7 +267,8 @@ class BookaroTest {
 		System.out.println("Insertamos book1");
 		Book book1 = new Book();
 		book1.setName("libro1");
-		book1.setAuthor("author1");
+		//book1.setAuthor("author1");
+		book1.setAuthor(author1); // <--
 		book1.setIsbn("isbn1");
 		book1.setCategory("category1");
 		book1.setEditorial("editorial1");
@@ -262,14 +280,14 @@ class BookaroTest {
 		System.out.println("Insertamos book2");
 		Book book2 = new Book();
 		book2.setName("libro2");
-		book2.setAuthor("author2");
+		//book2.setAuthor("author2");
+		book2.setAuthor(author2);
 		book2.setIsbn("isbn2");
 		book2.setCategory("category2");
 		book2.setEditorial("editorial2");
 		book2.setSynopsis("synopsis2");	
 		book2.setActive(true);
-		bookRepository.save(book2);
-		
+		bookRepository.save(book2);		
 				
 		
 		/**
@@ -294,8 +312,7 @@ class BookaroTest {
 
 		} catch (IOException e ) {			
 			e.printStackTrace();
-		}
-				
+		}				
 		
 		
 		/**
@@ -335,7 +352,6 @@ class BookaroTest {
 		assert !subscriptions.isEmpty();
 		assert subscriptions.size() == subscriptionRepository.count();
 
-
 		users = (List<User>) userRepository.findAll();
 		assert !users.isEmpty();
 		assert users.size() == userRepository.count();
@@ -365,8 +381,7 @@ class BookaroTest {
 	void test2() {
 		System.out.println("*************************** TEST UPDATE ***************************");
 		
-		// ********** USER ********** //
-		
+		// ********** USER ********** //		
 		// Obtenemos el usuario "admin"
 		User user = userRepository.findById(2L).get();
 		assert user.getAddress() == null;
@@ -375,6 +390,7 @@ class BookaroTest {
 		user.setAddress("Dirección actualizada");
 		userRepository.save(user);
 		assert user.getAddress().equals("Dirección actualizada");
+		
 		
 		// ********** EMPLOYEE ********** //
 		// Miramos el valor actual del apellido del empleado
@@ -385,6 +401,7 @@ class BookaroTest {
 		// Actualizamos el valor
 		employee.setSurname("Ruiz Martínez");
 		assertEquals(employee.getSurname(),"Ruiz Martínez");
+		
 		
 		// ********** CLIENTE 1 ********** //		
 		// Comprobamos que el cliente 1 tiene una subscripcion Familiar
@@ -397,6 +414,7 @@ class BookaroTest {
 		clientRepository.save(client1);
 		// Comprobamos que realmente se ha actualizado.
 		assertEquals(client1.getSubscription().getType(), clientRepository.findById(4L).get().getSubscription().getType());
+		
 		
 		// ********** SUBSCRIPTION ********** //
 		// Comprobamos que la subscripción 2 tiene un precio de 10

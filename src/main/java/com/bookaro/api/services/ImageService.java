@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Image;
+import com.bookaro.api.repositories.BookRepository;
 import com.bookaro.api.repositories.ImageRepository;
 import com.bookaro.api.utils.ImageUploadResponse;
 import com.bookaro.api.utils.ImageUtility;
@@ -27,9 +28,18 @@ import java.util.Optional;
 public class ImageService {
 
 	@Autowired
-	ImageRepository imageRepository;	
+	ImageRepository imageRepository;
+	
 
 	
+	
+	
+	public Optional<Image> findByBook(Book book) {
+		return imageRepository.findByBook(book);
+	}
+
+
+
 	/**
 	 * Metodo para subir una imagen a la BD del servidor
 	 * @param file Recibe un parametro de tipo MultipartFile
@@ -48,6 +58,7 @@ public class ImageService {
 		ImageUploadResponse image = new ImageUploadResponse(file.getOriginalFilename());
 		return image;
 	}	
+	
 
 	
 	/**

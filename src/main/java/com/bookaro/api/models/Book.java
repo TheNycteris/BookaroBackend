@@ -8,7 +8,10 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
  * 
@@ -31,12 +34,12 @@ public class Book {
 	private Long id;	
 	
 	
-	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER/*, orphanRemoval = true*/)
-	@JsonIgnore 
+	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
+	//@JsonIgnore 
 	private List<Order> orders;
 	
 	
-	private String name, author, category, editorial, synopsis;
+	private String name, /*author,*/ category, editorial, synopsis;
 	
 	@Column(unique = true, nullable = false)
 	private String isbn;	
@@ -46,8 +49,14 @@ public class Book {
 	// Enlace con la clase Book
 	@OneToOne(mappedBy="book")
 	@OnDelete(action = OnDeleteAction.CASCADE) 
-	@JsonIgnore
+	//@JsonIgnore
 	private Image image;
+	
+	//////////////////////////////////////
+	@ManyToOne()
+    @JoinColumn(name = "id_author")	
+	private Author author;
+	//////////////////////////////////////
 	
 	/**
 	 * Constructor vacio
@@ -93,17 +102,17 @@ public class Book {
 	 * Getter author
 	 * @return Retorna un string con el autor
 	 */
-	public String getAuthor() {
+	/*public String getAuthor() {
 		return author;
-	}
+	}*/
 
 	/**
 	 * Setter author
 	 * @param author Recibe un string con el autor
 	 */
-	public void setAuthor(String author) {
+	/*public void setAuthor(String author) {
 		this.author = author;
-	}
+	}*/
 
 	/**
 	 * Getter isbn
@@ -174,6 +183,7 @@ public class Book {
 	 * Getter atributo List<Order>
 	 * @return Retorna lista de objetos Order
 	 */
+	@JsonProperty("orders")
 	public List<Order> getOrders() {
 		return orders;
 	}
@@ -182,6 +192,7 @@ public class Book {
 	 * Setter atributo List<Order>
 	 * @param orders Recibe una lista de objetos Order
 	 */
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
 	}
@@ -190,7 +201,7 @@ public class Book {
 	/**
 	 * Getter atributo image
 	 * @return Retorn objeto Image
-	 */
+	 */	
 	public Image getImage() {
 		return image;
 	}
@@ -200,6 +211,7 @@ public class Book {
 	 * Setter atributo image
 	 * @param image Recibe un objeto Image
 	 */
+	@JsonProperty(access = Access.WRITE_ONLY)
 	public void setImage(Image image) {
 		this.image = image;
 	}
@@ -220,7 +232,19 @@ public class Book {
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+
+
+	public Author getAuthor() {
+		return author;
+	}
+
+
+
+	public void setAuthor(Author author) {
+		this.author = author;
 	}	
-	
+		
 	
 }

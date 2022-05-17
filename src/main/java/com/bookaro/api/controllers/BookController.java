@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookaro.api.models.Author;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.services.BookService;
+import com.bookaro.api.services.ImageService;
 
 /**
  * 
@@ -32,8 +34,6 @@ public class BookController {
 	private BookService bookService;	
 	
 	
-	
-	
 	/**
 	 * Metodo que devuelve todos los libros con paginacion
 	 * @param pageNo Recibe un entero con el numero de pagina o bloque
@@ -41,7 +41,7 @@ public class BookController {
 	 * @return Retorna una lista de libros paginada
 	 */
 	@GetMapping("/pagination/{pageNo}/{pageSize}")
-	public List<Book> findPaginated(@PathVariable int pageNo, @PathVariable int pageSize) {
+	public List<Book> findBooksPaginated(@PathVariable int pageNo, @PathVariable int pageSize) {		
 		return bookService.findPaginated(pageNo, pageSize);
 	}
 	
@@ -56,15 +56,17 @@ public class BookController {
 		return bookService.findBookByActive(active);
 	}
 
+	
 	/**
 	 * Metodo que busca un libro por su autor
 	 * @param author Recibe un String con el autor del libro
 	 * @return Retorna un objeto Book.
-	 */
-	@GetMapping("/author/{author}")
-	public List<Book> findBookByAuthor(@PathVariable("author") String author) {		
+	 */	
+	@GetMapping("/author")
+	public List<Book> findBookByAuthor(@RequestBody Author author) {		
 		return bookService.findBookByAuthor(author);
 	}
+	
 
 	/**
 	 * Metodo que busca un libro por su category
@@ -75,6 +77,7 @@ public class BookController {
 	public List<Book> findBookByCategory(@PathVariable("category") String category) {
 		return bookService.findBookByCategory(category);
 	}
+	
 
 	/**
 	 * Metodo que busca un libro por su editorial
@@ -139,6 +142,7 @@ public class BookController {
 	}
 	
 	
+	
 	/**
 	 * @author Pedro<br>
 	 * Metodo para actualizar un libro
@@ -153,6 +157,7 @@ public class BookController {
 			return "Error actualizando";
 		}
 	}
+	
 	
 	/**
 	 * @author Pedro<br>
