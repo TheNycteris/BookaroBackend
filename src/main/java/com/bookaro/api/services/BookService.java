@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
 import com.bookaro.api.models.Author;
 import com.bookaro.api.models.Book;
+import com.bookaro.api.models.Editorial;
 import com.bookaro.api.pagination.IBookService;
 import com.bookaro.api.repositories.BookRepository;
-import com.bookaro.api.repositories.ImageRepository;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -82,7 +80,7 @@ public class BookService implements IBookService {
 	 * @return Retorna un Book
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
-	public List<Book> findBookByEditorial(String editorial) {
+	public List<Book> findBookByEditorial(Editorial editorial) {
 		return bookRepository.findBookByEditorial(editorial);
 	}
 

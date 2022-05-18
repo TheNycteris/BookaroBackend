@@ -34,12 +34,11 @@ public class Book {
 	private Long id;	
 	
 	
-	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
-	//@JsonIgnore 
+	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)	
 	private List<Order> orders;
 	
 	
-	private String name, /*author,*/ category, editorial, synopsis;
+	private String name, category, synopsis;
 	
 	@Column(unique = true, nullable = false)
 	private String isbn;	
@@ -48,15 +47,17 @@ public class Book {
 	
 	// Enlace con la clase Book
 	@OneToOne(mappedBy="book")
-	@OnDelete(action = OnDeleteAction.CASCADE) 
-	//@JsonIgnore
-	private Image image;
+	@OnDelete(action = OnDeleteAction.CASCADE)	
+	private Image image;	
 	
-	//////////////////////////////////////
 	@ManyToOne()
     @JoinColumn(name = "id_author")	
 	private Author author;
-	//////////////////////////////////////
+	
+	@ManyToOne()
+    @JoinColumn(name = "id_editorial")	
+	private Editorial editorial;
+	
 	
 	/**
 	 * Constructor vacio
@@ -146,21 +147,7 @@ public class Book {
 		this.category = category;
 	}
 
-	/**
-	 * Getter editorial
-	 * @return Retorn un string con la editorial del libro.
-	 */
-	public String getEditorial() {
-		return editorial;
-	}
-
-	/**
-	 * Setter editorial
-	 * @param editorial Recibe un string con la editorial del libro.
-	 */
-	public void setEditorial(String editorial) {
-		this.editorial = editorial;
-	}
+	
 
 	/**
 	 * Getter synopsis
@@ -235,16 +222,42 @@ public class Book {
 	}
 
 
-
+	/**
+	 * Getter author
+	 * @return Retorna objeto Author
+	 */
 	public Author getAuthor() {
 		return author;
 	}
 
 
-
+	/**
+	 * Setter Author
+	 * @param author Recibe objeto Author
+	 */
 	public void setAuthor(Author author) {
 		this.author = author;
+	}
+
+
+	/**
+	 * Getter Editorial
+	 * @return Retorna objeto Editorial
+	 */
+	public Editorial getEditorial() {
+		return editorial;
+	}
+
+
+	/**
+	 * Setter Editorial
+	 * @param editorial Recibe objeto Editorial
+	 */
+	public void setEditorial(Editorial editorial) {
+		this.editorial = editorial;
 	}	
+	
+	
 		
 	
 }

@@ -29,6 +29,7 @@ import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 import com.bookaro.api.models.Author;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Client;
+import com.bookaro.api.models.Editorial;
 import com.bookaro.api.models.Employee;
 import com.bookaro.api.models.Image;
 import com.bookaro.api.models.Order;
@@ -37,6 +38,7 @@ import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.AuthorRepository;
 import com.bookaro.api.repositories.BookRepository;
 import com.bookaro.api.repositories.ClientRepository;
+import com.bookaro.api.repositories.EditorialRepository;
 import com.bookaro.api.repositories.EmployeeRepository;
 import com.bookaro.api.repositories.ImageRepository;
 import com.bookaro.api.repositories.OrderRepository;
@@ -82,12 +84,16 @@ class BookaroTest {
 	
 	@Autowired
 	private ImageRepository imageRepository;
-
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private AuthorRepository authorRepository;
+	
+	@Autowired 
+	private EditorialRepository editorialRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;	
+	
 	
 	
 	static List<User> users = new ArrayList<User>();
@@ -97,8 +103,8 @@ class BookaroTest {
 	static List<Book> books = new ArrayList<Book>();
 	static List<Subscription> subscriptions = new ArrayList<Subscription>();
 	static List<Image> images = new ArrayList<Image>();
-	
-	
+	static List<Author> authors = new ArrayList<Author>();	
+	static List<Editorial> editorials = new ArrayList<Editorial>();	
 	
 	static int cont = 1;
 	
@@ -249,11 +255,13 @@ class BookaroTest {
 		/**
 		 * ************ Author ************		
 		 */
+		System.out.println("Insertamos author1");
 		Author author1 = new Author();
 		author1.setName("author1");
 		author1.setNacionality("SPAIN");
 		authorRepository.save(author1);
 		
+		System.out.println("Insertamos author1");
 		Author author2 = new Author();
 		author2.setName("author2");
 		author2.setNacionality("GERMANY");
@@ -261,30 +269,40 @@ class BookaroTest {
 		
 		
 		/**
+		 * ************ Editorial ************		
+		 */
+		Editorial editorial1 = new Editorial();
+		editorial1.setName("editorial1");
+		editorialRepository.save(editorial1);
+		
+		Editorial editorial2 = new Editorial();
+		editorial2.setName("editorial2");
+		editorialRepository.save(editorial2);
+		
+		
+		/**
 		 * ************ Book ************		
 		 */
-		// Cremos book1
+		// Creamos book1
 		System.out.println("Insertamos book1");
 		Book book1 = new Book();
-		book1.setName("libro1");
-		//book1.setAuthor("author1");
-		book1.setAuthor(author1); // <--
+		book1.setName("libro1");		
+		book1.setAuthor(author1);
 		book1.setIsbn("isbn1");
 		book1.setCategory("category1");
-		book1.setEditorial("editorial1");
+		book1.setEditorial(editorial1);
 		book1.setSynopsis("synopsis1");	
 		book1.setActive(true);
 		bookRepository.save(book1);
 		
-		// Cremos book1
+		// Creamos book2
 		System.out.println("Insertamos book2");
 		Book book2 = new Book();
-		book2.setName("libro2");
-		//book2.setAuthor("author2");
+		book2.setName("libro2");		
 		book2.setAuthor(author2);
 		book2.setIsbn("isbn2");
 		book2.setCategory("category2");
-		book2.setEditorial("editorial2");
+		book2.setEditorial(editorial2);
 		book2.setSynopsis("synopsis2");	
 		book2.setActive(true);
 		bookRepository.save(book2);		
@@ -368,6 +386,14 @@ class BookaroTest {
 		assert !images.isEmpty();
 		assert images.size() == imageRepository.count();
 		
+		authors = authorRepository.findAll();
+		assert !authors.isEmpty();
+		assert authors.size() == authorRepository.count();
+		
+		editorials = editorialRepository.findAll();
+		assert !editorials.isEmpty();
+		assert editorials.size() == editorialRepository.count();
+		
 		cont++; // Actualizamos variable	
 		
 	}
@@ -442,6 +468,31 @@ class BookaroTest {
 		// Comprobamos que el cambio ha tenido efecto.
 		assert orderRepository.findById(1L).get().isActive() == false;
 		
+		// ********** Book ********** //
+		// Actualizamos el nombre del libro
+		System.out.println("Actualizamos el nombre del libro.");
+		Book book = bookRepository.findById(1L).get();
+		book.setName("Libro actualizado");
+		bookRepository.save(book);
+		assert bookRepository.findById(book.getId()).get().getName().equals("Libro actualizado");
+		
+		// ********** Author ********** //
+		// Actualizamos la nacionalidad del author
+		System.out.println("Actualizamos la nacionalidad del Autor.");
+		Author autor = authorRepository.findById(1L).get();
+		autor.setNacionality("USA");
+		authorRepository.save(autor);
+		assert authorRepository.findById(1L).get().getNacionality().equals("USA");
+		
+		// ********** Editorial ********** //
+		// Actualizamos el nombre del author
+		System.out.println("Actualizamos el nombre de la editorial.");
+		Editorial editorial = editorialRepository.findById(1L).get();
+		editorial.setName("Editorial actualizada");
+		editorialRepository.save(editorial);
+		assert editorialRepository.findById(1L).get().getName().equals("Editorial actualizada");
+		
+		
 		cont++; // Actualizamos variable
 	}
 	
@@ -490,6 +541,10 @@ class BookaroTest {
 		orderRepository.deleteAll();		
 		System.out.println("Borrado Books");
 		bookRepository.deleteAll();
+		System.out.println("Borrado Authors");
+		authorRepository.deleteAll();
+		System.out.println("Borrado Editorials");
+		editorialRepository.deleteAll();
 		System.out.println("Borrado Users");
 		userRepository.deleteAll();
 		System.out.println("Borrado Subscriptions");

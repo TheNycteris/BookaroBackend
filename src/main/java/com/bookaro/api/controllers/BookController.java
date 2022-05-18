@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bookaro.api.models.Author;
 import com.bookaro.api.models.Book;
+import com.bookaro.api.models.Editorial;
 import com.bookaro.api.services.BookService;
 import com.bookaro.api.services.ImageService;
 
@@ -84,8 +85,8 @@ public class BookController {
 	 * @param editorial Recibe un String con la editorial del libro
 	 * @return Retorna un objeto Book.
 	 */
-	@GetMapping("/editorial/{editorial}")
-	public List<Book> findBookByEditorial(@PathVariable("editorial") String editorial) {
+	@GetMapping("/editorial")
+	public List<Book> findBookByEditorial(@RequestBody Editorial editorial) {
 		return bookService.findBookByEditorial(editorial);
 	}
 

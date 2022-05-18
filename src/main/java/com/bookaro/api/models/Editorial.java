@@ -14,31 +14,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
-@Table(name = "author")
-public class Author {
+@Table(name = "editorial")
+public class Editorial {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
-	private Long id;	
+	private Long id;
 	
 	@Column(unique = true, nullable = false)
-	private String name; 
+	private String name;
 	
-	private String nacionality;
-	
-	@OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "editorial", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
 	private List<Book> books;
 	
-	public Author() {}
+	public Editorial() {}
 
-	
 	// ********* Getters/Setters ********* //
 	
 	public Long getId() {
 		return id;
-	}	
-	
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -51,14 +48,6 @@ public class Author {
 		this.name = name;
 	}
 
-	public String getNacionality() {
-		return nacionality;
-	}
-
-	public void setNacionality(String nacionality) {
-		this.nacionality = nacionality;
-	}
-
 	public List<Book> getBooks() {
 		return books;
 	}
@@ -66,7 +55,8 @@ public class Author {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	public void setBooks(List<Book> books) {
 		this.books = books;
-	}	
+	}
+	
 	
 
 }

@@ -23,19 +23,32 @@ public class AuthorController {
 	@Autowired
 	private AuthorService authorService;
 
-	
+	/**
+	 * Metodo que devuelve todos los autores
+	 * @return Retorna una lista de objetos Author
+	 */
 	@GetMapping("/all")
-	public List<Author> findAll() {
+	public List<Author> findAllAuthor() {
 		return authorService.findAll();
 	}
 
+	/**
+	 * Metodo que busca un Author por su id
+	 * @param id Recibe Long con el id
+	 * @return Retorna objeto Editorial
+	 */
 	@GetMapping("/id/{id}")
-	public Optional<Author> findById(@PathVariable("id") Long id) {
+	public Optional<Author> findAuthorById(@PathVariable("id") Long id) {
 		return authorService.findById(id);
 	}
 
+	/**
+	 * Metodo para insertar una Author
+	 * @param author Recibe objeto Author
+	 * @return Retorna String con el mensage
+	 */
 	@PostMapping("/insert")
-	public String add(@RequestBody Author author) {
+	public String addAuthor(@RequestBody Author author) {
 		if (authorService.add(author)) {
 			return "Added Author";
 		} else {
@@ -43,9 +56,13 @@ public class AuthorController {
 		}
 	}
 
-	
+	/***
+	 * Metodo para actualizar un Author
+	 * @param author Recibe un objeto Author
+	 * @return Retorna String con el mensaje
+	 */
 	@PutMapping("/update")
-	public String update(@RequestBody Author author) {
+	public String updateAuthor(@RequestBody Author author) {
 		if (authorService.update(author)) {
 			return "Update Author";
 		} else {
@@ -54,9 +71,13 @@ public class AuthorController {
 		
 	}
 
-	
+	/**
+	 * Metodo para eliminar un autor
+	 * @param id Recibe Long con el id
+	 * @return Retorna String con el mensaje.
+	 */
 	@DeleteMapping("/delete/{id}")
-	public String delete(@PathVariable("id") Long id) {
+	public String deleteAuthor(@PathVariable("id") Long id) {
 		if (authorService.delete(id)) {
 			return "Delete Author";
 		} else {
