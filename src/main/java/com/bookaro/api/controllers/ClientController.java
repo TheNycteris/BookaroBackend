@@ -32,10 +32,21 @@ import com.bookaro.api.services.ClientService;
 public class ClientController {
 	
 	@Autowired
-	private ClientService clientService;	
+	private ClientService clientService;		
 	
 	
-	
+	/**
+	 * Metodo que devuelve todos los clientes con paginacion
+	 * @param pageNo Recibe un entero con el numero de pagina o bloque
+	 * @param pageSize Recibe un entero con los elementos por pagina
+	 * @return Retorna una lista de clientes paginada
+	 */
+	@GetMapping("/pagination/{pageNo}/{pageSize}")
+	public List<Client> findClientPaginated(@PathVariable int pageNo, @PathVariable int pageSize) {
+		return clientService.findPaginated(pageNo, pageSize);
+	}
+
+
 	/**
 	 * Metodo que busca ordenes de un cliente por su estado
 	 * @param username Recibe String con el username del cliente.

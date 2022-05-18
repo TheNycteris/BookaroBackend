@@ -33,7 +33,7 @@ public class BookService implements IBookService {
 	 * Metodo para buscar todos los libros con paginacion
 	 * @param pageNo Recibe un entero con el numero de pagina
 	 * @param pageSize Recibe un entero con los elementos por pagina
-	 * return Retorna una lista de libros
+	 * @return Retorna una lista de libros
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	@Override	

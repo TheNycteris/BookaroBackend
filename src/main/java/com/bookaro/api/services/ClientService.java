@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
+import com.bookaro.api.pagination.IClientService;
 import com.bookaro.api.repositories.ClientRepository;
 
 
@@ -27,7 +33,7 @@ import com.bookaro.api.repositories.ClientRepository;
  *
  */
 @Service
-public class ClientService {
+public class ClientService implements IClientService {
 	
 	@Autowired
 	ClientRepository clientRepository;
@@ -36,6 +42,19 @@ public class ClientService {
 	private BCryptPasswordEncoder passwordEncoder;		
 		
 	
+	/**
+	 * Metodo para buscar todos los clientes por paginacion
+	 * @param pageNo Recibe un entero con el numero de pagina
+	 * @param pageSize Recibe un entero con los elementos por pagina
+	 * @return etorna una lista de clientes.
+	 */
+	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	@Override
+	public List<Client> findPaginated(int pageNo, int pageSize) {
+		Pageable paging = PageRequest.of(pageNo, pageSize);
+		Page<Client> pagedResult = clientRepository.findAll(paging);
+		return pagedResult.toList();
+	}	
 		
 	
 	/**
@@ -217,7 +236,6 @@ public class ClientService {
 		} catch (Exception e) {
 			return false;
 		}
-	}	
-
+	}
 	
 }

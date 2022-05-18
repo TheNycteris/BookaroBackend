@@ -1,12 +1,8 @@
 package com.bookaro.api.repositories;
 
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
@@ -18,7 +14,7 @@ import com.bookaro.api.models.Subscription;
  * Implementa el metodo findBySubscription para buscar por subscripcion
  */
 @Repository
-public interface ClientRepository extends CrudRepository<Client, Long> {
+public interface ClientRepository extends JpaRepository <Client, Long> {
 
 	List<Client> findBySubscription (Subscription subscription);
 	List<Order> findAllOrderByActive (String username);

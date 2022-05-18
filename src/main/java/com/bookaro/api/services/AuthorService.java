@@ -15,17 +15,31 @@ public class AuthorService {
 	
 	@Autowired
 	private AuthorRepository authorRepository;
-
+	
+	/**
+	 * Metodo que busca todos los autores de la BD
+	 * @return Retorna lista de objetos Author
+	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	public List<Author> findAll() {
 		return authorRepository.findAll();
 	}
 
+	/**
+	 * Metodo que busca un Author por su id
+	 * @param id Recibe Long con el id.
+	 * @return Retorna objeto Author
+	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	public Optional<Author> findById(Long id) {
 		return authorRepository.findById(id);
 	}
 	
+	/**
+	 * Metodo para insertar un autor
+	 * @param author Recibe objeto Author
+	 * @return Retrona true o false
+	 */
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public boolean add (Author author) {
 		try {
@@ -37,6 +51,11 @@ public class AuthorService {
 		
 	}
 	
+	/**
+	 * Metodo para actualizar un autor
+	 * @param author Recibe objeto Author
+	 * @return Retorna true o false
+	 */
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public boolean update(Author author) {
 	    try {
