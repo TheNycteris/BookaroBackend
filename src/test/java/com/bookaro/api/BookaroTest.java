@@ -196,11 +196,20 @@ class BookaroTest {
 		
 
 		// Creamos un usuario admin con los datos básicos
+		/*public User(Long id_user, String username, String password, 
+			    String name, String surname, String dni, String address,
+			    String email, int age, String roles, boolean active) */
+		
 		System.out.println("Insertamos user admin");
 		User admin = new User();
 		admin.setUsername("admin");
-		admin.setPassword(passwordEncoder.encode("admin"));	
-		admin.setEmail("admin@bookaro.com");						
+		admin.setPassword(passwordEncoder.encode("admin"));
+		admin.setName("Jill");
+		admin.setSurname("Valentine");
+		admin.setDni("0000010A");
+		admin.setAddress("Raccon City 1");
+		admin.setEmail("admin@bookaro.com");
+		admin.setAge(25);
 		admin.setRole("ROLE_ADMIN");	
 		admin.setActive(true);
 		userRepository.save(admin);	
