@@ -207,7 +207,6 @@ class BookaroTest {
 		admin.setName("Jill");
 		admin.setSurname("Valentine");
 		admin.setDni("0000010A");
-		admin.setAddress("Raccon City 1");
 		admin.setEmail("admin@bookaro.com");
 		admin.setAge(25);
 		admin.setRole("ROLE_ADMIN");	
