@@ -199,11 +199,15 @@ class BookaroTest {
 		System.out.println("Insertamos user admin");
 		User admin = new User();
 		admin.setUsername("admin");
-		admin.setPassword(passwordEncoder.encode("admin"));	
-		admin.setEmail("admin@bookaro.com");						
+		admin.setPassword(passwordEncoder.encode("admin"));
+		admin.setName("Jill");
+		admin.setSurname("Valentine");
+		admin.setDni("0000010A");
+		admin.setEmail("admin@bookaro.com");
+		admin.setAge(25);
 		admin.setRole("ROLE_ADMIN");	
 		admin.setActive(true);
-		userRepository.save(admin);	
+		userRepository.save(admin);
 		
 		// Creamos un usuario mod con los datos básicos
 		System.out.println("Insertamos user user");
@@ -521,7 +525,7 @@ class BookaroTest {
 		// Actualizaremos el email de cliente1 al mismo que tiene employee "pedro@bookaro.com"
 		// Debería saltar una excepción puesto que el campo está calificado como "unique=true"
 		Assertions.assertThrows(Exception.class, () -> {
-			User cliente1 = (Client)users.get(2);
+			User cliente1 = (Client)users.get(4);
 			cliente1.setEmail("pedro@bookaro.com");
 			userRepository.save(cliente1);
 		}, "Exception was expected");
@@ -535,7 +539,7 @@ class BookaroTest {
 	 * Test en el que borramos todos los registros
 	 */
 	@Test
-	//@Disabled
+	@Disabled
 	void test4 () {
 		System.out.println("*************************** TEST DELETE ***************************");		
 		
