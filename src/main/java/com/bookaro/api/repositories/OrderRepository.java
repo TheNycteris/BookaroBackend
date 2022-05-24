@@ -15,9 +15,7 @@ import com.bookaro.api.models.Order;
  *
  */
 @Repository
-public interface OrderRepository extends CrudRepository<Order, Long> {
-	
+public interface OrderRepository extends CrudRepository<Order, Long> {	
 	List<Order> findAllOrderByActive (boolean active);	
 	List<Order> findAllOrderByClient (Client client);
-
 }

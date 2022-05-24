@@ -27,8 +27,7 @@ public class BookService implements IBookService {
 	@Autowired
 	private BookRepository bookRepository;
 	
-	
-	
+		
 	/**
 	 * Metodo para buscar todos los libros con paginacion
 	 * @param pageNo Recibe un entero con el numero de pagina
@@ -154,8 +153,6 @@ public class BookService implements IBookService {
 	        System.out.println(e.getMessage());
 	        return false;
 	    }
-	}
-
-	
+	}	
 
 }

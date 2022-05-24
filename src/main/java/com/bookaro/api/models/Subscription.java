@@ -1,6 +1,5 @@
 package com.bookaro.api.models;
 
-
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,14 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 
 
 /**
@@ -29,14 +22,12 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * <li> Tiene vinculacion con las clase Client </li>
  *
  */
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_sub")
 @Entity
 @Table(name = "subscription")
 public class Subscription {
 
 	// ***** Atributos de clase *****	
-	@OneToMany(mappedBy = "subscription", cascade = CascadeType.MERGE, fetch=FetchType.EAGER)
-	//@JsonIgnore 
+	@OneToMany(mappedBy = "subscription", cascade = CascadeType.MERGE, fetch=FetchType.EAGER)	 
 	private List<Client> allClients;
 	
 	@Id

@@ -2,7 +2,6 @@ package com.bookaro.api.controllers;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.bookaro.api.models.Editorial;
 import com.bookaro.api.services.EditorialService;
 
@@ -32,6 +30,7 @@ public class EditorialController {
 	public List<Editorial> findAllEditorial() {
 		return editorialService.findAll();
 	}
+	
 
 	/**
 	 * Metodo que busca una Editorial por su id
@@ -42,6 +41,7 @@ public class EditorialController {
 	public Optional<Editorial> findEditorialById(@PathVariable("id") Long id) {
 		return editorialService.findById(id);
 	}
+	
 
 	/**
 	 * Metodo para eliminar añadir una editorial
@@ -56,6 +56,7 @@ public class EditorialController {
 			return "Cannot added Editorial";
 		}		
 	}
+	
 
 	/**
 	 * Metodo para actualizar una editorial
@@ -70,6 +71,7 @@ public class EditorialController {
 			return "Cannot update editorial";
 		}		
 	}
+	
 
 	/**
 	 * Metodo para eliminar una editorial

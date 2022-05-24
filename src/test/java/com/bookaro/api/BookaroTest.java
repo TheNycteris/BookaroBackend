@@ -261,7 +261,7 @@ class BookaroTest {
 		author1.setNacionality("SPAIN");
 		authorRepository.save(author1);
 		
-		System.out.println("Insertamos author1");
+		System.out.println("Insertamos author2");
 		Author author2 = new Author();
 		author2.setName("author2");
 		author2.setNacionality("GERMANY");
@@ -271,10 +271,12 @@ class BookaroTest {
 		/**
 		 * ************ Editorial ************		
 		 */
+		System.out.println("Insertamos editorial1");
 		Editorial editorial1 = new Editorial();
 		editorial1.setName("editorial1");
 		editorialRepository.save(editorial1);
 		
+		System.out.println("Insertamos editorial2");
 		Editorial editorial2 = new Editorial();
 		editorial2.setName("editorial2");
 		editorialRepository.save(editorial2);
@@ -533,7 +535,7 @@ class BookaroTest {
 	 * Test en el que borramos todos los registros
 	 */
 	@Test
-	@Disabled
+	//@Disabled
 	void test4 () {
 		System.out.println("*************************** TEST DELETE ***************************");		
 		

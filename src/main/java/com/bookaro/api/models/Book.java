@@ -2,15 +2,9 @@ package com.bookaro.api.models;
 
 import java.util.List;
 import javax.persistence.*;
-
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
@@ -21,31 +15,26 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  * <li> Tine vinculacion con la clase Order</li>
  *
  */
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name = "book")
 public class Book {
 	
-	// ****** Atributos de clase ******
-	
+	// ****** Atributos de clase ******	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
 	private Long id;	
 	
-	
 	@OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)	
-	private List<Order> orders;
-	
+	private List<Order> orders;	
 	
 	private String name, category, synopsis;
 	
 	@Column(unique = true, nullable = false)
 	private String isbn;	
 	
-	private boolean active;
+	private boolean active;	
 	
-	// Enlace con la clase Book
 	@OneToOne(mappedBy="book")
 	@OnDelete(action = OnDeleteAction.CASCADE)	
 	private Image image;	
@@ -100,22 +89,6 @@ public class Book {
 	}
 
 	/**
-	 * Getter author
-	 * @return Retorna un string con el autor
-	 */
-	/*public String getAuthor() {
-		return author;
-	}*/
-
-	/**
-	 * Setter author
-	 * @param author Recibe un string con el autor
-	 */
-	/*public void setAuthor(String author) {
-		this.author = author;
-	}*/
-
-	/**
 	 * Getter isbn
 	 * @return Retorna el isbn del libro
 	 */
@@ -145,9 +118,7 @@ public class Book {
 	 */
 	public void setCategory(String category) {
 		this.category = category;
-	}
-
-	
+	}	
 
 	/**
 	 * Getter synopsis
@@ -255,9 +226,6 @@ public class Book {
 	 */
 	public void setEditorial(Editorial editorial) {
 		this.editorial = editorial;
-	}	
-	
-	
-		
+	}		
 	
 }

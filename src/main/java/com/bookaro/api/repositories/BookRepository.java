@@ -14,12 +14,10 @@ import com.bookaro.api.models.Editorial;
  *
  */
 @Repository
-public interface BookRepository extends JpaRepository <Book, Long> {
-	
+public interface BookRepository extends JpaRepository <Book, Long> {	
 	Book findBookByName (String name);	
 	List<Book> findBookByAuthor (Author author);
 	List<Book> findBookByCategory (String category);
 	List<Book> findBookByEditorial (Editorial editorial);
 	List<Book> findBookByActive (boolean active);
-
 }

@@ -47,8 +47,7 @@ public class AuthorService {
 			return true;
 		} catch (Exception e) {
 			return false;
-		}
-		
+		}		
 	}
 	
 	/**
@@ -79,8 +78,6 @@ public class AuthorService {
 		} catch (Exception e) {
 			return false;
 		}
-	}
-	
-	
+	}	
 
 }

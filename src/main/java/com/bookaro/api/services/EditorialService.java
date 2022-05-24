@@ -15,8 +15,7 @@ import com.bookaro.api.repositories.EditorialRepository;
 public class EditorialService {
 	
 	@Autowired
-	private EditorialRepository editorialRepository;
-	
+	private EditorialRepository editorialRepository;	
 	
 	
 	/**

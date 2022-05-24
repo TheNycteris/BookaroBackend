@@ -15,9 +15,7 @@ import com.bookaro.api.models.Subscription;
  */
 @Repository
 public interface ClientRepository extends JpaRepository <Client, Long> {
-
 	List<Client> findBySubscription (Subscription subscription);
 	List<Order> findAllOrderByActive (String username);
-	Client findClientByUsername (String username);
-	
+	Client findClientByUsername (String username);	
 }

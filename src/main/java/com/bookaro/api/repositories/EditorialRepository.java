@@ -5,6 +5,4 @@ import org.springframework.stereotype.Repository;
 import com.bookaro.api.models.Editorial;
 
 @Repository
-public interface EditorialRepository extends JpaRepository <Editorial, Long> {
-
-}
+public interface EditorialRepository extends JpaRepository <Editorial, Long> {}

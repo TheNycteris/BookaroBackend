@@ -1,6 +1,5 @@
 package com.bookaro.api.models;
 
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -17,8 +16,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @DiscriminatorValue( value="EM" )
-public class Employee extends User {
-
+public class Employee extends User {	
+	
+	
 	// ******* Atributos de clase *******
 	private String position;
 	private double salary;

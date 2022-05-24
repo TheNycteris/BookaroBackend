@@ -53,30 +53,22 @@ public class Order {
 	 * @param client Recibe el id del cliente
 	 * @return Retorna true o false dependien de la cantidad de libros adquiridos.
 	 */
-	public boolean countActiveOrders (Client client) {
-		System.out.println(client.getId());
-		System.out.println(client.getUsername());
-		System.out.println(client.getSubscription().getType());
-		System.out.println(client.getOrders().size());
+	public boolean countActiveOrders (Client client) {		
 		if (client.getSubscription().getType().equalsIgnoreCase("Sin Subscripción")) {
 			System.out.println("Estoy en el primer IF");
 			return false;
 		} 
 		int contador = 0;
-		for (Order order: client.getOrders()) {
-			
+		for (Order order: client.getOrders()) {			
 			if (order.isActive()) {
 				contador++;
 			}
-		}
+		}		
 		
-		System.out.println(contador);
-		
-		if ((contador > 1) && client.getSubscription().getType().equals("Básica")) {
-			System.out.println("Estoy en el SEGUNDO IF");
+		if ((contador > 1) && client.getSubscription().getType().equals("Básica")) {			
 			return false;
 		}
-		return true; // aún por implementar
+		return true; 
 	}
 	
 	
@@ -186,7 +178,5 @@ public class Order {
 	public String toString() {
 		return "Order [id=" + id + ", startDate=" + startDate + ", active=" + active + "]";
 	}
-
-
 		
 }

@@ -11,8 +11,6 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Order;
 import com.bookaro.api.models.Subscription;
@@ -185,7 +183,18 @@ public class ClientService implements IClientService {
 	 */
 	@PreAuthorize("hasRole('ADMIN')")
 	public boolean updateA (Client client) {		
-	    try {	    	
+	    try {
+	    	// Capturamos el cliente de la BD
+	    	Client aux = clientRepository.findClientByUsername(client.getUsername());
+	    	// comprobamos que no sea null
+	    	if (client.getPassword() == null) {
+	    		client.setPassword(aux.getPassword());
+	    	} else if (!aux.getPassword().equals(client.getPassword())) {	    		
+	    		client.setPassword(passwordEncoder.encode(client.getPassword()));
+	    	} else {
+	    		client.setPassword(aux.getPassword());
+	    	}	
+	    	// Gruadamos el cliente	    	
 	    	clientRepository.save(client);
 	        return true;
 	    } catch (Exception e) {
@@ -209,7 +218,6 @@ public class ClientService implements IClientService {
 	        return false;
 	    }
 	}
-
 	
 	
 	/**
@@ -221,14 +229,12 @@ public class ClientService implements IClientService {
 	public boolean clientCancelation (String username) {
 		try {			
 			Client aux = clientRepository.findClientByUsername(username);			
-			
 			List<Order> orders = aux.getOrders();
 			for (Order or: orders) {
 				if (or.isActive()) {
 					return false;
 				}
-			}
-						
+			}						
 			aux.setRole("ROLE_DOWN");
 			aux.setActive(false);			
 			clientRepository.save(aux);		

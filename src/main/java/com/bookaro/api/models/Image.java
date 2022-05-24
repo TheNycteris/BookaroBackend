@@ -57,13 +57,13 @@ public class Image {
 		this.type = type;
 		this.image = image;
 		this.book = book;
-	}
-	
+	}	
 	
 	/**
 	 * Constructor vacio
 	 */
 	public Image() {}
+	
 	
 	// Getters/Setters	
 	/**

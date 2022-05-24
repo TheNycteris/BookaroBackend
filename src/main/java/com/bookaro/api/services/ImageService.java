@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Image;
-import com.bookaro.api.repositories.BookRepository;
 import com.bookaro.api.repositories.ImageRepository;
 import com.bookaro.api.utils.ImageUploadResponse;
 import com.bookaro.api.utils.ImageUtility;
@@ -30,14 +29,15 @@ public class ImageService {
 	@Autowired
 	ImageRepository imageRepository;
 	
-
 	
-	
-	
+	/**
+	 * Metodo que busca una imagen por su libro
+	 * @param book Recibe objeto Book
+	 * @return Retorna objeto Image
+	 */
 	public Optional<Image> findByBook(Book book) {
 		return imageRepository.findByBook(book);
 	}
-
 
 
 	/**
@@ -58,7 +58,6 @@ public class ImageService {
 		ImageUploadResponse image = new ImageUploadResponse(file.getOriginalFilename());
 		return image;
 	}	
-	
 
 	
 	/**
