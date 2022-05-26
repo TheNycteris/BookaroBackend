@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Image;
-import com.bookaro.api.services.BookService;
 import com.bookaro.api.services.ImageService;
 import com.bookaro.api.utils.ImageUploadResponse;
 
@@ -32,8 +31,7 @@ import com.bookaro.api.utils.ImageUploadResponse;
 public class ImageController {
 
 	@Autowired
-	ImageService imageService;
-	
+	ImageService imageService;	
 
 
 	/**
@@ -44,10 +42,10 @@ public class ImageController {
 	 * @throws IOException Puede lanzar IOException
 	 */
 	@PostMapping("/upload/image")
-	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file, @RequestParam("book_id") Book id) throws IOException {		
+	public ImageUploadResponse upload(@RequestParam("image") MultipartFile file, 
+									  @RequestParam("book_id") Book id) throws IOException {		
 		return imageService.upload(file, id);		
-	}
-	
+	}	
 	
 	
 
@@ -79,7 +77,6 @@ public class ImageController {
 	}
 
 
-
 	/**
 	 * Metodo para obtener lista de imagenes
 	 * @return Retorna lista imagenes
@@ -90,7 +87,6 @@ public class ImageController {
 	}
 
 
-
 	/**
 	 * Metodo que busca imagen por su ID.
 	 * @param id Recibe un long con el ID de la imagen
@@ -99,8 +95,7 @@ public class ImageController {
 	@GetMapping(path = {"/get/image/id/{id}"})
 	public Image findImageById(@PathVariable("id") Long id) {
 		return imageService.findById(id);
-	}
-	
+	}	
 	
 	
 	/**
@@ -123,7 +118,6 @@ public class ImageController {
 	public void deleteImageById(@PathVariable("id") Long id) {
 		imageService.deleteById(id);
 	}
-	
 	
 
 }

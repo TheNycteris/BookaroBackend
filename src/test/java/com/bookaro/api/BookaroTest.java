@@ -211,7 +211,7 @@ class BookaroTest {
 		admin.setAge(25);
 		admin.setRole("ROLE_ADMIN");	
 		admin.setActive(true);
-		userRepository.save(admin);	
+		userRepository.save(admin);
 		
 		// Creamos un usuario mod con los datos básicos
 		System.out.println("Insertamos user user");
@@ -269,7 +269,7 @@ class BookaroTest {
 		author1.setNacionality("SPAIN");
 		authorRepository.save(author1);
 		
-		System.out.println("Insertamos author1");
+		System.out.println("Insertamos author2");
 		Author author2 = new Author();
 		author2.setName("author2");
 		author2.setNacionality("GERMANY");
@@ -279,10 +279,12 @@ class BookaroTest {
 		/**
 		 * ************ Editorial ************		
 		 */
+		System.out.println("Insertamos editorial1");
 		Editorial editorial1 = new Editorial();
 		editorial1.setName("editorial1");
 		editorialRepository.save(editorial1);
 		
+		System.out.println("Insertamos editorial2");
 		Editorial editorial2 = new Editorial();
 		editorial2.setName("editorial2");
 		editorialRepository.save(editorial2);
@@ -527,7 +529,7 @@ class BookaroTest {
 		// Actualizaremos el email de cliente1 al mismo que tiene employee "pedro@bookaro.com"
 		// Debería saltar una excepción puesto que el campo está calificado como "unique=true"
 		Assertions.assertThrows(Exception.class, () -> {
-			User cliente1 = (Client)users.get(2);
+			User cliente1 = (Client)users.get(4);
 			cliente1.setEmail("pedro@bookaro.com");
 			userRepository.save(cliente1);
 		}, "Exception was expected");

@@ -3,7 +3,6 @@ package com.bookaro.api.services;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import com.bookaro.api.models.Subscription;
@@ -31,8 +30,7 @@ public class SubscriptionService {
 	/**
 	 * Metodo que devuelve una lista de Subscription
 	 * @return Retorna todas las subscripciones creadas
-	 */
-	//@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
+	 */	
 	public List<Subscription> findAll(){
 		return (List<Subscription>) subscriptionRepository.findAll();
 	}
@@ -42,8 +40,7 @@ public class SubscriptionService {
 	 * Metodo que devulve una Subscription
 	 * @param id Recibe un Long con el id de la subscripcion
 	 * @return Retorna un objeto de tipo Subscription
-	 */
-	//@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	 */	
 	public Optional<Subscription> findById (Long id) {
 		Optional<Subscription> aux = subscriptionRepository.findById(id);
 		return aux;
@@ -65,8 +62,7 @@ public class SubscriptionService {
 	 * Metodo para actualizar una subscripcion
 	 * @param subscription Recibe un objeto de tipo Subscription
 	 * @return Retorna un objeto Subscription
-	 */
-	//@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD') or principal.equals(returnObject.get().getUsername())")
+	 */	
 	@PreAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
 	public Subscription update(Subscription subscription) {
 	    try {

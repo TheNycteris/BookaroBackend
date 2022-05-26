@@ -60,8 +60,8 @@ public class UserService {
 	 */	
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD')")
     public List<User> findAll() {
-        List<User> list = new ArrayList<>();
-        Iterable<User> Users = repository.findAll();
+        List<User> list = new ArrayList<>();        
+        Iterable<User> Users = repository.findAll();       
         Users.forEach(list::add);
         return list;
     }

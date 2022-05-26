@@ -29,9 +29,9 @@ public class Editorial {
 	private List<Book> books;
 	
 	public Editorial() {}
-
-	// ********* Getters/Setters ********* //
 	
+
+	// ********* Getters/Setters ********* //	
 	public Long getId() {
 		return id;
 	}
@@ -55,8 +55,6 @@ public class Editorial {
 	@JsonProperty(access = Access.WRITE_ONLY)
 	public void setBooks(List<Book> books) {
 		this.books = books;
-	}
-	
-	
+	}	
 
 }

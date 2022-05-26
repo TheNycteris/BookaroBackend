@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * 
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id_user")
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "userbookaro")
@@ -39,8 +38,7 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = true)	
-	private Long id;
-	//private Long id_user;
+	private Long id;	
 	
 	@Column(unique = true, nullable = false)
 	private String username; 
@@ -77,8 +75,7 @@ public class User implements UserDetails {
 	public User(Long id_user, String username, String password, 
 			    String name, String surname, String dni, String address,
 			    String email, int age, String roles, boolean active) {		
-		this.id = id_user;
-		//this.id_user = id_user;
+		this.id = id_user;		
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -102,8 +99,7 @@ public class User implements UserDetails {
 	 * Getter ID de usuario
 	 * @return retorna el id del usuario
 	 */
-	public Long getId() {
-		//return id_user;
+	public Long getId() {		
 		return id;
 	}
 
@@ -111,8 +107,7 @@ public class User implements UserDetails {
 	 * Setter id de usuario
 	 * @param id Recibe un parametro de tipo Long
 	 */
-	public void setId(Long id) {
-		//this.id_user = id;
+	public void setId(Long id) {		
 		this.id = id;
 	}
 
@@ -260,6 +255,22 @@ public class User implements UserDetails {
 		this.roles = role;
 	}
 	
+	/**
+	 * Metodo que obtiene si un User está activo o no
+	 * @return Retorna true o false
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * Metodo para modificar el estado de un usuario
+	 * @param active Recibe un parametro boolean
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 	// ************ Metodos heredados de la interfaz UserDetails ************
 	
 	/**
@@ -282,8 +293,7 @@ public class User implements UserDetails {
 	 * Metodo que define si la cuenta tiene expiracion.
 	 */
 	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
+	public boolean isAccountNonExpired() {		
 		return true;
 	}
 
@@ -291,8 +301,7 @@ public class User implements UserDetails {
 	 * Metodo que define si la cuenta es No bloqueda
 	 */
 	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
+	public boolean isAccountNonLocked() {		
 		return true;
 	}
 
@@ -300,8 +309,7 @@ public class User implements UserDetails {
 	 * Metodo que define si las credenciales pueden expirar
 	 */
 	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
+	public boolean isCredentialsNonExpired() {		
 		return true;
 	}
 
@@ -309,26 +317,9 @@ public class User implements UserDetails {
 	 * Metodo que define si la cuenta esta habilitada.
 	 */
 	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
+	public boolean isEnabled() {		
 		return true;
-	}
-	
-	/**
-	 * Metodo que obtiene si un User está activo o no
-	 * @return Retorna true o false
-	 */
-	public boolean isActive() {
-		return active;
-	}
-
-	/**
-	 * Metodo para modificar el estado de un usuario
-	 * @param active Recibe un parametro boolean
-	 */
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+	}	
 	
 
 }

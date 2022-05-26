@@ -6,11 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.map.repository.config.EnableMapRepositories;
 import org.springframework.stereotype.Service;
-
-import com.bookaro.api.models.Client;
 import com.bookaro.api.models.Employee;
-import com.bookaro.api.models.Order;
-import com.bookaro.api.models.User;
 import com.bookaro.api.repositories.EmployeeRepository;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * <li> Employee add(Employee employee) </li>
  * <li> boolean update(Employee employee) </li>
  * <li> boolean delete (long id) </li> 
- * 
  * Inyecta las dependencias:
  * <li> EmployeeRepository </li>
  * <li> BCryptPasswordEncoder </li>

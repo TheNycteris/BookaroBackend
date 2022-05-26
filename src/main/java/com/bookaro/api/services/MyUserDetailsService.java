@@ -36,12 +36,10 @@ public class MyUserDetailsService implements UserDetailsService {
 		
 		if (user == null) {
 			throw new UsernameNotFoundException("User " + username +" not found");
-		}  			
-		
+		}	
 		
 		List<String> roles = new ArrayList<String>();
-		roles.add(user.getRole());
-		
+		roles.add(user.getRole());		
 		
 		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
 		for(String role:roles) {
@@ -49,10 +47,6 @@ public class MyUserDetailsService implements UserDetailsService {
 		}
 		
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
-    }
-
-	
-    
-    
+    }    
     
 }

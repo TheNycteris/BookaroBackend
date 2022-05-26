@@ -15,7 +15,6 @@ import com.bookaro.api.models.Employee;
  */
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
-
 	List<Employee> findEmployeesByPosition(String position);
 	Employee findEmployeeByUsername (String username);
 }

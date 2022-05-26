@@ -3,7 +3,6 @@ package com.bookaro.api.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.bookaro.api.models.Author;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Editorial;
 import com.bookaro.api.services.BookService;
-import com.bookaro.api.services.ImageService;
+
 
 /**
  * 

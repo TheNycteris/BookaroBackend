@@ -33,36 +33,67 @@ public class Author {
 	public Author() {}
 
 	
-	// ********* Getters/Setters ********* //
-	
+	// ********* Getters/Setters ********* //	
+	/**
+	 * Getter id
+	 * @return Retorna Long
+	 */
 	public Long getId() {
 		return id;
 	}	
 	
+	/**
+	 * Setter id
+	 * @param id Recibe Long
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * setter name
+	 * @return Retorna String
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * setter name
+	 * @param name Recibe String
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * getter nacionality
+	 * @return Retorna String
+	 */
 	public String getNacionality() {
 		return nacionality;
 	}
 
+	/**
+	 * setter nacionality
+	 * @param nacionality Recibe String
+	 */
 	public void setNacionality(String nacionality) {
 		this.nacionality = nacionality;
 	}
 
+	/**
+	 * getter books
+	 * @return Retorna lista de objetos Book
+	 */
 	public List<Book> getBooks() {
 		return books;
 	}
 
+	/**
+	 * setter books
+	 * @param books Recibe lista objetos book
+	 */
 	@JsonProperty(access = Access.WRITE_ONLY)
 	public void setBooks(List<Book> books) {
 		this.books = books;

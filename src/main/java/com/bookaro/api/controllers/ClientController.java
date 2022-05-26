@@ -67,8 +67,7 @@ public class ClientController {
 	@GetMapping("/username/{username}")
 	public Client findClientByUsername(@PathVariable ("username") String username) {
 		return clientService.findClientByUsername(username);
-	}
-	
+	}	
 	
 
 	/**
@@ -120,6 +119,7 @@ public class ClientController {
 		return clientService.findById(id);
 	}
 	
+	
 	/**
 	 * @author Pedro<br>
 	 * Metodo para crear clientes
@@ -153,6 +153,7 @@ public class ClientController {
 	    }
 	}
 	
+	
 	/**
 	 * @author Pedro<br>
 	 * Metodo para actualizar un cliente
@@ -169,8 +170,7 @@ public class ClientController {
 	        return "Request does not contain a body";
 	    }
 	}
-	
-	
+		
 
 	/**
 	 * @author Pedro<br>
