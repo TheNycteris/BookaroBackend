@@ -25,7 +25,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
-
 import com.bookaro.api.models.Author;
 import com.bookaro.api.models.Book;
 import com.bookaro.api.models.Client;
@@ -272,6 +271,12 @@ class BookaroTest {
 		authorRepository.save(author2);
 		
 		
+		Author george = new Author();
+		george.setName("GEORGE R.R. MARTIN");
+		george.setNacionality("USA");
+		authorRepository.save(george);
+		
+		
 		/**
 		 * ************ Editorial ************		
 		 */
@@ -285,12 +290,16 @@ class BookaroTest {
 		editorial2.setName("editorial2");
 		editorialRepository.save(editorial2);
 		
+		Editorial gigamesh = new Editorial();
+		gigamesh.setName("Gigamesh");
+		editorialRepository.save(gigamesh);
+		
 		
 		/**
 		 * ************ Book ************		
 		 */
 		// Creamos book1
-		System.out.println("Insertamos book1");
+		/*System.out.println("Insertamos book1");
 		Book book1 = new Book();
 		book1.setName("libro1");		
 		book1.setAuthor(author1);
@@ -299,10 +308,10 @@ class BookaroTest {
 		book1.setEditorial(editorial1);
 		book1.setSynopsis("synopsis1");	
 		book1.setActive(true);
-		bookRepository.save(book1);
+		bookRepository.save(book1);*/
 		
 		// Creamos book2
-		System.out.println("Insertamos book2");
+		/*System.out.println("Insertamos book2");
 		Book book2 = new Book();
 		book2.setName("libro2");		
 		book2.setAuthor(author2);
@@ -311,7 +320,66 @@ class BookaroTest {
 		book2.setEditorial(editorial2);
 		book2.setSynopsis("synopsis2");	
 		book2.setActive(true);
+		bookRepository.save(book2);	*/	
+		
+		
+		// Creamos book1
+		System.out.println("Insertamos book1");
+		Book book1 = new Book();
+		book1.setName("Juego de Tronos (Saga Canción de Hielo y Fuego)");		
+		book1.setAuthor(george);
+		book1.setIsbn("9788496208490");
+		book1.setCategory("Novela fantástica");
+		book1.setEditorial(gigamesh);
+		book1.setSynopsis("Canción de hielo y fuego: Libro primero. "
+				+ "La novela río más espectacular jamás escrita. "
+				+ "Tras el largo verano, el invierno se acerca a los Siete Reinos. ");	
+		book1.setActive(true);
+		bookRepository.save(book1);
+
+		// Creamos book2
+		System.out.println("Insertamos book2");
+		Book book2 = new Book();
+		book2.setName("Juego de Tronos (Choque de Reyes)");		
+		book2.setAuthor(george);
+		book2.setIsbn("9788496208506");
+		book2.setCategory("Novela fantástica");
+		book2.setEditorial(gigamesh);
+		book2.setSynopsis("Canción de hielo y fuego: Libro segundo. "
+				+ "La novela río más espectacular jamás escritaUn cometa"
+				+ " del color de la sangre hiende el cielo, cargado de malos augurios.");	
+		book2.setActive(true);
 		bookRepository.save(book2);		
+
+		// Creamos book3
+		System.out.println("Insertamos book3");
+		Book book3 = new Book();
+		book3.setName("Juego de Tronos (Tormenta de Espadas)");		
+		book3.setAuthor(george);
+		book3.setIsbn("9788496208513");
+		book3.setCategory("Novela fantástica");
+		book3.setEditorial(gigamesh);
+		book3.setSynopsis("Las huestes de los fugaces reyes de Poniente, "
+				+ "descompuestas en hordas, asuelan y esquilman una tierra castigada "
+				+ "por la guerra e indefensa ante un invierno que se anuncia inusitadamente crudo.");	
+		book3.setActive(true);
+		bookRepository.save(book3);
+
+		// Creamos book4
+		System.out.println("Insertamos book4");
+		Book book4 = new Book();
+		book4.setName("Juego de Tronos (Festín de cuervos)");		
+		book4.setAuthor(george);
+		book4.setIsbn("9788496208520");
+		book4.setCategory("Novela fantástica");
+		book4.setEditorial(gigamesh);
+		book4.setSynopsis("Mientras los vientos del otoño desnudan los árboles, "
+				+ "las últimas cosechas se pudren en los pocos campos que no han "
+				+ "sido devastados por la guerra, y por los ríos teñidos de rojo "
+				+ "bajan cadáveres de todos los blasones y estirpes.");	
+		book4.setActive(true);
+		bookRepository.save(book4);		
+		
 				
 		
 		/**
@@ -322,7 +390,7 @@ class BookaroTest {
 		String url = ubi + "/src/main/resources/captura.png";
 		File file = new File(url);
 		Image image = new Image();		
-		try {
+		/*try {
 			InputStream input = new FileInputStream(file);			
 
 			MultipartFile multi = new MockMultipartFile("file", file.getName(), "image/png", IOUtils.toByteArray(input));				
@@ -336,8 +404,90 @@ class BookaroTest {
 
 		} catch (IOException e ) {			
 			e.printStackTrace();
-		}				
+		}*/
 		
+		
+		System.out.println("Insertamos una imagen");				
+		url = ubi + "/src/main/resources/CHOQUE_DE_REYES.jpg";
+		file = new File(url);
+		image = new Image();		
+		try {
+			InputStream input = new FileInputStream(file);			
+
+			MultipartFile multi = new MockMultipartFile("file", file.getName(), "image/jpeg", IOUtils.toByteArray(input));				
+			image = imageRepository.save(Image.builder()
+					.id(multi.getSize())
+					.name(multi.getOriginalFilename())
+					.type(multi.getContentType())
+					.book(book2)
+					.image(ImageUtility.compressImage(multi.getBytes()))
+					.build());				
+
+		} catch (IOException e ) {			
+			e.printStackTrace();
+		}
+		
+		// Imagen 2
+		url = ubi + "/src/main/resources/FESTIN_DE_CUERVOS.jpg";
+		file = new File(url);
+		image = new Image();		
+		try {
+			InputStream input = new FileInputStream(file);			
+
+			MultipartFile multi = new MockMultipartFile("file", file.getName(), "image/jpeg", IOUtils.toByteArray(input));				
+			image = imageRepository.save(Image.builder()
+					.id(multi.getSize())
+					.name(multi.getOriginalFilename())
+					.type(multi.getContentType())
+					.book(book4)
+					.image(ImageUtility.compressImage(multi.getBytes()))
+					.build());				
+
+		} catch (IOException e ) {			
+			e.printStackTrace();
+		}
+		
+		
+		// Imagen 3
+		url = ubi + "/src/main/resources/SAGA_CANCION_DE_HIELO_Y_FUEGO 1.jpg";
+		file = new File(url);
+		image = new Image();		
+		try {
+			InputStream input = new FileInputStream(file);			
+
+			MultipartFile multi = new MockMultipartFile("file", file.getName(), "image/jpeg", IOUtils.toByteArray(input));				
+			image = imageRepository.save(Image.builder()
+					.id(multi.getSize())
+					.name(multi.getOriginalFilename())
+					.type(multi.getContentType())
+					.book(book1)
+					.image(ImageUtility.compressImage(multi.getBytes()))
+					.build());				
+
+		} catch (IOException e ) {			
+			e.printStackTrace();
+		}
+		
+		
+		// Imagen 4
+		url = ubi + "/src/main/resources/TORMENTA_DE_ESPADAS.jpg";
+		file = new File(url);
+		image = new Image();		
+		try {
+			InputStream input = new FileInputStream(file);			
+
+			MultipartFile multi = new MockMultipartFile("file", file.getName(), "image/jpeg", IOUtils.toByteArray(input));				
+			image = imageRepository.save(Image.builder()
+					.id(multi.getSize())
+					.name(multi.getOriginalFilename())
+					.type(multi.getContentType())
+					.book(book3)
+					.image(ImageUtility.compressImage(multi.getBytes()))
+					.build());				
+
+		} catch (IOException e ) {			
+			e.printStackTrace();
+		}
 		
 		/**
 		 * ************ Order ************		
@@ -476,11 +626,11 @@ class BookaroTest {
 		
 		// ********** Book ********** //
 		// Actualizamos el nombre del libro
-		System.out.println("Actualizamos el nombre del libro.");
+		/*System.out.println("Actualizamos el nombre del libro.");
 		Book book = bookRepository.findById(1L).get();
 		book.setName("Libro actualizado");
 		bookRepository.save(book);
-		assert bookRepository.findById(book.getId()).get().getName().equals("Libro actualizado");
+		assert bookRepository.findById(book.getId()).get().getName().equals("Libro actualizado");*/
 		
 		// ********** Author ********** //
 		// Actualizamos la nacionalidad del author
