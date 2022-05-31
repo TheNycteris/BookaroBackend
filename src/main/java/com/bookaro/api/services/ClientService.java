@@ -44,7 +44,7 @@ public class ClientService implements IClientService {
 	 * Metodo para buscar todos los clientes por paginacion
 	 * @param pageNo Recibe un entero con el numero de pagina
 	 * @param pageSize Recibe un entero con los elementos por pagina
-	 * @return etorna una lista de clientes.
+	 * @return Retorna una lista de clientes.
 	 */
 	@PostAuthorize(value = "hasAnyRole('ADMIN', 'MOD', 'USER')")
 	@Override

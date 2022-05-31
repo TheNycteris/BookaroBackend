@@ -1,7 +1,6 @@
 package com.bookaro.api.models;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +23,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
  * <li> Tiene vinculación con las clases Client y Book</li>
  *
  */
+
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name = "orders")

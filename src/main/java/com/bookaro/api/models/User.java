@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -276,6 +277,7 @@ public class User implements UserDetails {
 	/**
 	 * Metodo para la autorizacion del usuario por role
 	 */
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {		
 		ArrayList<GrantedAuthority> authorities = new ArrayList<>();
@@ -292,7 +294,8 @@ public class User implements UserDetails {
 	/**
 	 * Metodo que define si la cuenta tiene expiracion.
 	 */
-	@Override
+	@JsonIgnore
+	@Override	
 	public boolean isAccountNonExpired() {		
 		return true;
 	}
@@ -300,6 +303,7 @@ public class User implements UserDetails {
 	/**
 	 * Metodo que define si la cuenta es No bloqueda
 	 */
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {		
 		return true;
@@ -308,6 +312,7 @@ public class User implements UserDetails {
 	/**
 	 * Metodo que define si las credenciales pueden expirar
 	 */
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {		
 		return true;
@@ -316,6 +321,7 @@ public class User implements UserDetails {
 	/**
 	 * Metodo que define si la cuenta esta habilitada.
 	 */
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {		
 		return true;
