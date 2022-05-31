@@ -330,7 +330,7 @@ class BookaroTest {
 		// Creamos book1
 		System.out.println("Insertamos book1");
 		Book book1 = new Book();
-		book1.setName("Juego de Tronos (Saga Canción de Hielo y Fuego)");		
+		book1.setName("Juego de Tronos");		
 		book1.setAuthor(george);
 		book1.setIsbn("9788496208490");
 		book1.setCategory("Novela fantástica");
@@ -344,7 +344,7 @@ class BookaroTest {
 		// Creamos book2
 		System.out.println("Insertamos book2");
 		Book book2 = new Book();
-		book2.setName("Juego de Tronos (Choque de Reyes)");		
+		book2.setName("Choque de Reyes");		
 		book2.setAuthor(george);
 		book2.setIsbn("9788496208506");
 		book2.setCategory("Novela fantástica");
@@ -358,7 +358,7 @@ class BookaroTest {
 		// Creamos book3
 		System.out.println("Insertamos book3");
 		Book book3 = new Book();
-		book3.setName("Juego de Tronos (Tormenta de Espadas)");		
+		book3.setName("Tormenta de Espadas");		
 		book3.setAuthor(george);
 		book3.setIsbn("9788496208513");
 		book3.setCategory("Novela fantástica");
@@ -372,7 +372,7 @@ class BookaroTest {
 		// Creamos book4
 		System.out.println("Insertamos book4");
 		Book book4 = new Book();
-		book4.setName("Juego de Tronos (Festín de cuervos)");		
+		book4.setName("Festín de cuervos");		
 		book4.setAuthor(george);
 		book4.setIsbn("9788496208520");
 		book4.setCategory("Novela fantástica");
